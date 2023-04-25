@@ -90,7 +90,7 @@ const Dashboard = () => {
           <div className="content">
             <h2>Hi Demo User!</h2>
             <h3>These are your Volunteer events, add and edit them as you like.</h3>
-            <div className="dashboard cards-container">
+            <div className="dashboard-cards cards-container">
                 {events.map((event, index) => (
                     <div key={index} className="event-card">
                     <h4>{event.eventName}</h4>
