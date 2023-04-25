@@ -12,7 +12,6 @@ const UpdateUserEventAction = async (req, res) => {
         if(currentUserEvents.length>0){
             var oldevent =currentUserEvents.find(event=> event.id== body.data.id)
             currentUserEvents.splice(currentUserEvents.indexOf(oldevent),1,body.data);
-            body.data.eventYear=9999;
         }
         res.status(200).json(currentUserEvents);
       }
