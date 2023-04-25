@@ -96,4 +96,24 @@
     text-align: center;
     cursor: pointer;
   }
+
+  .dashboard .content {
+    position: relative;
+    overflow-y: auto;
+  }
+  
+  .fab {
+    position: sticky;
+    bottom: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    cursor: pointer;
+    float: right;
+  }
+  
   

@@ -16,11 +16,11 @@ const Dashboard = () => {
                 method: "POST",
                 body: JSON.stringify({ secretCode }),
             });
-            const { status } = await response.json();
-            const { name } =   response;
-            const { surname } =    response;
-            const { email } =   response;
-            if(status){
+            const data = await response.json();
+            if(data.status){
+                const name  =   data.name;
+                const  surname  =    data.surname;
+                const  email  =   data.email;
                 setName(name);
                 setSurname(surname);
                 setEmail(email);
@@ -44,8 +44,6 @@ const Dashboard = () => {
         fetchData();
       }, []);
       
-    
-
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
@@ -99,7 +97,8 @@ const Dashboard = () => {
                     <p>{event.eventRole}</p>
                     </div>
                 ))}
-                </div>
+            </div>
+            <button className="fab">+</button>
           </div>
         </div>
       );
