@@ -1,7 +1,14 @@
 // import MyCards from "../components/MyCards";
+import { useEffect } from "react";
 import NavMenu from "../components/NavMenu";
 // import UserCards from "../components/UserCards";
 const Dashboard = () => {
+    useEffect(() => {
+        const loginCode = localStorage.getItem("voleeyo_login");
+        if (!loginCode) {
+          location.href="/";
+        }
+      });
     return (
         <div className="page">
             <NavMenu />
