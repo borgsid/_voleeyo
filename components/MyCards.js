@@ -60,7 +60,6 @@ const MyCards = () => {
 
         const handleEdit = (event) => {
             // Handle editing of event data here
-            console.log("Editing event:", event);
             closeModal();
         };
 
