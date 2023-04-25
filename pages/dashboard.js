@@ -1,6 +1,6 @@
-import MyCards from "./MyCards";
-import NavMenu from "./NavMenu";
-import UserCards from "./UserCards";
+// import MyCards from "../components/MyCards";
+import NavMenu from "../components/NavMenu";
+// import UserCards from "../components/UserCards";
 const Dashboard = () => {
     return (
         <div className="page">
@@ -8,11 +8,11 @@ const Dashboard = () => {
             <div className="content events">
                 <h1>Dashboard</h1>
                 <h3>Your events</h3>
-                <MyCards />
+                {/* <MyCards /> */}
             </div>
             <div className="content friends">
                 <h1>Your friends</h1>
-                <UserCards />
+                {/* <UserCards /> */}
             </div>
         </div>
     );
