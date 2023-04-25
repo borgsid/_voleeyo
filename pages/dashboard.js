@@ -7,6 +7,8 @@ const Dashboard = () => {
     const [surname, setSurname] = useState('');
     const [activeTab, setActiveTab] = useState("dashboard");
     const [isModalOpen,setIsModalOpen] = useState();
+    const [isEdit,setIsEdit]= useState(false);
+    const [hoverIndex, setHoverIndex] = useState(null);
     useEffect(() => {
         const secretCode = localStorage.getItem("voleeyo_login");
         if (!secretCode) {
@@ -44,6 +46,7 @@ const Dashboard = () => {
         }
         getUserData();
         fetchData();
+        setIsEdit(false);
       }, []);
       
         const handleTabClick = (tab) => {
@@ -68,8 +71,8 @@ const Dashboard = () => {
                 eventYear,
                 eventRole,
             };
-            
-            const response = await fetch("/api/saveUserEvent", {
+            var link = isEdit?"/api/updateUserEvent":"/api/saveUserEvent";
+            const response = await fetch(link, {
                 method: "POST",
                 body: JSON.stringify({
                 data,
@@ -84,6 +87,19 @@ const Dashboard = () => {
             setIsModalOpen(false);
             setEvents(await response.json());
         };
+
+        const handleMouseEnter = (index) => {
+        setHoverIndex(index);
+        }
+
+        const handleMouseLeave = () => {
+        setHoverIndex(null);
+        }
+        const handleEditClick=()=>{
+
+            setIsEdit(true);
+            setIsModalOpen(true);
+        }
     return (
         <div className="dashboard">
           <div className="navbar">
@@ -123,36 +139,60 @@ const Dashboard = () => {
             <h3>These are your Volunteer events, add and edit them as you like.</h3>
             <div className="dashboard-cards cards-container">
                 {events.map((event, index) => (
-                    <div key={index} className="event-card">
+                <div key={index} className="event-card"
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={handleMouseLeave}>
                     <h4>{event.eventName}</h4>
                     <p>{event.eventLocation}</p>
                     <p>{event.eventYear}</p>
                     <p>{event.eventRole}</p>
+                    {hoverIndex === index && (
+                    <div className="edit-icon" onClick={() => handleEditClick(event)}>
+                        <i className="fas fa-edit"></i>
                     </div>
+                    )}
+                </div>
                 ))}
             </div>
             <button className="fab" onClick={() => setIsModalOpen(true)}>+</button>
             <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
-                    <h2>New Event:</h2>
+                    {   isEdit
+                        ?<h2>Edit Event:</h2>
+                        :<h2>New Event:</h2>}
                     <div className="inline-modal">
                         <label htmlFor="event-name">Event Name:</label>
-                        <input type="text" id="event-name" />
+                        {   isEdit
+                            ?<input type="text" id="event-name" value="edit role" />
+                            :<input type="text" id="event-name" />
+                        }
                     </div>
                     <div  className="inline-modal">
                         <label htmlFor="event-location">Event Location:</label>
-                        <input type="text" id="event-location" />
+                        {   isEdit
+                            ? <input type="text" id="event-location" value="edit role" />
+                            : <input type="text" id="event-location" />
+                        }
                     </div>
                     <div  className="inline-modal">
                         <label htmlFor="event-year">Event Year:</label>
-                        <input type="text" id="event-year" />
+                        {   isEdit
+                            ?<input type="text" id="event-year" value="edit role" />
+                            :<input type="text" id="event-year" />
+                        }
                     </div>
                     <div  className="inline-modal">
                         <label htmlFor="event-role">Event Role:</label>
-                        <input type="text" id="event-role" />
+                        {   isEdit
+                            ? <input type="text" id="event-role" value="edit role"/>
+                            :<input type="text" id="event-role" />
+                        }
                     </div>
-                    <button type="submit">Add Event</button>
+                    {   isEdit
+                        ? <button type="submit">Update Event</button>
+                        : <button type="submit">Add Event</button>
+                    }
                     </form>
                 </div>
                 </ReactModal>
