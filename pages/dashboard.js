@@ -59,6 +59,7 @@ const Dashboard = () => {
       
         const handleTabClick = (tab) => {
             setActiveTab(tab);
+            location.href=`/${tab}`
         };
         const handleLogout = () => {
             localStorage.removeItem("voleeyo_login");
@@ -124,105 +125,105 @@ const Dashboard = () => {
             setModEditEventRole(null);
             setEventId(null)
         }
-    return (
+    return ( 
         <div className="dashboard">
-          <div className="navbar">
-          <div className="profile">
-                <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp" alt="User profile picture" />
-                <div>
-                    <h4>{name} {surname}</h4>
-                    <p>{email}</p>
+            <div className="navbar">
+                <div className="profile">
+                        <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp" alt="User profile picture" />
+                        <div>
+                            <h4>{name} {surname}</h4>
+                            <p>{email}</p>
+                        </div>
+                </div>
+                <div className="tabs">
+                    <div
+                        className={`tab ${activeTab === "dashboard" ? "active" : ""}`}
+                        onClick={() => handleTabClick("dashboard")}
+                    >
+                        Dashboard
+                    </div>
+                    <div
+                        className={`tab ${activeTab === "notifications" ? "active" : ""}`}
+                        onClick={() => handleTabClick("notifications")}
+                    >
+                        Notifications
+                    </div>
+                    <div
+                        className={`tab ${activeTab === "friends" ? "active" : ""}`}
+                        onClick={() => handleTabClick("friends")}
+                    >
+                        Friends
+                    </div>
+                </div>
+                <div className="logout" onClick={handleLogout}>
+                    Logout
                 </div>
             </div>
-            <div className="tabs">
-              <div
-                className={`tab ${activeTab === "dashboard" ? "active" : ""}`}
-                onClick={() => handleTabClick("dashboard")}
-              >
-                Dashboard
-              </div>
-              <div
-                className={`tab ${activeTab === "notifications" ? "active" : ""}`}
-                onClick={() => handleTabClick("notifications")}
-              >
-                Notifications
-              </div>
-              <div
-                className={`tab ${activeTab === "friends" ? "active" : ""}`}
-                onClick={() => handleTabClick("friends")}
-              >
-                Friends
-              </div>
-            </div>
-            <div className="logout" onClick={handleLogout}>
-              Logout
-            </div>
-          </div>
-          <div className="content">
-            <h2>Hi Demo User!</h2>
-            <h3>These are your Volunteer events, add and edit them as you like.</h3>
-            <div className="dashboard-cards cards-container">
-                {events.map((event, index) => (
-                <div key={index} className="event-card"
-                    onMouseEnter={() => handleMouseEnter(index)}
-                    onMouseLeave={handleMouseLeave}>
-                    <h4>{event.eventName}</h4>
-                    <p>{event.eventLocation}</p>
-                    <p>{event.eventYear}</p>
-                    <p>{event.eventRole}</p>
-                    {hoverIndex === index && (
-                    <div className="edit-icon" onClick={() => handleEditClick(event)}>
-                        <img height={svgPencil.height} src={svgPencil.src}/>
+            <div className="content">
+                <h2>Hi Demo User!</h2>
+                <h3>These are your Volunteer events, add and edit them as you like.</h3>
+                <div className="dashboard-cards cards-container">
+                    {events.map((event, index) => (
+                    <div key={index} className="event-card"
+                        onMouseEnter={() => handleMouseEnter(index)}
+                        onMouseLeave={handleMouseLeave}>
+                        <h4>{event.eventName}</h4>
+                        <p>{event.eventLocation}</p>
+                        <p>{event.eventYear}</p>
+                        <p>{event.eventRole}</p>
+                        {hoverIndex === index && (
+                        <div className="edit-icon" onClick={() => handleEditClick(event)}>
+                            <img height={svgPencil.height} src={svgPencil.src}/>
+                        </div>
+                        )}
                     </div>
-                    )}
+                    ))}
                 </div>
-                ))}
-            </div>
-            <button className="fab" onClick={() => setIsModalOpen(true)}>+</button>
-            <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={() => {setIsModalOpen(false); resetValues()}} ariaHideApp={false}>
-                <div className="modal-content">
-                    <form onSubmit={handleSubmit}>
-                    <input type="number" readonly  id="event-id" defaultValue={eventId} />
-                    {   isEdit
-                        ?<h2>Edit Event:</h2>
-                        :<h2>New Event:</h2>}
-                    <div className="inline-modal">
-                        <label htmlFor="event-name">Event Name:</label>
+                <button className="fab" onClick={() => setIsModalOpen(true)}>+</button>
+                <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={() => {setIsModalOpen(false); resetValues()}} ariaHideApp={false}>
+                    <div className="modal-content">
+                        <form onSubmit={handleSubmit}>
+                        <input type="number" readonly hidden id="event-id" defaultValue={eventId} />
                         {   isEdit
-                            ?<input type="text" id="event-name" defaultValue={modEditEventName} />
-                            :<input type="text" id="event-name" />
-                        }
-                    </div>
-                    <div  className="inline-modal">
-                        <label htmlFor="event-location">Event Location:</label>
+                            ?<h2>Edit Event:</h2>
+                            :<h2>New Event:</h2>}
+                        <div className="inline-modal">
+                            <label htmlFor="event-name">Event Name:</label>
+                            {   isEdit
+                                ?<input type="text" id="event-name" defaultValue={modEditEventName} />
+                                :<input type="text" id="event-name" />
+                            }
+                        </div>
+                        <div  className="inline-modal">
+                            <label htmlFor="event-location">Event Location:</label>
+                            {   isEdit
+                                ? <input type="text" id="event-location" defaultValue={modEditEventLocation} />
+                                : <input type="text" id="event-location" />
+                            }
+                        </div>
+                        <div  className="inline-modal">
+                            <label htmlFor="event-year">Event Year:</label>
+                            {   isEdit
+                                ?<input type="text" id="event-year"  defaultValue={modEditEventYear}/>
+                                :<input type="text" id="event-year" />
+                            }
+                        </div>
+                        <div  className="inline-modal">
+                            <label htmlFor="event-role">Event Role:</label>
+                            {   isEdit
+                                ? <input type="text" id="event-role" defaultValue={modEditEventRole}/>
+                                :<input type="text" id="event-role" />
+                            }
+                        </div>
                         {   isEdit
-                            ? <input type="text" id="event-location" defaultValue={modEditEventLocation} />
-                            : <input type="text" id="event-location" />
+                            ? <button type="submit">Update Event</button>
+                            : <button type="submit">Add Event</button>
                         }
+                        </form>
                     </div>
-                    <div  className="inline-modal">
-                        <label htmlFor="event-year">Event Year:</label>
-                        {   isEdit
-                            ?<input type="text" id="event-year"  defaultValue={modEditEventYear}/>
-                            :<input type="text" id="event-year" />
-                        }
-                    </div>
-                    <div  className="inline-modal">
-                        <label htmlFor="event-role">Event Role:</label>
-                        {   isEdit
-                            ? <input type="text" id="event-role" defaultValue={modEditEventRole}/>
-                            :<input type="text" id="event-role" />
-                        }
-                    </div>
-                    {   isEdit
-                        ? <button type="submit">Update Event</button>
-                        : <button type="submit">Add Event</button>
-                    }
-                    </form>
-                </div>
-            </ReactModal>
+                </ReactModal>
 
-          </div>
+            </div>
         </div>
       );
 }

@@ -77,9 +77,9 @@ const Home = () => {
                 onChange={(e) => setSecretCode(e.target.value)}
               />
             </label>
-            <div>
+            <div className="btn-spacer">
               <button type="submit">Log in</button>
-              <button type="button" onClick={handlePopupClose}>Close</button>
+              <button type="submit" className='close' onClick={handlePopupClose}>Close</button>
             </div>
           </form>
         </div>
