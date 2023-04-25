@@ -1,5 +1,4 @@
 const CheckSecretAction = async (req, res) => {
-    console.log('Received request',res);
     const input = JSON.parse(req.body).secretCode;
     // Check for different statuses to send proper payload
     if (process.env.log_in_key==input) {

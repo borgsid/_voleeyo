@@ -1,5 +1,6 @@
 import { useEffect,useState } from "react";
 import ReactModal from 'react-modal';
+import svgPencil from "../assets/pencil-edit-button.svg"
 const Dashboard = () => {
     const [events,setEvents]= useState([]);
     const [name, setName] = useState('');
@@ -9,6 +10,13 @@ const Dashboard = () => {
     const [isModalOpen,setIsModalOpen] = useState();
     const [isEdit,setIsEdit]= useState(false);
     const [hoverIndex, setHoverIndex] = useState(null);
+
+    const [modEditEventName, setModEditEventName] = useState('');
+    const [modEditEventLocation, setModEditEventLocation] = useState('');
+    const [modEditEventRole, setModEditEventRole] = useState('');
+    const [modEditEventYear, setModEditEventYear] = useState('');
+    const [eventId, setEventId] = useState(0);
+
     useEffect(() => {
         const secretCode = localStorage.getItem("voleeyo_login");
         if (!secretCode) {
@@ -64,14 +72,18 @@ const Dashboard = () => {
             const eventLocation = document.getElementById("event-location").value;
             const eventYear = document.getElementById("event-year").value;
             const eventRole = document.getElementById("event-role").value;
-            
+            const id = document.getElementById("event-id").value;
+
             const data = {
+                id,
                 eventName,
                 eventLocation,
                 eventYear,
                 eventRole,
             };
-            var link = isEdit?"/api/updateUserEvent":"/api/saveUserEvent";
+            var link = isEdit
+                ?"/api/updateUserEvent"
+                :"/api/saveUserEvent";
             const response = await fetch(link, {
                 method: "POST",
                 body: JSON.stringify({
@@ -95,10 +107,22 @@ const Dashboard = () => {
         const handleMouseLeave = () => {
         setHoverIndex(null);
         }
-        const handleEditClick=()=>{
-
+        const handleEditClick=(event)=>{
             setIsEdit(true);
+            setModEditEventName(event.eventName);
+            setModEditEventLocation(event.eventLocation);
+            setModEditEventYear(event.eventYear);
+            setModEditEventRole(event.eventRole);
+            setEventId(event.id)
             setIsModalOpen(true);
+        }
+        const resetValues= ()=>{
+            setIsEdit(false);
+            setModEditEventName(null);
+            setModEditEventLocation(null);
+            setModEditEventYear(null);
+            setModEditEventRole(null);
+            setEventId(null)
         }
     return (
         <div className="dashboard">
@@ -148,44 +172,45 @@ const Dashboard = () => {
                     <p>{event.eventRole}</p>
                     {hoverIndex === index && (
                     <div className="edit-icon" onClick={() => handleEditClick(event)}>
-                        <i className="fas fa-edit"></i>
+                        <img height={svgPencil.height} src={svgPencil.src}/>
                     </div>
                     )}
                 </div>
                 ))}
             </div>
             <button className="fab" onClick={() => setIsModalOpen(true)}>+</button>
-            <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
+            <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={() => {setIsModalOpen(false); resetValues()}} ariaHideApp={false}>
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
+                    <input type="number" readonly  id="event-id" defaultValue={eventId} />
                     {   isEdit
                         ?<h2>Edit Event:</h2>
                         :<h2>New Event:</h2>}
                     <div className="inline-modal">
                         <label htmlFor="event-name">Event Name:</label>
                         {   isEdit
-                            ?<input type="text" id="event-name" value="edit role" />
+                            ?<input type="text" id="event-name" defaultValue={modEditEventName} />
                             :<input type="text" id="event-name" />
                         }
                     </div>
                     <div  className="inline-modal">
                         <label htmlFor="event-location">Event Location:</label>
                         {   isEdit
-                            ? <input type="text" id="event-location" value="edit role" />
+                            ? <input type="text" id="event-location" defaultValue={modEditEventLocation} />
                             : <input type="text" id="event-location" />
                         }
                     </div>
                     <div  className="inline-modal">
                         <label htmlFor="event-year">Event Year:</label>
                         {   isEdit
-                            ?<input type="text" id="event-year" value="edit role" />
+                            ?<input type="text" id="event-year"  defaultValue={modEditEventYear}/>
                             :<input type="text" id="event-year" />
                         }
                     </div>
                     <div  className="inline-modal">
                         <label htmlFor="event-role">Event Role:</label>
                         {   isEdit
-                            ? <input type="text" id="event-role" value="edit role"/>
+                            ? <input type="text" id="event-role" defaultValue={modEditEventRole}/>
                             :<input type="text" id="event-role" />
                         }
                     </div>
@@ -195,7 +220,7 @@ const Dashboard = () => {
                     }
                     </form>
                 </div>
-                </ReactModal>
+            </ReactModal>
 
           </div>
         </div>

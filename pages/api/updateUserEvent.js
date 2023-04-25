@@ -1,4 +1,4 @@
-const SaveUserEventAction = async (req, res) => {
+const UpdateUserEventAction = async (req, res) => {
     const body=JSON.parse(req.body);
     //Check for different statuses to send proper payload
     if (process.env.log_in_key==body.secretCode) {
@@ -10,8 +10,9 @@ const SaveUserEventAction = async (req, res) => {
 
         const currentUserEvents = await userEventsRaw.json();
         if(currentUserEvents.length>0){
-            body.data.id=20;
-            currentUserEvents.push(body.data);
+            var oldevent =currentUserEvents.find(event=> event.id== body.data.id)
+            currentUserEvents.splice(currentUserEvents.indexOf(oldevent),1,body.data);
+            body.data.eventYear=9999;
         }
         res.status(200).json(currentUserEvents);
       }
@@ -19,4 +20,4 @@ const SaveUserEventAction = async (req, res) => {
         res.status(400).json([]);
       }
   };
-  export default SaveUserEventAction;
+  export default UpdateUserEventAction;
