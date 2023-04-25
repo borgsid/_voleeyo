@@ -1,10 +1,12 @@
 import { useEffect,useState } from "react";
+import ReactModal from 'react-modal';
 const Dashboard = () => {
     const [events,setEvents]= useState([]);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [surname, setSurname] = useState('');
     const [activeTab, setActiveTab] = useState("dashboard");
+    const [isModalOpen,setIsModalOpen] = useState();
     useEffect(() => {
         const secretCode = localStorage.getItem("voleeyo_login");
         if (!secretCode) {
@@ -44,13 +46,44 @@ const Dashboard = () => {
         fetchData();
       }, []);
       
-    const handleTabClick = (tab) => {
-        setActiveTab(tab);
-    };
-    const handleLogout = () => {
-        localStorage.removeItem("voleeyo_login");
-        location.href="/";
-      };
+        const handleTabClick = (tab) => {
+            setActiveTab(tab);
+        };
+        const handleLogout = () => {
+            localStorage.removeItem("voleeyo_login");
+            location.href="/";
+        };
+
+        const handleSubmit = async (event) => {
+            event.preventDefault();
+            const secretCode = localStorage.getItem("voleeyo_login");
+            const eventName = document.getElementById("event-name").value;
+            const eventLocation = document.getElementById("event-location").value;
+            const eventYear = document.getElementById("event-year").value;
+            const eventRole = document.getElementById("event-role").value;
+            
+            const data = {
+                eventName,
+                eventLocation,
+                eventYear,
+                eventRole,
+            };
+            
+            const response = await fetch("/api/saveUserEvent", {
+                method: "POST",
+                body: JSON.stringify({
+                data,
+                secretCode: secretCode,
+                }),
+            });
+            
+            if (!response.ok) {
+                alert("Failed to save event.");
+            }
+            
+            setIsModalOpen(false);
+            setEvents(await response.json());
+        };
     return (
         <div className="dashboard">
           <div className="navbar">
@@ -98,7 +131,32 @@ const Dashboard = () => {
                     </div>
                 ))}
             </div>
-            <button className="fab">+</button>
+            <button className="fab" onClick={() => setIsModalOpen(true)}>+</button>
+            <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
+                <div className="modal-content">
+                    <form onSubmit={handleSubmit}>
+                    <h2>New Event:</h2>
+                    <div className="inline-modal">
+                        <label htmlFor="event-name">Event Name:</label>
+                        <input type="text" id="event-name" />
+                    </div>
+                    <div  className="inline-modal">
+                        <label htmlFor="event-location">Event Location:</label>
+                        <input type="text" id="event-location" />
+                    </div>
+                    <div  className="inline-modal">
+                        <label htmlFor="event-year">Event Year:</label>
+                        <input type="text" id="event-year" />
+                    </div>
+                    <div  className="inline-modal">
+                        <label htmlFor="event-role">Event Role:</label>
+                        <input type="text" id="event-role" />
+                    </div>
+                    <button type="submit">Add Event</button>
+                    </form>
+                </div>
+                </ReactModal>
+
           </div>
         </div>
       );
