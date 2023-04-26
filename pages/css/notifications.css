@@ -212,3 +212,8 @@ button[type="submit"]:hover {
 .close-btn:hover {
   color: #000;
 }
+.modal-footer{
+  display: flex;
+    width: -webkit-fill-available;
+    place-content: space-evenly;
+}

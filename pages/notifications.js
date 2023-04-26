@@ -201,8 +201,8 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button className="send-button">Send</button>
-                  <button className="cancel-button" onClick={() => SetIsMessagingModalOpen(false)}>Cancel</button>
+                  <button type="submit" className="send-button">Send</button>
+                  <button  type="submit" className="cancel-button" onClick={() => SetIsMessagingModalOpen(false)}>Cancel</button>
                 </div>
                 </div>
                 </ReactModal> }
