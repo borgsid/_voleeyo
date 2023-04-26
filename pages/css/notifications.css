@@ -70,7 +70,7 @@
   justify-content: center;
 }
 
-.motifications-modal.modal-content {
+.notifications-modal.modal-content {
   background-color: white;
   border-radius: 10px;
   padding: 20px;
@@ -140,4 +140,75 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background-color: #0d8bf2;
+}
+.notification-content{
+  width: -webkit-fill-available;
+    margin: 20px;
+}
+
+ 
+/* Modal container */
+.modal-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Combo box */
+.combo-box {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Text area */
+.text-area {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  resize: none;
+}
+
+/* Send button */
+.send-btn {
+  background-color: #ff9800;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.send-btn:hover {
+  background-color: #e65100;
+}
+
+/* Close button */
+.close-btn {
+  background-color: transparent;
+  border: none;
+  color: #757575;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+}
+
+.close-btn:hover {
+  color: #000;
 }
