@@ -390,10 +390,108 @@ textarea {
     }
 }
 
-
-
- /* Loading ring animation */
-.loader {
+.cardContainer {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+  }
+  
+  .card {
+    background-color: #1c1c1c;
+    border-radius: 16px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    height: 200px;
+    width: 300px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+    transform: translateY(-4px);
+  }
+  
+  .card label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .card h3 {
+    color: white;
+    text-align: center;
+  }
+  .bad:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+    transform: translateY(-4px);
+  }
+  
+  .bad p {
+    color: black;
+    margin-left: 8px;
+    font-size: 16px;
+  }
+  
+  .bad img {
+    height: 32px;
+    width: auto;
+  }
+  
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .popup label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .popup input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+  }
+  
+  .popup button[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .btn-spacer button[type="submit"].close{
+      background-color: rgb(227, 85, 85);
+    }
+  .btn-spacer{
+    display: flex;
+    place-content: space-between;
+  }
+  
+  /* Loading ring animation */
+  .loader {
     width: 18px;
     height: 18px;
     border-radius: 50%;

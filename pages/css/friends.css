@@ -1,0 +1,86 @@
+
+.friends {
+    display: flex;
+    height: 100vh;
+}
+.friends-cards.cards-container{
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Set some default styles */
+/* .friends > * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+} */
+
+/* Style for the header */
+
+/* Style for the main content */
+.friends .content {
+  margin: 1rem;
+}
+
+/* Style for the friend cards */
+.friend-card {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.friends .card-header {
+  display: flex;
+  align-items: center;
+}
+
+.friends .card-header img {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.friends .card-header h4 {
+  font-size: 1.25rem;
+}
+
+.friends .card-header p {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.card-body p {
+  font-size: 1rem;
+  color: #333;
+}
+
+.friends .card-footer button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.friends .card-footer button:hover {
+  background-color: #0062cc;
+}
+
+/* Style for the search bar */
+.friends input[type="text"] {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+/* Style for horizontal line */
+.friends hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 1rem 0;
+}

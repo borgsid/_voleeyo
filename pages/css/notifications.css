@@ -1,0 +1,143 @@
+.notification-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 16px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .card-header h5 {
+    margin: 0;
+  }
+  
+  .read-indicator {
+    padding: 4px;
+    background-color: #d1ffd1;
+    color: #007700;
+    border-radius: 4px;
+  }
+  
+  .unread-indicator {
+    padding: 4px;
+    background-color: #ffe7e7;
+    color: #770000;
+    border-radius: 4px;
+  }
+  
+  .card-body {
+    margin: 0;
+  }
+  
+  .card-body p {
+    margin: 0 0 8px 0;
+  }
+  
+  .user-reply {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 8px;
+    margin-top: 8px;
+  }
+  
+  .user-reply p {
+    margin: 0;
+  }
+  
+  .user-reply strong {
+    font-weight: bold;
+  }
+  .notification {
+    display: flex;
+    height: 100vh;
+}
+.notification-cards.cards-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 20px;
+  gap: 20px;
+}
+
+/* Modal */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.motifications-modal.modal-content {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Heading */
+.modal-content h4 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Message */
+.modal-content p {
+  margin: 0 0 20px;
+  font-size: 18px;
+}
+
+/* User reply */
+.user-reply {
+  margin: 0 0 20px;
+  font-size: 18px;
+}
+
+/* Form group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Textarea */
+textarea {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 18px;
+  width: 100%;
+  resize: none;
+  min-height: 100px;
+}
+
+/* Submit button */
+button[type="submit"] {
+  background-color: #2196f3;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0d8bf2;
+}
