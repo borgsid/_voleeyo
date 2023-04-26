@@ -38,7 +38,7 @@ const Frineds = () => {
         }
 
         const fetchData = async ()=>{
-            const dataRaw = await fetch("/api/useFriends", {
+            const dataRaw = await fetch("/api/userFriends", {
                 method: "POST",
                 body: JSON.stringify({ secretCode }),
             });
@@ -95,43 +95,52 @@ const Frineds = () => {
           <div>
             <div className="content">
               <h2>Your friends</h2>
+              <hr />
               <div className="friends-cards cards-container">
-                {friends.map((friend) => (
-                  <div
-                  className="friend-card"
-                  key={friend.id}
-                  >
-                  {/*Add missing info */}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="content">
-              <h2>Search friends</h2>
-            </div>
-            <div>
-              <input placeholder="Mario..."/>
-            </div>
-            <div className="friends-cards cards-container">
                 {friends.map((friend) => (
                   <div className="friend-card" key={friend.id}>
                     <div className="card-header">
                       <img src={friend.profilePic} alt="Friend profile picture" />
                       <div>
                         <h4>{friend.name} {friend.surname}</h4>
-                        <p>{friend.email}</p>
+                        <p className="card-subtitle">{friend.email}</p>
+                      </div>
+                    </div>
+                    <div className="card-body">
+                      <p>{friend.bio}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="content">
+              <h2>Search friends</h2>
+              <div className="search-bar">
+                <input placeholder="Search friends..."/>
+              </div>
+              <hr />
+              <div className="friends-cards cards-container">
+                {friends.map((friend) => (
+                  <div className="friend-card" key={friend.id}>
+                    <div className="card-header">
+                      <img src={friend.profilePic} alt="Friend profile picture" />
+                      <div>
+                        <h4>{friend.name} {friend.surname}</h4>
+                        <p className="card-subtitle">{friend.email}</p>
                       </div>
                     </div>
                     <div className="card-body">
                       <p>{friend.bio}</p>
                     </div>
                     <div className="card-footer">
-                      <button>Add Friend</button>
+                      <button className="add-friend-btn">Add Friend</button>
                     </div>
                   </div>
                 ))}
               </div>
+            </div>
           </div>
+
         </div>
       );
 }

@@ -145,7 +145,7 @@ const Dashboard = () => {
                 onRequestClose={() => {setShowModal(false); setReplyMessage(null)}} 
                 ariaHideApp={false}
               >
-                <div className="modal-content">
+                <div className="motifications-modal modal-content">
                   <form onSubmit={handleSubmit}>
                     <h4>{selectedMessage.messageSender.name} {selectedMessage.messageSender.surname}</h4>
                     <p>Message:{selectedMessage.message}</p>

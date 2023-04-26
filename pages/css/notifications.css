@@ -70,7 +70,7 @@
   justify-content: center;
 }
 
-.modal-content {
+.motifications-modal.modal-content {
   background-color: white;
   border-radius: 10px;
   padding: 20px;
