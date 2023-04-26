@@ -51,7 +51,7 @@ const Dashboard = () => {
             const dataResp=await dataRaw.json();
       
             if (dataResp.length === 0) {
-                setEvents([]);
+                setNotifications([]);
             } else {
             setNotifications(dataResp);
             }
