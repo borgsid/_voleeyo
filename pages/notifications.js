@@ -10,7 +10,8 @@ const Dashboard = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedMessage, setReplyMessage] = useState("");
     const [reply, setReply] = useState("");
-  
+    const [isMessagingModalOpen, SetIsMessagingModalOpen] = useState(false);
+    const [newMessage,SetNewMessage] = useState('')
     
     const handleTabClick = (tab) => {
         location.href=`/${tab}`
@@ -70,7 +71,9 @@ const Dashboard = () => {
         // handle reply submission logic
         setShowModal(false);
       };
-     
+      const handleNewMessageClick = () => {
+        SetIsMessagingModalOpen(true);
+      }
       return (
         <div className="notification">
           <div className="navbar">
@@ -108,7 +111,8 @@ const Dashboard = () => {
               Logout
             </div>
           </div>
-          <div className="content">
+          <div className="notification-content content">
+            <h2>Your messages</h2>
             <div className="notification-cards cards-container">
               {notifications.map((message) => (
                 <div
@@ -137,7 +141,7 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-            <button className="fab">+</button>
+            <button className="fab"onClick={handleNewMessageClick}>+</button>
             {showModal && (
               <ReactModal
                 className="modal"
@@ -145,7 +149,7 @@ const Dashboard = () => {
                 onRequestClose={() => {setShowModal(false); setReplyMessage(null)}} 
                 ariaHideApp={false}
               >
-                <div className="motifications-modal modal-content">
+                <div className="notifications-modal modal-content">
                   <form onSubmit={handleSubmit}>
                     <h4>{selectedMessage.messageSender.name} {selectedMessage.messageSender.surname}</h4>
                     <p>Message:{selectedMessage.message}</p>
@@ -174,7 +178,35 @@ const Dashboard = () => {
                 </div>
               </ReactModal>
             )}
-          </div>
+            {isMessagingModalOpen && 
+              <ReactModal
+              className="modal"
+              isOpen={true}
+              onRequestClose={() => {SetIsMessagingModalOpen(false); SetNewMessage(null)}} 
+              ariaHideApp={false}
+            >
+              <div className="notifications-modal modal-content">
+
+                <div className="modal-header">
+                  <h3>New Message</h3>
+                </div>
+                <div className="modal-body">
+                  <div className="form-group">
+                    <label htmlFor="friend">To:</label>
+                    <input type="text" id="friend" name="friend" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="message">Message:</label>
+                    <textarea id="message" name="message"></textarea>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button className="send-button">Send</button>
+                  <button className="cancel-button" onClick={() => SetIsMessagingModalOpen(false)}>Cancel</button>
+                </div>
+                </div>
+                </ReactModal> }
+              </div>
         </div>
       );
 }
