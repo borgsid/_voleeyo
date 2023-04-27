@@ -217,3 +217,12 @@ button[type="submit"]:hover {
     width: -webkit-fill-available;
     place-content: space-evenly;
 }
+.modal-content #friend  {
+    border: solid lightgrey 1px;
+    border-radius: 4px;
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 8px 12px ;
+    margin-bottom: 16px;
+    width: -webkit-fill-available;
+    font-size: 1rem;
+}
