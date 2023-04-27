@@ -209,7 +209,7 @@ const Dashboard = () => {
                 <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={() => {setIsModalOpen(false); resetValues()}} ariaHideApp={false}>
                     <div className="modal-content">
                         <form onSubmit={handleSubmit}>
-                        <input type="number" readonly hidden id="event-id" defaultValue={eventId} />
+                        <input type="number" readOnly hidden id="event-id" defaultValue={eventId} />
                         {   isEdit
                             ?<h2>Edit Event:</h2>
                             :<h2>New Event:</h2>}

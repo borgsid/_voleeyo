@@ -1,7 +1,7 @@
 
 .friends {
     display: flex;
-    height: 100vh;
+    height:100vh;
 }
 .friends-cards.cards-container{
   grid-template-columns: repeat(4, 1fr);

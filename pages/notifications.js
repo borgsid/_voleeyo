@@ -12,6 +12,7 @@ const Dashboard = () => {
     const [reply, setReply] = useState("");
     const [isMessagingModalOpen, SetIsMessagingModalOpen] = useState(false);
     const [newMessage,SetNewMessage] = useState('')
+    const [isVisible, setIsVisible] = useState(false);
     
     const handleTabClick = (tab) => {
         location.href=`/${tab}`
@@ -74,9 +75,27 @@ const Dashboard = () => {
       const handleNewMessageClick = () => {
         SetIsMessagingModalOpen(true);
       }
+      const toggleNavMenu= ()=>{
+        console.log("im clicked")
+        var navbar=document.getElementById("navbar");
+        if(isVisible)
+        {
+            navbar.style.display="none";
+            setIsVisible(false);
+        }
+        else{
+            navbar.style.display="unset";
+            setIsVisible(true);
+        }
+    }
       return (
         <div className="notification">
-          <div className="navbar">
+          <div className="navbar" id="navbar">
+          <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
+                    <rect width="100" height="20"></rect>
+                    <rect y="30" width="100" height="20"></rect>
+                    <rect y="60" width="100" height="20"></rect>
+                </svg>
             <div className="profile">
               <img
                 src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp"
@@ -112,7 +131,14 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="notification-content content">
-            <h2>Your messages</h2>
+             <div class="page-header">
+              <h2>Your messages</h2>
+              <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
+                      <rect width="100" height="20"></rect>
+                      <rect y="30" width="100" height="20"></rect>
+                      <rect y="60" width="100" height="20"></rect>
+                </svg>
+             </div>
             <div className="notification-cards cards-container">
               {notifications.map((message) => (
                 <div

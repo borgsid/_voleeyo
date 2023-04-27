@@ -235,4 +235,7 @@
     align-items: center;
     justify-content: space-between;
   }
+  .dashboard-cards.cards-container {
+    grid-template-columns: 1fr;
+  }
 }
