@@ -16,6 +16,7 @@ const Dashboard = () => {
     const [modEditEventRole, setModEditEventRole] = useState('');
     const [modEditEventYear, setModEditEventYear] = useState('');
     const [eventId, setEventId] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         const secretCode = localStorage.getItem("voleeyo_login");
@@ -125,9 +126,27 @@ const Dashboard = () => {
             setModEditEventRole(null);
             setEventId(null)
         }
+        const toggleNavMenu= ()=>{
+            console.log("im clicked")
+            var navbar=document.getElementById("navbar");
+            if(isVisible)
+            {
+                navbar.style.display="none";
+                setIsVisible(false);
+            }
+            else{
+                navbar.style.display="unset";
+                setIsVisible(true);
+            }
+        }
     return ( 
         <div className="dashboard">
-            <div className="navbar">
+            <div className="navbar"  id="navbar">
+                <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
+                    <rect width="100" height="20"></rect>
+                    <rect y="30" width="100" height="20"></rect>
+                    <rect y="60" width="100" height="20"></rect>
+                </svg>
                 <div className="profile">
                         <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp" alt="User profile picture" />
                         <div>
@@ -160,7 +179,14 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className="content">
-                <h2>Hi Demo User!</h2>
+                <div className="page-header">
+                    <h2>Hi Demo User!</h2>
+                    <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
+                        <rect width="100" height="20"></rect>
+                        <rect y="30" width="100" height="20"></rect>
+                        <rect y="60" width="100" height="20"></rect>
+                    </svg>
+                </div>
                 <h3>These are your Volunteer events, add and edit them as you like.</h3>
                 <div className="dashboard-cards cards-container">
                     {events.map((event, index) => (

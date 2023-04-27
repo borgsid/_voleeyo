@@ -11,7 +11,9 @@
     width: 250px;
     padding: 20px;
   }
-  
+  .page-header svg{
+    display: none;
+  }
   .profile {
     display: flex;
     align-items: center;
@@ -223,3 +225,14 @@
     color: #333333;
   }
   
+@media only screen and (max-width: 600px) {
+  .page-header svg{
+    display: unset;
+  }
+  .navbar{display: none;}
+  .page-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
