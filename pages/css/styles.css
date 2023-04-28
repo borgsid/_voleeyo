@@ -476,7 +476,9 @@ textarea {
     margin: 70px;
     }
   }
-
+#navbar svg{
+  display: none;
+}
   
 @media only screen and (max-width: 600px) {
     .page-header svg{
@@ -499,5 +501,8 @@ textarea {
     }
     .badge-container.grow{
         display: none;
+    }
+    #navbar svg{
+      display: unset;
     }
   }
