@@ -76,13 +76,15 @@ const Frineds = () => {
                       <rect y="30" width="100" height="20"></rect>
                       <rect y="60" width="100" height="20"></rect>
               </svg>
-            <div className="profile">
+              <div className="profile">
               <img
                 src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp"
                 alt="User profile picture"
               />
+              <div>
                 <h4>{name} {surname}</h4>
                 <p>{email}</p>
+              </div>
             </div>
             <div className="tabs">
               <div
