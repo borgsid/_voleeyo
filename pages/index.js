@@ -30,7 +30,12 @@ const Home = () => {
       alert('An error occurred, please try again later.');
     }
   };
+  const CheckLogAndGoToFriends=()=>{
+    const loginCode = localStorage.getItem('voleeyo_login');
+    if (!loginCode) setShowPopup(true);
+    else window.location.href = '/friends';
 
+  }
   return (
     <div className="root">
       <Head>
@@ -49,7 +54,7 @@ const Home = () => {
           <div className="card" onClick={handleMyAccountClick}>
             <label><h3>My account</h3></label>
           </div>
-          <div className="card">
+          <div className="card" onClick={CheckLogAndGoToFriends}>
             <label><h3>My friends</h3></label>
           </div>
         </div>
@@ -65,7 +70,7 @@ const Home = () => {
               <button type="submit">Log in</button>
               <button type="submit" className='close' onClick={handlePopupClose}>Close</button>
             </div>
-          </form>
+          </form>c
         </div>
       )}
       <div className="badge-container grow">
