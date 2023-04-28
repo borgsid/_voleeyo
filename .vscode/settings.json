@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/614766c2-ad93-4207-85a9-74925a17b262/resourceGroups/voleeyo-rsg/providers/Microsoft.Web/sites/voleeyo",
+    "appService.deploySubpath": "."
+}
