@@ -52,7 +52,6 @@ const SearchFriendsAction = async (req, res) => {
         if(myFriendsRaw.status==200)
         {
             var myFriendsIds= (await myFriendsRaw.json()).map(x=> x.id);
-            console.log("myFriendsIds",myFriendsIds)
             var clearExistingFriends=searchResults.filter(x=> !myFriendsIds.includes(x.id));
             res.status(200).json(clearExistingFriends);
         }
