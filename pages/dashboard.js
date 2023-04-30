@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react";
 import ReactModal from 'react-modal';
 import svgPencil from "../assets/pencil-edit-button.svg"
-import NavMenu from "./components/NavMenu";
+import NavMenu from "./components/NavMenu"; 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState("dashboard");
     const [events,setEvents]= useState([]);
