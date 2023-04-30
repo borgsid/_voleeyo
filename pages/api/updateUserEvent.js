@@ -3,7 +3,7 @@ const UpdateUserEventAction = async (req, res) => {
     //Check for different statuses to send proper payload
     if (process.env.log_in_key==body.secretCode) {
         const baseUri= process.env.baseUri;
-        const userEventsRaw = await fetch(`${baseUri}userCards`,
+        const userEventsRaw = await fetch(`${baseUri}userEventsCards`,
         { method: "POST",
             body: JSON.stringify({ secretCode:body.secretCode })
         });

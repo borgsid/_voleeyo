@@ -62,8 +62,8 @@ const Dashboard = () => {
             const response = await fetch(link, {
                 method: "POST",
                 body: JSON.stringify({
-                data,
-                secretCode: secretCode,
+                    data,
+                    secretCode
                 }),
             });
             
@@ -71,8 +71,8 @@ const Dashboard = () => {
                 alert("Failed to save event.");
             }
             
-            setIsModalOpen(false);
             setEvents(await response.json());
+            resetValues();
         };
 
         const handleMouseEnter = (index) => {
@@ -98,6 +98,7 @@ const Dashboard = () => {
             setModEditEventYear(null);
             setModEditEventRole(null);
             setEventId(null)
+            setIsModalOpen(false)
         }
         const toggleNavMenu= ()=>{
             var navbar=document.getElementById("navbar");
@@ -142,7 +143,7 @@ const Dashboard = () => {
                     ))}
                 </div>
                 <button className="fab" onClick={() => setIsModalOpen(true)}>+</button>
-                <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={() => {setIsModalOpen(false); resetValues()}} ariaHideApp={false}>
+                <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={resetValues} ariaHideApp={false}>
                     <div className="modal-content">
                         <form onSubmit={handleSubmit}>
                         <input type="number" readOnly hidden id="event-id" defaultValue={eventId} />
