@@ -48,7 +48,6 @@ const Dashboard = () => {
         SetIsMessagingModalOpen(true);
       }
       const toggleNavMenu= ()=>{
-        console.log("im clicked")
         var navbar=document.getElementById("navbar");
         if(isVisible)
         {

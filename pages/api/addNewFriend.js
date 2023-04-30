@@ -52,9 +52,7 @@ const AddNewFriendsAction = async (req, res) => {
         if(myFriendsRaw.status==200)
         {
             friends.push(...(await myFriendsRaw.json()));
-            console.log("friends 1",friends)
             friends.push(allUsers.find(x=> x.id==body.friendId))
-            console.log("friends 2",friends)
             res.status(200).json(friends);
         }
         else

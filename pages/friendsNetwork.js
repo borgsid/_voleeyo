@@ -42,7 +42,6 @@ const FriendsNetwork = () => {
       }, [selectedId]);
    
     const handleNodeClick=(d)=> {
-        console.log("setSelectedId",selectedId)
         d3.selectAll('.node').select('circle').attr('fill', 'blue');
 
         // Select relationships for clicked node

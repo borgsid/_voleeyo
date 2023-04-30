@@ -100,7 +100,6 @@ const Dashboard = () => {
             setEventId(null)
         }
         const toggleNavMenu= ()=>{
-            console.log("im clicked")
             var navbar=document.getElementById("navbar");
             if(isVisible)
             {

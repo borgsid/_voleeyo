@@ -68,7 +68,6 @@ const Friends = () => {
   };
 
   const addNewFriend = async (friendId) => {
-    console.log("friendId",friendId)
     var resp = await fetch("/api/addNewFriend", {
       method: "POST",
       body: JSON.stringify({ secretCode, friendId }),
