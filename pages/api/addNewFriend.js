@@ -27,17 +27,17 @@ const AddNewFriendsAction = async (req, res) => {
             email:"sds@yopmail.com"
         },
         {
-            id:6,
-            name:"Eve",
-            surname:"O-marley",
+            id:5,
+            name:"Dave",
+            surname:"Brown",
             profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
             bio:"",
             email:"sds@yopmail.com"
         },
         {
-            id:5,
-            name:"Dave",
-            surname:"Brown",
+            id:6,
+            name:"Eve",
+            surname:"O-marley",
             profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
             bio:"",
             email:"sds@yopmail.com"

@@ -36,19 +36,12 @@ const FriendsNetwork = () => {
            
             setSelectedId(idParam);
             setSelectedUserName(userName);
-            // const node = d3.select(`#node-${idParam}`);
-            // console.log("node",node)
-            // // if (node) {
-            // //   handleNodeClick(node);
-            // // }
           };
         fetchData();
         updateSelectedNode();
       }, [selectedId]);
    
     const handleNodeClick=(d)=> {
-        // Select all nodes and reset fill color
-        // d3.selectAll('.node').select('circle').attr('fill', d => d.group === 0 ? 'blue' : (d.group === 1 ? 'green' : 'red'));
         console.log("setSelectedId",selectedId)
         d3.selectAll('.node').select('circle').attr('fill', 'blue');
 
@@ -64,7 +57,9 @@ const FriendsNetwork = () => {
             const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
             d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'yellow');
             d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'yellow');
-            relText.connections.push(`- connected to ${relatedNodeId} through the ${rel.eventName}.`);
+            if(clickedCircle.id==1)
+                relText.isCurrentUser=true
+            relText.connections.push(`- connected to ${data.nodes.find(x=> x.id==relatedNodeId).userName} through the: ${rel.eventName}.`);
         });
         setActiveNode(relText);
     }
@@ -89,25 +84,27 @@ const FriendsNetwork = () => {
                 {data && (
                 <FriendEventsForceLayout
                     data={data}
-                    width={900}
-                    height={500}
+                    width={500}
+                    height={400}
                     onNodeClick={handleNodeClick}
                     selectedId={selectedId}
                 />
                 )}
             </div>
+            {activeNode.connections && (   
             <div className="side-banner">
-                {activeNode.connections && (
+               
                     <div className="node-info">
                         <h3>{activeNode.clickedUser} is:</h3>
+                        <hr/>
                     {activeNode.connections.map((node, index) => (
-                        <h3 key={index}>{node}</h3>
+                        <span key={index}>{node}</span>
                     ))}
                 {!activeNode.isCurrentUser&&<button type="button" className="friend-network" onClick={()=>{location.href="/notifications"}}>Contact {activeNode.clickedUser}</button>}
                 </div>
-                )}
-            </div>
-            </div>
+               
+            </div> )}
+            </div> 
         </div>
         </div>
     </div>
