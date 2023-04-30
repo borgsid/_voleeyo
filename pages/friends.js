@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import NavMenu from "./components/NavMenu";
+import NavMenu from "../components/NavMenu";
 
 const Friends = () => {
   const [activeTab, setActiveTab] = useState("friends");

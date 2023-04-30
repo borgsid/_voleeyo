@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react";
 import * as d3 from 'd3';
-import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
-import NavMenu from "./components/NavMenu";
+import FriendEventsForceLayout from "../components/friendEventsForceLayout ";
+import NavMenu from "../components/NavMenu";
 const FriendsNetwork = () => {
     const [data,setData]=useState(null);
     const [activeNode, setActiveNode] = useState([]);
@@ -29,7 +29,9 @@ const FriendsNetwork = () => {
 
     const handleNodeClick=(d)=> {
         // Select all nodes and reset fill color
-        d3.selectAll('.node').select('circle').attr('fill', d => d.group === 0 ? 'blue' : (d.group === 1 ? 'green' : 'red'));
+        // d3.selectAll('.node').select('circle').attr('fill', d => d.group === 0 ? 'blue' : (d.group === 1 ? 'green' : 'red'));
+        d3.selectAll('.node').select('circle').attr('fill', 'blue');
+
         // Select relationships for clicked node
         const clickedCircle = d.target.__data__;
         console.log("clickedCircle",clickedCircle)
