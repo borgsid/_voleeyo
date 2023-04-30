@@ -1,11 +1,9 @@
 import * as d3 from 'd3';
 import React, { useEffect, useRef } from 'react';
 
-const FriendEventsForceLayout = ({ data, width, height }) => {
+const FriendEventsForceLayout = ({ data, width, height,onNodeClick }) => {
     const svgRef = useRef(null);
     useEffect(() => {
-      const width = 600;
-      const height = 400;
       const margin = { top: 20, right: 20, bottom: 20, left: 20 };
       const svg = d3.select(svgRef.current)
         .attr('width', width)
@@ -14,7 +12,7 @@ const FriendEventsForceLayout = ({ data, width, height }) => {
       svg.selectAll('*').remove(); // Clear SVG element
   
       const simulation = d3.forceSimulation(data.nodes)
-        .force('link', d3.forceLink().id(d => d.id).links(data.links))
+        .force('link', d3.forceLink().id(d => d.id).distance(200).links(data.links))
         .force('charge', d3.forceManyBody())
         .force('center', d3.forceCenter(width / 2, height / 2));
       const link = svg
@@ -39,12 +37,14 @@ const FriendEventsForceLayout = ({ data, width, height }) => {
         .call(drag(simulation));
   
       node.append('circle')
-        .attr('r', 5)
-        .attr('fill', d => d.group === 0 ? 'red' : (d.group === 1 ? 'green' : 'blue'));
+        .attr('r', 10)
+        // .attr('fill', d => d.group === 0 ? 'red' : (d.group === 1 ? 'green' : 'blue'))
+        .attr('fill',  'blue')
+        .style('cursor', 'pointer');
   
       node.append('text')
         .text(d => d.id)
-        .attr('dx', 10)
+        .attr('dx', 15)
         .attr('dy', 5);
   
       simulation.on('tick', () => {
@@ -80,23 +80,8 @@ const FriendEventsForceLayout = ({ data, width, height }) => {
     .on('drag', dragged)
     .on('end', dragended);
     }
-    node.on('click',  handleNodeClick);
-      function handleNodeClick(d) {
-        // Select all nodes and reset fill color
-        d3.selectAll('.node').select('circle').attr('fill', d => d.group === 0 ? 'red' : (d.group === 1 ? 'green' : 'blue'));
+    node.on('click',  onNodeClick);
       
-        // Select relationships for clicked node
-        const clickedCircle = d.target.__data__;
-        const relationships = data.links.filter(l => l.source.id === clickedCircle.id || l.target.id === clickedCircle.id);
-      
-        // Set fill color for related nodes
-        relationships.forEach(rel => {
-          const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
-          d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'yellow');
-          d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'yellow');
-          console.log(`${clickedCircle.id} is connected to ${relatedNodeId} through the ${rel.marathonName}`);
-        });
-      }
     return () => {
         node.on('click', null);
     }

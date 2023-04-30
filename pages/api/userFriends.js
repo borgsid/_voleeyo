@@ -18,22 +18,6 @@ const UserFriendsAction = async (req, res) => {
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
                 email:"sds@yopmail.com"
-            },
-            {
-                id:3,
-                name:"Saima",
-                surname:"Al faja",
-                profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                bio:"",
-                email:"sds@yopmail.com"
-            },
-            {
-                id:4,
-                name:"Deaton",
-                surname:"Mally",
-                profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                bio:"",
-                email:"sds@yopmail.com"
             }
         ]
         res.status(200).json(friends);

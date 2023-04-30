@@ -1,10 +1,7 @@
 import { useEffect,useState } from "react";
 import ReactModal from 'react-modal';
-import svgPencil from "../assets/pencil-edit-button.svg"
+import NavMenu from "./components/NavMenu";
 const Dashboard = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [surname, setSurname] = useState('');
     const [activeTab, setActiveTab] = useState("notifications");
     const [notifications, setNotifications] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -14,35 +11,11 @@ const Dashboard = () => {
     const [newMessage,SetNewMessage] = useState('')
     const [isVisible, setIsVisible] = useState(false);
     
-    const handleTabClick = (tab) => {
-        location.href=`/${tab}`
-        setActiveTab(tab);
-    };
-    const handleLogout = () => {
-        localStorage.removeItem("voleeyo_login");
-        location.href="/";
-    };
-
     useEffect(() => {
         const secretCode = localStorage.getItem("voleeyo_login");
         if (!secretCode) {
           location.href = "/";
           return;
-        }
-        const getUserData = async ()=> {
-            const response = await fetch("/api/checkSecret", {
-                method: "POST",
-                body: JSON.stringify({ secretCode }),
-            });
-            const data = await response.json();
-            if(data.status){
-                const name  =   data.name;
-                const  surname  =    data.surname;
-                const  email  =   data.email;
-                setName(name);
-                setSurname(surname);
-                setEmail(email);
-            }
         }
 
         const fetchData = async ()=>{
@@ -58,7 +31,6 @@ const Dashboard = () => {
             setNotifications(dataResp);
             }
         }
-        getUserData();
         fetchData();
       }, []);
     
@@ -87,49 +59,10 @@ const Dashboard = () => {
             navbar.style.display="unset";
             setIsVisible(true);
         }
-    }
+      }
       return (
         <div className="notification">
-          <div className="navbar" id="navbar">
-          <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
-                    <rect width="100" height="20"></rect>
-                    <rect y="30" width="100" height="20"></rect>
-                    <rect y="60" width="100" height="20"></rect>
-                </svg>
-            <div className="profile">
-              <img
-                src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp"
-                alt="User profile picture"
-              />
-              <div>
-                <h4>{name} {surname}</h4>
-                <p>{email}</p>
-              </div>
-            </div>
-            <div className="tabs">
-              <div
-                className={`tab ${activeTab === "dashboard" ? "active" : ""}`}
-                onClick={() => handleTabClick("dashboard")}
-              >
-                Dashboard
-              </div>
-              <div
-                className={`tab ${activeTab === "notifications" ? "active" : ""}`}
-                onClick={() => handleTabClick("notifications")}
-              >
-                Notifications
-              </div>
-              <div
-                className={`tab ${activeTab === "friends" ? "active" : ""}`}
-                onClick={() => handleTabClick("friends")}
-              >
-                Friends
-              </div>
-            </div>
-            <div className="logout" onClick={handleLogout}>
-              Logout
-            </div>
-          </div>
+          <NavMenu activeTab={activeTab} setActiveTab={setActiveTab}/>
           <div className="notification-content content">
              <div className="page-header">
               <h2>Your messages</h2>

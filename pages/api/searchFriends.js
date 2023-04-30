@@ -1,7 +1,7 @@
 const SearchFriendsAction = async (req, res) => {
     const body=JSON.parse(req.body);
     //Check for different statuses to send proper payload
-    if (process.env.log_in_key==body.secretCode && body?.searchText.length>=3) {
+    if (process.env.log_in_key==body.secretCode && body?.searchText?.trim().length>=1) {
         const friends=[
             {
                 id:1,
@@ -36,10 +36,20 @@ const SearchFriendsAction = async (req, res) => {
                 email:"sds@yopmail.com"
             }
         ]
-        res.status(200).json(friends.filter(x=> x.name.toLocaleLowerCase().includes(body.searchText.toLocaleLowerCase())|| x.surname.toLocaleLowerCase().includes(body.searchText.toLocaleLowerCase())));
-      }
-      else {
-        res.status(400).json([]);
-      }
+        var searchResults =friends.filter(x=> x.name.toLocaleLowerCase().includes(body.searchText.toLocaleLowerCase())|| x.surname.toLocaleLowerCase().includes(body.searchText.toLocaleLowerCase()));
+        var myFriendsRaw= await fetch(`${process.env.baseUri}userFriends`,{
+            method: "POST",
+            body:JSON.stringify({secretCode:body.secretCode})
+        });
+        if(myFriendsRaw.status==200)
+        {
+            var myFriendsIds= (await myFriendsRaw.json()).map(x=> x.id);
+            var clearExistingFriends=searchResults.filter(x=> !myFriendsIds.includes(x.id));
+            res.status(200).json(clearExistingFriends);
+        }
+    }
+    else {
+    res.status(400).json([]);
+    }
   };
   export default SearchFriendsAction;
