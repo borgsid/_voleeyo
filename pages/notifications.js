@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import ReactModal from 'react-modal';
-import NavMenu from "../components/NavMenu";
+import NavMenu from "./navMenu";
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState("notifications");
     const [notifications, setNotifications] = useState([]);

@@ -1,11 +1,13 @@
 import { useEffect,useState } from "react";
 import * as d3 from 'd3';
-import FriendEventsForceLayout from "../components/friendEventsForceLayout ";
-import NavMenu from "../components/NavMenu";
+import FriendEventsForceLayout from "./friendEventsForceLayout ";
+import NavMenu from "./navMenu";
 const FriendsNetwork = () => {
     const [data,setData]=useState(null);
     const [activeNode, setActiveNode] = useState([]);
     const [activeTab, setActiveTab] = useState("friends");
+    const [selectedId,setSelectedId] =useState(0);
+    const [selectedUserName,setSelectedUserName]=useState("")
 
     useEffect(() => {
         const secretCode = localStorage.getItem("voleeyo_login");
@@ -13,28 +15,45 @@ const FriendsNetwork = () => {
             location.href = "/";
             return;
         }
-        const fetchData = async ()=>{
+        const fetchData = async () => {
             const dataRaw = await fetch("/api/friendsNetwork", {
-                    method: "POST",
-                    body: JSON.stringify({ secretCode }),
-                });
-            const dataResp=await dataRaw.json();
-            if (dataResp!=undefined)
+                method: "POST",
+                body: JSON.stringify({ secretCode }),
+            });
+            const dataResp = await dataRaw.json();
+            if (dataResp != undefined) {
                 setData(dataResp);
-            else
-                setData(null);
-        }
-        fetchData();
-    }, []);
+                d3.selectAll('.node').select('circle').attr('fill', 'red');
 
+            } else {
+                setData(null);
+            }
+        };
+        const updateSelectedNode = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idParam = urlParams.get('id');
+            const userName = urlParams.get('userName');
+           
+            setSelectedId(idParam);
+            setSelectedUserName(userName);
+            // const node = d3.select(`#node-${idParam}`);
+            // console.log("node",node)
+            // // if (node) {
+            // //   handleNodeClick(node);
+            // // }
+          };
+        fetchData();
+        updateSelectedNode();
+      }, [selectedId]);
+   
     const handleNodeClick=(d)=> {
         // Select all nodes and reset fill color
         // d3.selectAll('.node').select('circle').attr('fill', d => d.group === 0 ? 'blue' : (d.group === 1 ? 'green' : 'red'));
+        console.log("setSelectedId",selectedId)
         d3.selectAll('.node').select('circle').attr('fill', 'blue');
 
         // Select relationships for clicked node
         const clickedCircle = d.target.__data__;
-        console.log("clickedCircle",clickedCircle)
         const relationships = data.links.filter(l => l.source.id === clickedCircle.id || l.target.id === clickedCircle.id);
         // Set fill color for related nodes
         var relText ={  clickedUser:clickedCircle.userName,
@@ -43,12 +62,9 @@ const FriendsNetwork = () => {
                     };
         relationships.forEach(rel => {
             const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
-            console.log("relatedNodeId",relatedNodeId)
             d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'yellow');
             d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'yellow');
             relText.connections.push(`- connected to ${relatedNodeId} through the ${rel.eventName}.`);
-            if(clickedCircle.id==1) //TODO GET CURRENT USER ID
-                relText.isCurrentUser=true;
         });
         setActiveNode(relText);
     }
@@ -60,7 +76,7 @@ const FriendsNetwork = () => {
             <div className="page-header">
             <h2>Your Friends network</h2>
             <div className="card-header">
-                Drag, click and find out how you can network with your friends
+                <span>Drag or click on <b>{selectedUserName}</b> to find out how you can start network.</span>
             </div>
             <svg viewBox="0 0 100 80" width="40" height="40">
                 <rect width="100" height="20"></rect>
@@ -76,6 +92,7 @@ const FriendsNetwork = () => {
                     width={900}
                     height={500}
                     onNodeClick={handleNodeClick}
+                    selectedId={selectedId}
                 />
                 )}
             </div>

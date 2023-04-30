@@ -4,7 +4,7 @@ const SearchFriendsAction = async (req, res) => {
     if (process.env.log_in_key==body.secretCode && body?.searchText?.trim().length>=1) {
         const friends=[
             {
-                id:1,
+                id:2,
                 name:"Alice",
                 surname:"James",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
@@ -12,7 +12,7 @@ const SearchFriendsAction = async (req, res) => {
                 email:"sds@yopmail.com"
             },
             {
-                id:2,
+                id:3,
                 name:"Bob",
                 surname:"Walber",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
@@ -20,7 +20,7 @@ const SearchFriendsAction = async (req, res) => {
                 email:"sds@yopmail.com"
             },
             {
-                id:3,
+                id:4,
                 name:"Charlie",
                 surname:"West",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
@@ -28,9 +28,9 @@ const SearchFriendsAction = async (req, res) => {
                 email:"sds@yopmail.com"
             },
             {
-                id:4,
+                id:6,
                 name:"Eve",
-                surname:"O'marley",
+                surname:"O-marley",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
                 email:"sds@yopmail.com"
@@ -52,6 +52,7 @@ const SearchFriendsAction = async (req, res) => {
         if(myFriendsRaw.status==200)
         {
             var myFriendsIds= (await myFriendsRaw.json()).map(x=> x.id);
+            console.log("myFriendsIds",myFriendsIds)
             var clearExistingFriends=searchResults.filter(x=> !myFriendsIds.includes(x.id));
             res.status(200).json(clearExistingFriends);
         }

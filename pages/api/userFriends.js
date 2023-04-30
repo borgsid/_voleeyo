@@ -3,8 +3,9 @@ const UserFriendsAction = async (req, res) => {
     //Check for different statuses to send proper payload
     if (process.env.log_in_key==body.secretCode) {
         const friends=[
+
             {
-                id:1,
+                id:2,
                 name:"Alice",
                 surname:"James",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
@@ -12,7 +13,7 @@ const UserFriendsAction = async (req, res) => {
                 email:"sds@yopmail.com"
             },
             {
-                id:2,
+                id:3,
                 name:"Bob",
                 surname:"Walber",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",

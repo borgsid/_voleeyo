@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import NavMenu from "../components/NavMenu";
+import NavMenu from "./navMenu";
 
 const Friends = () => {
   const [activeTab, setActiveTab] = useState("friends");
@@ -33,7 +33,6 @@ const Friends = () => {
   }, []);
 
   const toggleNavMenu = () => {
-    console.log("im clicked");
     var navbar = document.getElementById("navbar");
     if (isVisible) {
       navbar.style.display = "none";
@@ -64,12 +63,12 @@ const Friends = () => {
     }
   };
 
-  const seeFriendNetwork = () => {
-    window.location.href = "/friendsNetwork";
+  const seeFriendNetwork = (friendObj) => {
+    window.location.href = `/friendsNetwork?id=${friendObj.id}&userName=${friendObj.name} ${friendObj.surname}`;
   };
 
   const addNewFriend = async (friendId) => {
-    console.log("friend id", friendId);
+    console.log("friendId",friendId)
     var resp = await fetch("/api/addNewFriend", {
       method: "POST",
       body: JSON.stringify({ secretCode, friendId }),
@@ -98,14 +97,14 @@ const Friends = () => {
             {friends.map((friend) => (
               <div className="friend-card" key={friend.id}>
                 <div className="card-header">
-                  <img src={friend.profilePic} alt="Friend profile picture" />
+                  <img src={friend?.profilePic} alt="Friend profile picture" />
                   <div>
                     <h4>{friend.name} {friend.surname}</h4>
                     <p className="card-subtitle">{friend.email}</p>
                   </div>
                 </div>
                 <div className="card-body">
-                  <button className="friend-btn-network" type="button" onClick={seeFriendNetwork}>See Network</button>
+                  <button className="friend-btn-network" type="button" onClick={()=>{seeFriendNetwork(friend)}}>See Network</button>
                 </div>
               </div>
             ))}
@@ -130,7 +129,7 @@ const Friends = () => {
                   </div>
                 </div>
                 <div className="card-footer">
-                  <button className="add-friend-btn" onClick={() => addNewFriend(friend.id)}>Add Friend</button>
+                  <button className="add-friend-btn" onClick={() => {addNewFriend(friend.id)}}>Add Friend</button>
                 </div>
               </div>
             ))}
