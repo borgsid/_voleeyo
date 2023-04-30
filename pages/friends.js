@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react";
-const Frineds = () => {
+const Friends = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [surname, setSurname] = useState('');
@@ -73,7 +73,7 @@ const Frineds = () => {
       }
     }
     const searchFriendsFunc= async (event)=>{
-      setSearchText(event.target.value)
+      setSearchText(event?.target?.value??searchText)
       if(searchText?.length>=3)
       {
         
@@ -86,6 +86,10 @@ const Frineds = () => {
           setSearchFriends(await resultRaw.json());
       }
       
+    }
+    const searchButton=(event)=>{
+      if(searchText?.length>=3)
+        searchFriendsFunc()
     }
     return (
       <div className="friends">
@@ -161,6 +165,7 @@ const Frineds = () => {
             <h2>Search for friends</h2>
             <div className="search-bar">
               <input type="text" placeholder="Search friends..." onChange={searchFriendsFunc}/>
+              <button className="btn-search" onClick={searchButton}>Search</button>
             </div>
             <h3>Search results</h3>
             {/*Search results section */}
@@ -189,4 +194,4 @@ const Frineds = () => {
       </div>
     );
 }
-export default Frineds;
+export default Friends;

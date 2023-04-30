@@ -16,7 +16,14 @@
   font-size: 1rem;
 }
   
-
+.btn-search{
+  background-color: #f04545;
+  color: #fff;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
 /* Style for the main content */
 .friends .content {
   margin: 1rem;
@@ -72,11 +79,10 @@
 
 /* Style for the search bar */
 .friends input[type="text"] {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin: 0 10px 0 0;
 }
 
 /* Style for horizontal line */
