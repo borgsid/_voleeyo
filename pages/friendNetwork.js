@@ -6,18 +6,18 @@ const FriendNetwork = () => {
           { id: 'Bob', group: 0 },
           { id: 'Charlie', group: 1 },
           { id: 'Dave', group: 2 },
-          { id: 'Eve', group: 2 }
+          { id: 'Eve', group: 3 },
         ],
         links: [
-          { source: 'Alice', target: 'Bob', value: 1 },
-          { source: 'Alice', target: 'Charlie', value: 2 },
-          { source: 'Bob', target: 'Charlie', value: 1 },
-          { source: 'Charlie', target: 'Dave', value: 2 },
-          { source: 'Charlie', target: 'Eve', value: 1 },
-          { source: 'Dave', target: 'Eve', value: 2 }
-        ]
+          { source: 'Alice', target: 'Bob', value: 3, marathonName: 'New York City Marathon' },
+          { source: 'Alice', target: 'Charlie', value: 2, marathonName: 'Boston Marathon' },
+          { source: 'Bob', target: 'Charlie', value: 4, marathonName: 'Chicago Marathon' },
+          { source: 'Charlie', target: 'Dave', value: 1, marathonName: 'London Marathon' },
+          { source: 'Dave', target: 'Alice', value: 1, marathonName: 'Tokyo Marathon' },
+          { source: 'Eve', target: 'Alice', value: 1, marathonName: 'Tokyo Marathon' },
+        ],
       };
-    
+      
       return (
         <div style={{ textAlign: 'center' }}>
           <h1>Friend Events Force Layout</h1>
