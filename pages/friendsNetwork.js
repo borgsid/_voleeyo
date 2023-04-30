@@ -7,22 +7,29 @@ const FriendsNetwork = () => {
     const [activeNode, setActiveNode] = useState([]);
     const [activeTab, setActiveTab] = useState("friends");
 
-    const mookData = {
-    nodes: [
+    const mookData = { 
+         nodes: [
+        { id: 'Current User', group: 0 },
         { id: 'Alice', group: 0 },
         { id: 'Bob', group: 0 },
         { id: 'Charlie', group: 1 },
         { id: 'Dave', group: 2 },
         { id: 'Eve', group: 3 },
-    ],
-    links: [
-        { source: 'Alice', target: 'Bob', value: 3, marathonName: 'New York City Marathon' },
-        { source: 'Alice', target: 'Charlie', value: 2, marathonName: 'Boston Marathon' },
-        { source: 'Bob', target: 'Charlie', value: 4, marathonName: 'Chicago Marathon' },
-        { source: 'Charlie', target: 'Dave', value: 1, marathonName: 'London Marathon' },
-        { source: 'Dave', target: 'Alice', value: 1, marathonName: 'Tokyo Marathon' },
-        { source: 'Eve', target: 'Alice', value: 1, marathonName: 'Tokyo Marathon' },
-    ],
+      ],
+      links: [
+        { source: 'Alice', target: 'Bob', value: 3, eventName: 'New York City Marathon', yearOfParticipation: 2016 },
+        { source: 'Alice', target: 'Charlie', value: 2, eventName: 'Boston Marathon', yearOfParticipation: 2007 },
+        { source: 'Bob', target: 'Charlie', value: 4, eventName: 'Chicago Marathon', yearOfParticipation: 2000 },
+        { source: 'Charlie', target: 'Dave', value: 1, eventName: 'London Marathon', yearOfParticipation: 2012 },
+        { source: 'Dave', target: 'Alice', value: 1, eventName: 'Tokyo Marathon', yearOfParticipation: 2022 },
+        { source: 'Eve', target: 'Alice', value: 1, eventName: 'Tokyo Marathon', yearOfParticipation: 2023 },
+        { source: 'Current User', target: 'Alice', value: 1, eventName: 'Charity Walk', yearOfParticipation: 2022 },
+        { source: 'Current User', target: 'Alice', value: 1, eventName: 'Food Drive', yearOfParticipation: 2022 },
+        { source: 'Current User', target: 'Charlie', value: 1, eventName: 'Environmental Cleanup', yearOfParticipation: 2021 },
+        { source: 'Current User', target: 'Eve', value: 1, eventName: 'Blood Drive', yearOfParticipation: 2021 },
+        { source: 'Current User', target: 'Bob', value: 1, eventName: 'Animal Shelter Volunteer', yearOfParticipation: 2020 },
+        { source: 'Current User', target: 'Bob', value: 1, eventName: 'Community Garden', yearOfParticipation: 2020 },
+      ]
     };
 
     useEffect(() => {
@@ -63,7 +70,7 @@ const FriendsNetwork = () => {
         const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
         d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'yellow');
         d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'yellow');
-        relText.connections.push(`- connected to ${relatedNodeId} through the ${rel.marathonName}.`);
+        relText.connections.push(`- connected to ${relatedNodeId} through the ${rel.eventName}.`);
     });
     setActiveNode(relText);
     }
@@ -102,8 +109,8 @@ const FriendsNetwork = () => {
                     {activeNode.connections.map((node, index) => (
                         <h3 key={index}>{node}</h3>
                     ))}
-                <button type="button" className="friend-network">Contact {activeNode.clickedUser}</button>
-                    </div>
+                <button type="button" className="friend-network" onClick={()=>{location.href="/notifications"}}>Contact {activeNode.clickedUser}</button>
+                </div>
                 )}
             </div>
             </div>

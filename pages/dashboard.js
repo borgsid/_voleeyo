@@ -24,7 +24,7 @@ const Dashboard = () => {
         }
 
         const fetchData = async ()=>{
-            const dataRaw = await fetch("/api/userCards", {
+            const dataRaw = await fetch("/api/userEventsCards", {
                 method: "POST",
                 body: JSON.stringify({ secretCode }),
             });

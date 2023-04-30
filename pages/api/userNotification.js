@@ -30,14 +30,14 @@ const UserNotificationsAction = async (req, res) => {
             {
                 id:2,
                 messageSender:{
-                    id:7,
-                    name:"Dr. Taey",
-                    surname:"Ford",
+                    id:7, 
+                    name:"Dr. Mar",
+                    surname:"Walber",
                     isFollowing:false
                 },
                 message:"What you up to tonight?",
                 isRead:true,
-                userReply:"Not much, wann go see the movies?"
+                userReply:"Not much, wanna go see the movies?"
             }
         ]
         res.status(200).json(userNotifications);
