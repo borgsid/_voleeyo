@@ -5,15 +5,15 @@ const UserFriendsAction = async (req, res) => {
         const friends=[
             {
                 id:1,
-                name:"Jessy",
-                surname:"james",
+                name:"Alice",
+                surname:"James",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
                 email:"sds@yopmail.com"
             },
             {
                 id:2,
-                name:"Dr. Mar",
+                name:"Bob",
                 surname:"Walber",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",

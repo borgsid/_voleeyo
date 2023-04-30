@@ -5,15 +5,15 @@ const SearchFriendsAction = async (req, res) => {
         const friends=[
             {
                 id:1,
-                name:"Jessy",
-                surname:"james",
+                name:"Alice",
+                surname:"James",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
                 email:"sds@yopmail.com"
             },
             {
                 id:2,
-                name:"Dr. Mar",
+                name:"Bob",
                 surname:"Walber",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
@@ -21,16 +21,24 @@ const SearchFriendsAction = async (req, res) => {
             },
             {
                 id:3,
-                name:"Saima",
-                surname:"Al faja",
+                name:"Charlie",
+                surname:"West",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
                 email:"sds@yopmail.com"
             },
             {
                 id:4,
-                name:"Deaton",
-                surname:"Mally",
+                name:"Eve",
+                surname:"O'marley",
+                profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
+                bio:"",
+                email:"sds@yopmail.com"
+            },
+            {
+                id:5,
+                name:"Dave",
+                surname:"Brown",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
                 email:"sds@yopmail.com"

@@ -38,12 +38,12 @@ const FriendEventsForceLayout = ({ data, width, height,onNodeClick }) => {
   
       node.append('circle')
         .attr('r', 10)
-        // .attr('fill', d => d.group === 0 ? 'red' : (d.group === 1 ? 'green' : 'blue'))
-        .attr('fill',  'blue')
+        .attr('fill', d => d.group === 0 ? 'blue' : (d.group === 1 ? 'green' : 'red'))
+        // .attr('fill',  'blue')
         .style('cursor', 'pointer');
   
       node.append('text')
-        .text(d => d.id)
+        .text(d => d.userName)
         .attr('dx', 15)
         .attr('dy', 5);
   
