@@ -10,6 +10,7 @@
     color: #fff;
     width: 250px;
     padding: 20px;
+    height: inherit;
   }
   .page-header svg{
     display: none;
