@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import * as d3 from 'd3';
-import NavMenu from "./components/NavMenu";
+import NavMenu from "./components/navMenu";
 import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
 const FriendsNetwork = () => {
     const [data,setData]=useState(null);
