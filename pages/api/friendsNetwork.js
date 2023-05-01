@@ -3,7 +3,7 @@ const FriendsNetworkAction = async (req, res) => {
     //Check for different statuses to send proper payload
     const network={ 
         nodes: [
-            { id: '1',userName:'Current User', group: 0 },
+            { id: '1',userName:'You', group: 0 },
             { id: '2',userName:'Alice James', group: 0 },
             { id: '3',userName:'Bob Walber', group: 0 },
             { id: '4',userName:'Charlie West', group: 1 },

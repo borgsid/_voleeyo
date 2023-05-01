@@ -1,15 +1,14 @@
 import * as d3 from 'd3';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef} from 'react';
 
 const FriendEventsForceLayout = ({ data, width, height, onNodeClick ,selectedId}) => {
   const svgRef = useRef(null);
 
   useEffect(() => {
-    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
     const svg = d3.select(svgRef.current)
       .attr('width', width)
-      .attr('height', height);
-
+      .attr('height', height)
+    
     svg.selectAll('*').remove(); // Clear SVG element
 
     const simulation = d3.forceSimulation(data.nodes)
@@ -57,7 +56,7 @@ const FriendEventsForceLayout = ({ data, width, height, onNodeClick ,selectedId}
       node
         .attr('transform', d => `translate(${d.x},${d.y})`);
     });
-
+   
     function drag(simulation) {
       function dragstarted(event, d) {
         if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -75,7 +74,7 @@ const FriendEventsForceLayout = ({ data, width, height, onNodeClick ,selectedId}
         d.fx = null;
         d.fy = null;
       }
-
+    
     return d3.drag()
     .on('start', dragstarted)
     .on('drag', dragged)
@@ -88,6 +87,7 @@ const FriendEventsForceLayout = ({ data, width, height, onNodeClick ,selectedId}
     }
 }, [data]);
 
+ 
 return (
     <svg ref={svgRef}></svg>
 );

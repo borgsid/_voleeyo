@@ -1,9 +1,8 @@
 import { useEffect,useState } from "react";
-const NavMenu = ({activeTab,setActiveTab}) => {
+const NavMenu = ({activeTab,setActiveTab,toggleNavMenu}) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [surname, setSurname] = useState('');
-    const [isVisible, setIsVisible] = useState(false);
     
     const handleTabClick = (tab) => {
         location.href=`/${tab}`
@@ -38,18 +37,6 @@ const NavMenu = ({activeTab,setActiveTab}) => {
         getUserData();
       }, []);
     
-      const toggleNavMenu= ()=>{
-        var navbar=document.getElementById("navbar");
-        if(isVisible)
-        {
-            navbar.style.display="none";
-            setIsVisible(false);
-        }
-        else{
-            navbar.style.display="unset";
-            setIsVisible(true);
-        }
-      }
       return (
         <div className="navbar" id="navbar">
         <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import NavMenu from "./navMenu";
+import NavMenu from "./components/navMenu";
 
 const Friends = () => {
   const [activeTab, setActiveTab] = useState("friends");
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
   const [secretCode, setSecretCode] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const tryeSecretCode = localStorage.getItem("voleeyo_login");
@@ -31,17 +31,6 @@ const Friends = () => {
     };
     fetchData();
   }, []);
-
-  const toggleNavMenu = () => {
-    var navbar = document.getElementById("navbar");
-    if (isVisible) {
-      navbar.style.display = "none";
-      setIsVisible(false);
-    } else {
-      navbar.style.display = "unset";
-      setIsVisible(true);
-    }
-  };
 
   const searchFriendsFunc = async (event) => {
     setSearchText(event?.target?.value ?? searchText);
@@ -78,17 +67,28 @@ const Friends = () => {
       console.log("we couldnt add this friend at this time");
     }
   };
+  const toggleNavMenu = () => {
+    var navbar = document.getElementById("navbar");
+    if (isVisible) {
+      navbar.style.display = "none";
+      setIsVisible(false);
+    }
+    else {
+      navbar.style.display = "unset";
+      setIsVisible(true);
+    }
+  }
   return (
     <div className="friends">
-      <NavMenu activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu} />
       <div className="content-container">
         <div className="content">
           <div className="page-header">
             <h2>Your friends</h2>
             <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
-                <rect width="100" height="20"></rect>
-                <rect y="30" width="100" height="20"></rect>
-                <rect y="60" width="100" height="20"></rect>
+              <rect width="100" height="20"></rect>
+              <rect y="30" width="100" height="20"></rect>
+              <rect y="60" width="100" height="20"></rect>
             </svg>
           </div>
           <hr />
@@ -103,7 +103,7 @@ const Friends = () => {
                   </div>
                 </div>
                 <div className="card-body">
-                  <button className="friend-btn-network" type="button" onClick={()=>{seeFriendNetwork(friend)}}>See Network</button>
+                  <button className="friend-btn-network" type="button" onClick={() => { seeFriendNetwork(friend) }}>See Network</button>
                 </div>
               </div>
             ))}
@@ -112,7 +112,7 @@ const Friends = () => {
         <div className="content">
           <h2>Search for friends</h2>
           <div className="search-bar">
-            <input type="text" placeholder="Search friends..." onChange={searchFriendsFunc}/>
+            <input type="text" placeholder="Search friends..." onChange={searchFriendsFunc} />
             <button className="btn-search" onClick={searchButton}>Search</button>
           </div>
           <h3>Search results</h3>
@@ -128,16 +128,16 @@ const Friends = () => {
                   </div>
                 </div>
                 <div className="card-footer">
-                  <button className="add-friend-btn" onClick={() => {addNewFriend(friend.id)}}>Add Friend</button>
+                  <button className="add-friend-btn" onClick={() => { addNewFriend(friend.id) }}>Add Friend</button>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
-  
+
     </div>
   );
-  
+
 }
 export default Friends;

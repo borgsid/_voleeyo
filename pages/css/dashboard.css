@@ -224,7 +224,10 @@
   .event-card:hover .edit-icon i {
     color: #333333;
   }
-  
+  .buttons-line{
+    display: flex;
+    gap:50px;
+  }
 @media only screen and (max-width: 600px) {
   .page-header svg{
     display: unset;

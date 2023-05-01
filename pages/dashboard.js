@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react";
 import ReactModal from 'react-modal';
 import svgPencil from "../assets/pencil-edit-button.svg"
-import NavMenu from "./navMenu"; 
+import NavMenu from "./components/navMenu"; 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState("dashboard");
     const [events,setEvents]= useState([]);
@@ -40,7 +40,7 @@ const Dashboard = () => {
         setIsEdit(false);
       }, []);
        
-      
+
         const handleSubmit = async (event) => {
             event.preventDefault();
             const secretCode = localStorage.getItem("voleeyo_login");
@@ -103,6 +103,7 @@ const Dashboard = () => {
         }
         const toggleNavMenu= ()=>{
             var navbar=document.getElementById("navbar");
+            console.log("navbar",navbar)
             if(isVisible)
             {
                 navbar.style.display="none";
@@ -115,7 +116,7 @@ const Dashboard = () => {
         }
     return ( 
         <div className="dashboard">
-            <NavMenu activeTab={activeTab} setActiveTab={setActiveTab}/>
+            <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu}/>
             <div className="content">
                 <div className="page-header">
                     <h2>Hi Demo User!</h2>
@@ -179,10 +180,13 @@ const Dashboard = () => {
                                 :<input type="text" id="event-role" />
                             }
                         </div>
-                        {   isEdit
+                      <div className="buttons-line">
+                          {   isEdit
                             ? <button type="submit">Update Event</button>
                             : <button type="submit">Add Event</button>
                         }
+                        <button type="button" className="btn-search" onClick={resetValues}>close</button>
+                        </div>
                         </form>
                     </div>
                 </ReactModal>
