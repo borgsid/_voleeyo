@@ -33,22 +33,40 @@ const Dashboard = () => {
     }
     fetchData();
   }, []);
-
-  const handleSelectedMessage = (e) => {
+  const updateMessageStatus=async (e)=>{
+    const secretCode = localStorage.getItem("voleeyo_login");
+        await fetch("/api/setMeasageRead",
+        {
+          method:"post",
+          body:JSON.stringify({secretCode,message:e})
+        }
+      )
+    
+  }
+  const handleSelectedMessage =async (e) => {
+    e.isRead=true;
+    if(e.userReply?.length==0)
+      e.userReply=reply;
     setReplyMessage(e);
     setShowModal(true);
+    await updateMessageStatus(e);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
+    const secretCode = localStorage.getItem("voleeyo_login");
     e.preventDefault();
     // handle reply submission logic
-    closeModalNewMessage();
+    selectedMessage.userReply=reply;
+    await fetch("/api/setMeasageRead",
+    {
+      method:"post",
+      body:JSON.stringify({secretCode,message:selectedMessage})
+    })
+    setReply(null)
+    setShowModal(false)
   };
   const handleNewMessageClick = () => {
     setIsMessagingModalOpen(true);
-  }
-  const closeModalNewMessage=()=>{
-    setIsMessagingModalOpen(false);
   }
   const toggleNavMenu = () => {
     var navbar = document.getElementById("navbar");
@@ -60,6 +78,10 @@ const Dashboard = () => {
       navbar.style.display = "unset";
       setIsVisible(true);
     }
+  }
+  const closeAndResetModal=()=>{
+    SetNewMessage(null);
+    setShowModal(false)
   }
   return (
     <div className="notification">
@@ -131,9 +153,12 @@ const Dashboard = () => {
                     />
                   </div>
                 )}
+              <div className="buttons-line">
                 {!selectedMessage.userReply && (
                   <button type="submit">Send reply</button>
                 )}
+                <button type="submit" onClick={closeAndResetModal}>Close</button>
+              </div>
               </form>
             </div>
           </ReactModal>

@@ -75,9 +75,8 @@
   border-radius: 10px;
   padding: 20px;
   max-width: 500px;
-  width: 100%;
+  width: max-content;
 }
-
 .modal-content form {
   display: flex;
   flex-direction: column;
@@ -121,7 +120,6 @@ textarea {
   border-radius: 5px;
   padding: 10px;
   font-size: 18px;
-  width: 100%;
   resize: none;
   min-height: 100px;
 }
