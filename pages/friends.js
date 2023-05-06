@@ -4,7 +4,6 @@ const Friends = () => {
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [secretCode, setSecretCode] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const tryeSecretCode = localStorage.getItem("voleeyo_login");
@@ -66,14 +65,14 @@ const Friends = () => {
   };
   const toggleNavMenu = () => {
     var navbar = document.getElementById("navbar");
-    if (isVisible) {
-      navbar.style.display = "none";
-      setIsVisible(false);
-    }
-    else {
-      navbar.style.display = "unset";
-      setIsVisible(true);
-    }
+    // if (isVisible) {
+    //   navbar.style.display = "none";
+    //   setIsNavBarVIsible(false);
+    // }
+    // else {
+    //   navbar.style.display = "unset";
+    //   setIsNavBarVIsible(true);
+    // }
   }
   return (
     <div className="friends">

@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 
 const Header = (isVisible) => {
 
-    useEffect(()=>{
-    });
+    var isLoginVisible = isVisible.isVisible;
+    console.log("isLoginVisible",isLoginVisible)
     const link1 = { link: "/login", name: "Login" };
     const link2 = { link: "/dashboard", name: "Dashboard" };
     const link3 = { link: "/account", name: "Account" };
@@ -41,9 +41,11 @@ const Header = (isVisible) => {
             </div>
             <div className="nav">
                 <ul>
-                    {isVisible&&<li>
-                        <a onClick={handleMyAccountClick}>{link1.name}</a>
-                    </li>
+                    {
+                        isLoginVisible&&
+                        <li>
+                            <a onClick={handleMyAccountClick}>{link1.name}</a>
+                        </li>
                     }
                     <li>
                         <a href={link2.link}>{link2.name}</a>

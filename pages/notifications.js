@@ -7,7 +7,6 @@ const Dashboard = () => {
   const [reply, setReply] = useState("");
   const [isMessagingModalOpen, setIsMessagingModalOpen] = useState(false);
   const [newMessage, setNewMessage] = useState('')
-  const [isVisible, setIsVisible] = useState(false);
   const [receiverUserId, setReceiverUserId] = useState("");
   const [receiverUserName, setReceiverUserName] = useState("");
   const [activeTabSection,setActiveTabSection]= useState("inbox");
@@ -127,14 +126,14 @@ const Dashboard = () => {
   }
   const toggleNavMenu = () => {
     var navbar = document.getElementById("navbar");
-    if (isVisible) {
-      navbar.style.display = "none";
-      setIsVisible(false);
-    }
-    else {
-      navbar.style.display = "unset";
-      setIsVisible(true);
-    }
+    // if (isVisible) {
+    //   navbar.style.display = "none";
+    //   setIsVisible(false);
+    // }
+    // else {
+    //   navbar.style.display = "unset";
+    //   setIsVisible(true);
+    // }
   }
   const closeAndResetModal=()=>{
     setNewMessage("");

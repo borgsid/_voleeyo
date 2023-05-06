@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import Image from 'next/image';
 import imageLink from "./../assets/00000-3174216882.png"
 import { useState, useEffect } from 'react';
@@ -6,10 +5,6 @@ import { useState, useEffect } from 'react';
 const Home = () => {
   return (
       <div className="dashboard-container">
-        <Head>
-          <title>Voleeyo: create your path!</title>
-        </Head>
-       
         <div className="section-one">
           <div className="section-one-text">
             <h1>Voleeyo: your LinkedIn for volunteers</h1>
@@ -25,7 +20,7 @@ const Home = () => {
           </div>
           <div className="section-one-action">
             <button onClick={()=>{location.href="/dashboard"}}>Discover Voleeyo</button>
-            <button onClick={()=>{location.href="/login"}}>Join Voleeyo</button>
+            <button onClick={()=>{location.href="/dashboard"}}>Join Voleeyo</button>
           </div>
         </div>
 

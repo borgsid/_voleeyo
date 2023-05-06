@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
-import imagelink1 from "../../assets/pencil-edit-button.svg"
-const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu }) => {
+import instagamSvg  from "../../assets/iconmonstr-instagram-11.svg"
+import facebookSvg  from "../../assets/iconmonstr-facebook-3.svg"
+import twitterSvg from "../../assets/iconmonstr-twitter-1.svg"
+import tik_tokSvg from "../../assets/iconmonstr-audio-thin.svg"
+
+const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu , secretCode, currentUser}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [surname, setSurname] = useState('');
-  const [isVisible, setIsVisible] = useState(false);
 
-  const image1link = imagelink1.src;
-  const image2link = imagelink1.src;
-  const image3link = imagelink1.src;
-  const image4link = imagelink1.src;
-  const image5link = imagelink1.src;
+  var instagam = instagamSvg.src;
+  var facebook = facebookSvg.src;
+  var twitter = twitterSvg.src;
+  var tik_tok = tik_tokSvg.src;
+  
   const handleTabClick = (tab) => {
     location.href = `/${tab}`
     setActiveTab(tab);
@@ -21,22 +24,11 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu }) => {
   };
 
   useEffect(() => {
-    const secretCode = localStorage.getItem("voleeyo_login");
-    if (!secretCode) 
-      setIsVisible(true)
-    else
-      setIsVisible(false)
-      
-    const getUserData = async () => {
-      const response = await fetch("/api/checkSecret", {
-        method: "POST",
-        body: JSON.stringify({ secretCode }),
-      });
-      const data = await response.json();
-      if (data.status) {
-        const name = data.name;
-        const surname = data.surname;
-        const email = data.email;
+    const getUserData =  () => {
+      if (currentUser) {
+        const name = currentUser.name;
+        const surname = currentUser.surname;
+        const email = currentUser.email;
         setName(name);
         setSurname(surname);
         setEmail(email);
@@ -67,19 +59,16 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu }) => {
       <div className="socials">
         <ul>
           <li>
-            <a href="#"><img src={image1link} /></a>
+            <a href="#"><img src={instagam} /></a>
           </li>
           <li>
-            <a href="#"><img src={image2link} /></a>
+            <a href="#"><img src={facebook} /></a>
           </li>
           <li>
-            <a href="#"><img src={image3link} /></a>
+            <a href="#"><img src={twitter} /></a>
           </li>
           <li>
-            <a href="#"><img src={image4link} /></a>
-          </li>
-          <li>
-            <a href="#"><img src={image5link} /></a>
+            <a href="#"><img src={tik_tok} /></a>
           </li>
         </ul>
       </div>
@@ -109,9 +98,6 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu }) => {
       <hr/>
       <div className="group2">
         <ul>
-         {/* {isVisible&& <li>
-            <a>Login</a>
-          </li>} */}
           <li className="logout">
             <a onClick={handleLogout}>Logout</a>
           </li>

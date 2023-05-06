@@ -1,8 +1,8 @@
 import { useEffect,useState } from "react";
 import ReactModal from 'react-modal';
-import svgPencil from "../assets/pencil-edit-button.svg"
+import pencil from "../assets/pencil-edit-button.svg"
 const Dashboard = () => {
-    
+    var svgPencil= pencil;
     const [events,setEvents]= useState([]);
     const [isModalOpen,setIsModalOpen] = useState();
     const [isEdit,setIsEdit]= useState(false);
@@ -13,7 +13,7 @@ const Dashboard = () => {
     const [modEditEventRole, setModEditEventRole] = useState('');
     const [modEditEventYear, setModEditEventYear] = useState('');
     const [eventId, setEventId] = useState(0);
-    const [isVisible, setIsVisible] = useState(false);
+    const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
         var navbar=document.getElementById("navbar");
@@ -24,7 +24,7 @@ const Dashboard = () => {
           return;
         }
         else
-            setIsVisible(true)
+            setIsNavBarVIsible(true)
 
 
         const fetchData = async ()=>{
@@ -107,17 +107,17 @@ const Dashboard = () => {
         }
         const toggleNavMenu= ()=>{
             var navbar=document.getElementById("navbar");
-            if(isVisible)
+            if(isNavBarVIsible)
             {
                 navbar.style.display="none";
-                setIsVisible(false);
+                setIsNavBarVIsible(false);
             }
             else{
                 navbar.style.display="unset";
-                setIsVisible(true);
+                setIsNavBarVIsible(true);
             }
         }
-    return ( isVisible&&
+    return ( isNavBarVIsible&&
         <div className="dashboard">
             <div className="content">
                 <div className="page-header">
