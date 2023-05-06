@@ -1,9 +1,8 @@
 import { useEffect,useState } from "react";
 import ReactModal from 'react-modal';
 import svgPencil from "../assets/pencil-edit-button.svg"
-import NavMenu from "./components/navMenu"; 
 const Dashboard = () => {
-    const [activeTab, setActiveTab] = useState("dashboard");
+    
     const [events,setEvents]= useState([]);
     const [isModalOpen,setIsModalOpen] = useState();
     const [isEdit,setIsEdit]= useState(false);
@@ -17,11 +16,16 @@ const Dashboard = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
+        var navbar=document.getElementById("navbar");
+        navbar.style.display="unset";
         const secretCode = localStorage.getItem("voleeyo_login");
         if (!secretCode) {
-          location.href = "/";
+          location.href = "/login";
           return;
         }
+        else
+            setIsVisible(true)
+
 
         const fetchData = async ()=>{
             const dataRaw = await fetch("/api/userEventsCards", {
@@ -113,9 +117,8 @@ const Dashboard = () => {
                 setIsVisible(true);
             }
         }
-    return ( 
+    return ( isVisible&&
         <div className="dashboard">
-            <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu}/>
             <div className="content">
                 <div className="page-header">
                     <h2>Hi Demo User!</h2>

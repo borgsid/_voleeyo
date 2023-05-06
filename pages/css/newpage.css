@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Manrope', sans-serif;
+
+}
+ 
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-image: linear-gradient(to top,white,#d6cb94);
+    padding-left: 100px;
+    padding-right:120px
+  }
+  
+  .logo img {
+    height: 30px;
+  }
+  
+  .nav ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap:50px;
+  }
+  
+  .nav li {
+    margin-right: 10px;
+  }
+  
+  .sidemenu {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #f2f2f2;
+    padding: 10px;
+  }
+  
+  .avatar img {
+    width: 100%;
+    border-radius: 50%;
+  }
+  
+  .socials ul {
+    display: flex;
+    list-style: none;
+    margin: 10px 0;
+  }
+  
+  .socials li {
+    margin-right: 10px;
+  }
+  
+  .group1 ul,
+  .group2 ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .group1 li,
+  .group2 li {
+    margin-bottom: 5px;
+  }
+  
+  .main {
+    display: flex;
+    flex: 1;
+    /* padding: 10px; */
+  }
+  
+  .page {
+    flex: 1;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  }
+  
+  form label {
+    margin-bottom: 5px;
+  }
+  
+  form input,
+  form textarea {
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  form button {
+    padding: 5px 10px;
+    background-color: #f2f2f2;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: -webkit-fill-available;
+    }
+  
+  .section-one {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1;
+    padding: 1rem;
+  }
+  
+  .section-one h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .section-one p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .section-one .social-links {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
+  .section-one .social-links a {
+    display: inline-block;
+    margin-right: 1rem;
+    font-size: 1rem;
+    color: rgb(199, 190, 148);
+  }
+  
+  .section-one .social-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .section-one-action {
+    display: flex;
+    align-items: center;
+    margin: 100px auto 20px 100px;
+    gap: 40px;
+  }
+  
+  .section-one-action button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+  }
+  
+  .section-one-action button:hover {
+    background-color: rgb(225, 215, 172);
+  }
+  
+  .section-two {
+    flex: 1 2;
+    padding: 1rem;
+  }
+  
+  .section-two-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .section-two-image img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .section-one-text{
+    margin: 5px 100px 0px 100px;
+  }
+  a {
+    text-decoration: none;
+    font-weight: bolder;
+    color: black;
+  }
+
+  .section-one.login{
+    place-self: center;
+  }
+
+  .btn-spacer.login{
+    gap: 50px;
+    display: flex;
+  }
+
+  svg rect {
+    fill: rgb(225, 215, 172);
+  }
+  .group2 li a{
+    color:rgb(225, 215, 172) ;
+  }

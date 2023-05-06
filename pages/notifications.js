@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
-import NavMenu from "./components/navMenu";
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("notifications");
   const [notifications, setNotifications] = useState({inbox:[],sent:[]});
   const [showModal, setShowModal] = useState(false);
   const [selectedMessage, setReplyMessage] = useState("");
@@ -105,7 +103,7 @@ const Dashboard = () => {
     };
 
     notifications.sent.push(myMessage)
-    setNotifications({ ...notifications });
+    setNotifications({notifications });
     // handle reply submission logic
     const response=await fetch("/api/sendNewMessage",
     {
@@ -179,7 +177,6 @@ const Dashboard = () => {
   }
   return (
     <div className="notification">
-      <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu} />
       <div className="notification-content content">
         <div className="page-header">
           <h2>Your messages</h2>

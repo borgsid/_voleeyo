@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import * as d3 from 'd3';
-import NavMenu from "./components/navMenu";
 import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
 const FriendsNetwork = () => {
   const [data, setData] = useState(null);
   const [activeNode, setActiveNode] = useState([]);
-  const [activeTab, setActiveTab] = useState("friends");
   const [selectedId, setSelectedId] = useState(0);
   const [selectedUserName, setSelectedUserName] = useState("")
   const [isVisible, setIsVisible] = useState(false);
@@ -76,7 +74,6 @@ const FriendsNetwork = () => {
   }
   return (
     <div className="friends frinds-network">
-      <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu} />
       <div className="constnet-container">
         <div className="content">
           <div className="page-header">

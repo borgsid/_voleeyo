@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import NavMenu from "./components/navMenu";
-
 const Friends = () => {
-  const [activeTab, setActiveTab] = useState("friends");
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -80,7 +77,6 @@ const Friends = () => {
   }
   return (
     <div className="friends">
-      <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu} />
       <div className="content-container">
         <div className="content">
           <div className="page-header">

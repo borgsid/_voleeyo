@@ -1,10 +1,8 @@
 import React from "react";
-// import NavMenu from "../components/NavMenu";
 
 function WorldEvents() {
   return (
     <div className="page">
-          {/* <NavMenu/> */}
           <div className="content">
 
       <h1>World Events</h1>
