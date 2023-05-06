@@ -103,7 +103,6 @@ const Dashboard = () => {
         }
         const toggleNavMenu= ()=>{
             var navbar=document.getElementById("navbar");
-            console.log("navbar",navbar)
             if(isVisible)
             {
                 navbar.style.display="none";
@@ -185,7 +184,7 @@ const Dashboard = () => {
                             ? <button type="submit">Update Event</button>
                             : <button type="submit">Add Event</button>
                         }
-                        <button type="button" className="btn-search" onClick={resetValues}>close</button>
+                        <button type="button" className="btn-search" onClick={resetValues}>Close</button>
                         </div>
                         </form>
                     </div>

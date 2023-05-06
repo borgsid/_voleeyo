@@ -1,4 +1,4 @@
-const SearchFriendsAction = async (req, res) => {
+const SearchInAllFriendsAction = (req, res) => {
     const body=JSON.parse(req.body);
     //Check for different statuses to send proper payload
     if (process.env.log_in_key==body.secretCode && body?.searchText?.trim().length>=1) {
@@ -50,19 +50,11 @@ const SearchFriendsAction = async (req, res) => {
             || body.searchText.toLocaleLowerCase().includes(x.name.toLocaleLowerCase())
             || body.searchText.toLocaleLowerCase().includes(x.surname.toLocaleLowerCase())
             ));
-        var myFriendsRaw= await fetch(`${process.env.baseUri}userFriends`,{
-            method: "POST",
-            body:JSON.stringify({secretCode:body.secretCode})
-        });
-        if(myFriendsRaw.status==200)
-        {
-            var myFriendsIds= (await myFriendsRaw.json()).map(x=> x.id);
-            var clearExistingFriends=searchResults.filter(x=> !myFriendsIds.includes(x.id));
-            res.status(200).json(clearExistingFriends);
-        }
+       
+            res.status(200).json(searchResults);
     }
     else {
-    res.status(400).json([]);
+        res.status(400).json([]);
     }
   };
-  export default SearchFriendsAction;
+  export default SearchInAllFriendsAction;

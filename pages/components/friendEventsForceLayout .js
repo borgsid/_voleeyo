@@ -12,7 +12,7 @@ const FriendEventsForceLayout = ({ data, width, height, onNodeClick ,selectedId}
     svg.selectAll('*').remove(); // Clear SVG element
 
     const simulation = d3.forceSimulation(data.nodes)
-      .force('link', d3.forceLink().id(d => d.id).distance(200).links(data.links))
+      .force('link', d3.forceLink().id(d => d.id).distance(150).links(data.links))
       .force('charge', d3.forceManyBody())
       .force('center', d3.forceCenter(width / 2, height / 2));
     const link = svg

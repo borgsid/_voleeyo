@@ -75,9 +75,8 @@
   border-radius: 10px;
   padding: 20px;
   max-width: 500px;
-  width: 100%;
+  width: max-content;
 }
-
 .modal-content form {
   display: flex;
   flex-direction: column;
@@ -114,6 +113,26 @@
   font-size: 18px;
   margin-bottom: 10px;
 }
+.notification-tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.notification-tab {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
+  color: #999;
+}
+
+.notification-tab.active {
+  color: #333;
+  border-bottom: 3px solid #333;
+}
 
 /* Textarea */
 textarea {
@@ -121,7 +140,6 @@ textarea {
   border-radius: 5px;
   padding: 10px;
   font-size: 18px;
-  width: 100%;
   resize: none;
   min-height: 100px;
 }
@@ -225,4 +243,41 @@ button[type="submit"]:hover {
     margin-bottom: 16px;
     width: -webkit-fill-available;
     font-size: 1rem;
+}
+.dropdown-list {
+  top: 40px; /* adjust as needed */
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdown-list-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-list-item:hover {
+  background-color: #f2f2f2;
+}
+
+.dropdown-list-item.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.dropdown-list-item.active:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.dropdown-no-results {
+  padding: 10px;
+  text-align: center;
+  color: #999;
 }
