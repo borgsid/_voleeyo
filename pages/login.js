@@ -3,10 +3,10 @@ import Image from 'next/image';
 import imageLink from "./../assets/00000-3174216882.png"
 import { useState, useEffect } from 'react';
 
-const Login = () => {
+const Login = ({ activeTab, setActiveTab}) => {
     const [secretCode, setSecretCode] = useState('');
     useEffect(() => {
-
+        setActiveTab("login")
         var navbar = document.getElementById("navbar");
         navbar.style.display = "none";
     });
@@ -48,7 +48,7 @@ const Login = () => {
             </div>
             <div className="section-two">
             <div className="section-two-image">
-            <img src={imageLink.src}/>
+            <Image alt="happy people hugging each other" src={imageLink.src}/>
           </div>
             </div>
 

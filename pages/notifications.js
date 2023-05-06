@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
-const Dashboard = () => {
+const Dashboard = ({ activeTab, setActiveTab}) => {
   const [notifications, setNotifications] = useState({inbox:[],sent:[]});
   const [showModal, setShowModal] = useState(false);
   const [selectedMessage, setReplyMessage] = useState("");
@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [hideFilteredList,setHideFilteredList]=useState(true);
 
   useEffect(() => {
+    setActiveTab("notification")
     const secretCode = localStorage.getItem("voleeyo_login");
     if (!secretCode) {
       location.href = "/";

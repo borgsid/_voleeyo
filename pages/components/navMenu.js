@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import instagamSvg  from "../../assets/iconmonstr-instagram-11.svg"
-import facebookSvg  from "../../assets/iconmonstr-facebook-3.svg"
+import Image from 'next/image';
+import instagamSvg from "../../assets/iconmonstr-instagram-11.svg"
+import facebookSvg from "../../assets/iconmonstr-facebook-3.svg"
 import twitterSvg from "../../assets/iconmonstr-twitter-1.svg"
 import tik_tokSvg from "../../assets/iconmonstr-audio-thin.svg"
 
-const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu , secretCode, currentUser}) => {
+const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUser }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [surname, setSurname] = useState('');
 
-  var instagam = instagamSvg.src;
-  var facebook = facebookSvg.src;
-  var twitter = twitterSvg.src;
-  var tik_tok = tik_tokSvg.src;
-  
+  var instagam = instagamSvg;
+  var facebook = facebookSvg;
+  var twitter = twitterSvg;
+  var tik_tok = tik_tokSvg;
+
   const handleTabClick = (tab) => {
     location.href = `/${tab}`
     setActiveTab(tab);
@@ -24,7 +25,11 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu , secretCode, currentU
   };
 
   useEffect(() => {
-    const getUserData =  () => {
+    if (activeTab != "index") {
+      var navbar = document.getElementById("navbar");
+      navbar.style.display = "unset";
+    }
+    const getUserData = () => {
       if (currentUser) {
         const name = currentUser.name;
         const surname = currentUser.surname;
@@ -59,20 +64,20 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu , secretCode, currentU
       <div className="socials">
         <ul>
           <li>
-            <a href="#"><img src={instagam} /></a>
+            <a href="#"><Image alt="social icon" src={instagam.src} width={instagam.width} height={instagam.height} /></a>
           </li>
           <li>
-            <a href="#"><img src={facebook} /></a>
+            <a href="#"><Image alt="social icon" src={facebook} width={facebook.width} height={facebook.height}/></a>
           </li>
           <li>
-            <a href="#"><img src={twitter} /></a>
+            <a href="#"><Image alt="social icon" src={twitter} width={twitter.width} height={twitter.height}/></a>
           </li>
           <li>
-            <a href="#"><img src={tik_tok} /></a>
+            <a href="#"><Image alt="social icon" src={tik_tok} width={tik_tok.width} height={tik_tok.height} /></a>
           </li>
         </ul>
       </div>
-      <hr/>
+      <hr />
       <div className="group1">
         <ul>
           <li
@@ -95,7 +100,7 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu , secretCode, currentU
           </li>
         </ul>
       </div>
-      <hr/>
+      <hr />
       <div className="group2">
         <ul>
           <li className="logout">

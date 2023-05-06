@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-const Friends = () => {
+const Friends = ({ activeTab, setActiveTab}) => {
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [secretCode, setSecretCode] = useState("");
 
   useEffect(() => {
+    setActiveTab("friends")
     const tryeSecretCode = localStorage.getItem("voleeyo_login");
     if (!tryeSecretCode) {
       window.location.href = "/";
@@ -91,7 +92,7 @@ const Friends = () => {
             {friends.map((friend) => (
               <div className="friend-card" key={friend.id}>
                 <div className="card-header">
-                  <img src={friend?.profilePic} alt="Friend profile picture" />
+                  <Image src={friend?.profilePic} alt="Friend profile picture" />
                   <div>
                     <h4>{friend.name} {friend.surname}</h4>
                     <p className="card-subtitle">{friend.email}</p>
@@ -116,7 +117,7 @@ const Friends = () => {
             {searchFriends.map((friend) => (
               <div className="friend-card" key={friend.id}>
                 <div className="card-header">
-                  <img src={friend.profilePic} alt="Friend profile picture" />
+                  <Image src={friend.profilePic} alt="Friend profile picture" />
                   <div>
                     <h4>{friend.name} {friend.surname}</h4>
                     <p className="card-subtitle">{friend.email}</p>

@@ -1,7 +1,8 @@
 import { useEffect,useState } from "react";
+import Image from 'next/image';
 import ReactModal from 'react-modal';
 import pencil from "../assets/pencil-edit-button.svg"
-const Dashboard = () => {
+const Dashboard = (activeTab,setActiveTab) => {
     var svgPencil= pencil;
     const [events,setEvents]= useState([]);
     const [isModalOpen,setIsModalOpen] = useState();
@@ -16,8 +17,9 @@ const Dashboard = () => {
     const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
-        var navbar=document.getElementById("navbar");
-        navbar.style.display="unset";
+        console.log("activeTab b",activeTab)
+        console.log("activeTab f",after)
+        setActiveTab("dashboard")
         const secretCode = localStorage.getItem("voleeyo_login");
         if (!secretCode) {
           location.href = "/login";
@@ -140,7 +142,7 @@ const Dashboard = () => {
                         <p>{event.eventRole}</p>
                         {hoverIndex === index && (
                         <div className="edit-icon" onClick={() => handleEditClick(event)}>
-                            <img height={svgPencil.height} src={svgPencil.src}/>
+                            <Image alt="pencil icon" height={svgPencil.height} src={svgPencil.src} width={svgPencil.width}/>
                         </div>
                         )}
                     </div>

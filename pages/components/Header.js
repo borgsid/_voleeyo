@@ -1,3 +1,5 @@
+
+import Image from 'next/image';
 import logolink from "../../assets/voleeyo-logo.png"
 import { useState, useEffect } from 'react';
 
@@ -15,7 +17,8 @@ const Header = (isVisible) => {
         const loginCode = localStorage.getItem('voleeyo_login');
         if (!loginCode) 
             location.href="/login"
-        else window.location.href = '/dashboard';
+        else 
+        window.location.href = '/dashboard';
     };
 
     
@@ -36,7 +39,7 @@ const Header = (isVisible) => {
         <header className="header">
             <div className="logo">
                 <a href="/">
-                    <img src={logolink.src} />
+                    <Image alt="logo icon" src={logolink.src} width={67} height={30} />
                 </a>
             </div>
             <div className="nav">

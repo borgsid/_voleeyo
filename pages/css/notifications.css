@@ -54,7 +54,7 @@
   }
   .notification {
     display: flex;
-    height: 100vh;
+    width: -webkit-fill-available;
 }
 .notification-cards.cards-container {
   display: grid;

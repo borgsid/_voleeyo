@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import Image from 'next/image';
 import * as d3 from 'd3';
 import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
-const FriendsNetwork = () => {
+const FriendsNetwork = ({ activeTab, setActiveTab}) => {
   const [data, setData] = useState(null);
   const [activeNode, setActiveNode] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
   const [selectedUserName, setSelectedUserName] = useState("")
   // const [isVisible, setIsNavBarVIsible] = useState(false);
   useEffect(() => {
+    setActiveTab("friends")
     const secretCode = localStorage.getItem("voleeyo_login");
     if (!secretCode) {
       location.href = "/";

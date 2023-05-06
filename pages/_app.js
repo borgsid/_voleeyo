@@ -1,4 +1,3 @@
-// import './css/styles.css';
 import { useEffect,useState } from "react";
 import Head from 'next/head';
 import './css/newpage.css'
@@ -9,7 +8,7 @@ import './css/friendsNetwork.css';
 import NavMenu from "./components/navMenu";
 import  Header from "./components/Header";
 function App({ Component, pageProps }) {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState(null);
   const [isVisible,setIsVisible]=useState(false);
   const [secretCode, setSecretCode]= useState(null)
 
@@ -21,19 +20,19 @@ function App({ Component, pageProps }) {
     else
       setIsVisible(true);
 
-    console.log("isVisible",isVisible)
+    setActiveTab("index")
   });
   const toggleNavMenuFunc= ()=>{
     var navbar=document.getElementById("navbar");
-    // if(isVisible)
-    // {
-    //     navbar.style.display="none";
-    //     setIsVisible(false);
-    // }
-    // else{
-    //     navbar.style.display="unset";
-    //     setIsVisible(true);
-    // }
+    if(isVisible)
+    {
+        navbar.style.display="none";
+        setIsVisible(false);
+    }
+    else{
+        navbar.style.display="unset";
+        setIsVisible(true);
+    }
   }
   return (
      <div className='container'>
@@ -42,11 +41,14 @@ function App({ Component, pageProps }) {
         </Head>
         <Header isVisible={isVisible}/>
         <div className='main'>
-        <NavMenu activeTab={activeTab} 
+        <NavMenu 
+                activeTab={activeTab} 
                 setActiveTab={setActiveTab} 
                 toggleNavMenu={toggleNavMenuFunc} 
                 secretCode={secretCode}/>
-          <Component {...pageProps} />
+          <Component {...pageProps} 
+                    activeTab={activeTab} 
+                  setActiveTab={setActiveTab}  />
         </div>
       </div>
     );
