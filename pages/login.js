@@ -38,8 +38,8 @@ const Login = ({ activeTab, setActiveTab}) => {
             </Head>
             <div className="section-one login">
                 <div className="section-one-text">
-            <h2>Get in touch with <a href="https://twitter.com/sydney_lukee">Sydney</a> on twitter or send him an 
-                <a href="mailto:silsfinest@vodafone.it?subject=[Voleeyo] Request access token &body= Hi,{add name} I'd like to request access to Voleeyo."> email</a> to access Voleeyo</h2>
+            <h2>Get in touch with <a className='sydney-color' href="https://twitter.com/sydney_lukee">Sydney</a> on twitter or send him an 
+                <a className='sydney-color' href="mailto:silsfinest@vodafone.it?subject=[Voleeyo] Request access token &body= Hi,{add name} I'd like to request access to Voleeyo."> email</a> to access Voleeyo</h2>
            
                     <form onSubmit={(e) => { e.preventDefault(); handleSecretCodeSubmit(); }}>
                         <label>
