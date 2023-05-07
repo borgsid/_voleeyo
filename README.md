@@ -1,12 +1,19 @@
-# Voleeyo 
-### This is V1 pok for a Volunteer platform.
-I'm working on a Volunteer WebApp to help volunteers connect and contribute to society.
+# Voleeyo
 
-To run successful 
-- npm i
-- create a .env file 
-    - save 2 localvariables:
-        - baseUri
-        - log_in_key
-- enjoy :)
+Voleeyo is a Volunteer WebApp that aims to help volunteers connect and contribute to society. This is a V1 proof of concept for the platform.
 
+## Installation
+
+To run Voleeyo locally, follow these steps:
+
+1. Run `npm i` to install the necessary dependencies.
+2. Create a `.env` file in the root directory of the project.
+3. In the `.env` file, save the following two environment variables:
+    - `baseUri`: The base URI for the API endpoints.
+    - `log_in_key`: The login key for the authentication service.
+4. Run `npm start` to start the application.
+5. Enjoy Voleeyo!
+
+## Conclusion
+
+Voleeyo is a work in progress, but we hope that it will help connect volunteers with the organizations and causes that they are passionate about. We will continue to improve and expand the platform in future versions.

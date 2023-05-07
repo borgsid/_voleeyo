@@ -66,8 +66,16 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
               }
               {!isVisible && <p>Find out what you friends have been up to and connect with new ones!</p>}
               <div className="social-links">
-                <a href="https://www.instagram.com/voleeyo/" target="_blank" rel="noopener noreferrer">Instagram</a>
-                <a href="https://twitter.com/Voleeyo" target="_blank" rel="noopener noreferrer">Twitter</a>
+                <a href="#" target="_blank" rel="noopener noreferrer">Instagram (Coming soon)</a>
+                <a href="https://twitter.com/Voleeyo" target="_blank" rel="noopener noreferrer">Twitter (WIP)</a>
+              </div>
+                  <br/>
+                  <br/>
+                  <span>Like what I'm doing, here are some links</span>
+                  
+              <div className="social-links">
+                  <a href="https://www.buymeacoffee.com/sydneylukee" target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
+                  <a href="https://www.buymeacoffee.com/sydneylukee" target="_blank" rel="noopener noreferrer">Github repo</a>
               </div>
             </div>
           }
