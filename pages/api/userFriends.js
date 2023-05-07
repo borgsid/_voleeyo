@@ -10,7 +10,8 @@ const UserFriendsAction = async (req, res) => {
                 surname:"James",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
-                email:"sds@yopmail.com"
+                email:"sds@yopmail.com",
+                isFollowing:true
             },
             {
                 id:3,
@@ -18,7 +19,8 @@ const UserFriendsAction = async (req, res) => {
                 surname:"Walber",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
-                email:"sds@yopmail.com"
+                email:"sds@yopmail.com",
+                isFollowing:true
             }
         ]
         res.status(200).json(friends);

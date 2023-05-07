@@ -1,9 +1,9 @@
 import { useEffect,useState } from "react";
+import Image from 'next/image';
 import ReactModal from 'react-modal';
-import svgPencil from "../assets/pencil-edit-button.svg"
-import NavMenu from "./components/navMenu"; 
-const Dashboard = () => {
-    const [activeTab, setActiveTab] = useState("dashboard");
+import pencil from "../assets/pencil-edit-button.svg"
+const Dashboard = ({activeTab,setActiveTab}) => {
+    var svgPencil= pencil;
     const [events,setEvents]= useState([]);
     const [isModalOpen,setIsModalOpen] = useState();
     const [isEdit,setIsEdit]= useState(false);
@@ -14,14 +14,21 @@ const Dashboard = () => {
     const [modEditEventRole, setModEditEventRole] = useState('');
     const [modEditEventYear, setModEditEventYear] = useState('');
     const [eventId, setEventId] = useState(0);
-    const [isVisible, setIsVisible] = useState(false);
+    const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
+        setActiveTab("dashboard")
+        console.log("activeTab",activeTab)
+        var navbar = document.getElementById("navbar");
+        navbar.style.display = "unset";
         const secretCode = localStorage.getItem("voleeyo_login");
         if (!secretCode) {
-          location.href = "/";
+          location.href = "/login";
           return;
         }
+        else
+            setIsNavBarVIsible(true)
+
 
         const fetchData = async ()=>{
             const dataRaw = await fetch("/api/userEventsCards", {
@@ -103,19 +110,17 @@ const Dashboard = () => {
         }
         const toggleNavMenu= ()=>{
             var navbar=document.getElementById("navbar");
-            if(isVisible)
+            if(isNavBarVIsible)
             {
                 navbar.style.display="none";
-                setIsVisible(false);
+                setIsNavBarVIsible(false);
             }
             else{
                 navbar.style.display="unset";
-                setIsVisible(true);
+                setIsNavBarVIsible(true);
             }
         }
-    return ( 
-        <div className="dashboard">
-            <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu}/>
+    return ( isNavBarVIsible&&
             <div className="content">
                 <div className="page-header">
                     <h2>Hi Demo User!</h2>
@@ -137,7 +142,7 @@ const Dashboard = () => {
                         <p>{event.eventRole}</p>
                         {hoverIndex === index && (
                         <div className="edit-icon" onClick={() => handleEditClick(event)}>
-                            <img height={svgPencil.height} src={svgPencil.src}/>
+                            <Image alt="pencil icon" height={svgPencil.height} src={svgPencil.src} width={svgPencil.width}/>
                         </div>
                         )}
                     </div>
@@ -191,7 +196,6 @@ const Dashboard = () => {
                 </ReactModal>
 
             </div>
-        </div>
       );
 }
 export default Dashboard;

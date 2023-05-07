@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import * as d3 from 'd3';
-import NavMenu from "./components/navMenu";
 import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
-const FriendsNetwork = () => {
+const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}) => {
   const [data, setData] = useState(null);
   const [activeNode, setActiveNode] = useState([]);
-  const [activeTab, setActiveTab] = useState("friends");
   const [selectedId, setSelectedId] = useState(0);
   const [selectedUserName, setSelectedUserName] = useState("")
-  const [isVisible, setIsVisible] = useState(false);
+  
   useEffect(() => {
+    setActiveTab("friendsNetwork")
     const secretCode = localStorage.getItem("voleeyo_login");
     if (!secretCode) {
       location.href = "/";
@@ -30,18 +29,19 @@ const FriendsNetwork = () => {
       }
     };
     const updateSelectedNode = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const idParam = urlParams.get('id');
-      const userName = urlParams.get('userName');
+      const idParam = friendLookUp.id;
+      const userName = `${friendLookUp.name} ${friendLookUp.surname}`;
 
       setSelectedId(idParam);
       setSelectedUserName(userName);
     };
     fetchData();
     updateSelectedNode();
-  }, [selectedId]);
+  }, [selectedId,activeTab]);
   const handleNodeClick = (d) => {
-    d3.selectAll('.node').select('circle').attr('fill', 'blue');
+    console.log("d",d)
+    console.log("SelectedId",selectedId)
+    d3.selectAll('.node').select('circle').attr('fill', '#2c3e50');
     // Select relationships for clicked node
     const clickedCircle = d.target.__data__;
     setSelectedUserName(clickedCircle.userName);
@@ -55,8 +55,8 @@ const FriendsNetwork = () => {
     };
     relationships.forEach(rel => {
       const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
-      d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'yellow');
-      d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'yellow');
+      d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
+      d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
       if (clickedCircle.id == 1)
         relText.isCurrentUser = true
       relText.connections.push(`- connected to ${data.nodes.find(x => x.id == relatedNodeId).userName} through the: ${rel.eventName}.`);
@@ -65,18 +65,17 @@ const FriendsNetwork = () => {
   }
   const toggleNavMenu = () => {
     var navbar = document.getElementById("navbar");
-    if (isVisible) {
-      navbar.style.display = "none";
-      setIsVisible(false);
-    }
-    else {
-      navbar.style.display = "unset";
-      setIsVisible(true);
-    }
+    // if (isVisible) {
+    //   navbar.style.display = "none";
+    //   setIsNavBarVIsible(false);
+    // }
+    // else {
+    //   navbar.style.display = "unset";
+    //   setIsNavBarVIsible(true);
+    // }
   }
   return (
     <div className="friends frinds-network">
-      <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu} />
       <div className="constnet-container">
         <div className="content">
           <div className="page-header">
@@ -112,7 +111,7 @@ const FriendsNetwork = () => {
                   {activeNode.connections.map((node, index) => (
                     <span key={index}>{node}</span>
                   ))}
-                  {!activeNode.isCurrentUser && <button type="button" className="friend-network" onClick={() => { location.href = `/notifications?receiverUserId=${activeNode.userId}&receiverUserName=${activeNode.clickedUser}` }}>Contact {activeNode.clickedUser}</button>}
+                  {!activeNode.isCurrentUser && <button type="button" className="friend-network" onClick={() => { setActiveTab("notifications"); setFriendLookUp({receiverUserId: activeNode.userId,receiverUserName:activeNode.clickedUser})}}>Contact {activeNode.clickedUser}</button>}
                 </div>
               </div>)}
           </div>

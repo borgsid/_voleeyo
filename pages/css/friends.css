@@ -16,7 +16,7 @@
   font-size: 1rem;
 }
 button.friend-btn-network[type="button"]{
-  background-color: #007bff;
+  background-color: #2c3e50;
   color: #fff;
   border: none;
   padding: 0.5rem;
@@ -74,7 +74,7 @@ button.friend-btn-network[type="button"]{
 }
 
 .friends .card-footer button {
-  background-color: #007bff;
+  background-color: #2c3e50;
   color: #fff;
   border: none;
   padding: 0.5rem;
@@ -83,6 +83,14 @@ button.friend-btn-network[type="button"]{
 }
 
 
+.add-friend-btn{
+  background-color: #2c3e50;
+  color: #fff;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
 /* Style for the search bar */
 .friends input[type="text"] {
     padding: 0.5rem;

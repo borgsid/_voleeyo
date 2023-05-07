@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
-import NavMenu from "./components/navMenu";
-const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("notifications");
+const Notifications = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}) => {
   const [notifications, setNotifications] = useState({inbox:[],sent:[]});
   const [showModal, setShowModal] = useState(false);
   const [selectedMessage, setReplyMessage] = useState("");
   const [reply, setReply] = useState("");
   const [isMessagingModalOpen, setIsMessagingModalOpen] = useState(false);
   const [newMessage, setNewMessage] = useState('')
-  const [isVisible, setIsVisible] = useState(false);
   const [receiverUserId, setReceiverUserId] = useState("");
   const [receiverUserName, setReceiverUserName] = useState("");
   const [activeTabSection,setActiveTabSection]= useState("inbox");
@@ -17,15 +14,11 @@ const Dashboard = () => {
   const [hideFilteredList,setHideFilteredList]=useState(true);
 
   useEffect(() => {
+    setActiveTab("notifications")
+    console.log("friendLookUp",friendLookUp)
     const secretCode = localStorage.getItem("voleeyo_login");
-    if (!secretCode) {
-      location.href = "/";
-      return;
-    }
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var userId= urlParams.get('receiverUserId');
-    var userName= urlParams.get('receiverUserName');
+    var userId= friendLookUp?.receiverUserId
+    var userName= friendLookUp?.receiverUserName
     if(userName?.length>0)
     {
       setReceiverUserId(userId);
@@ -48,7 +41,7 @@ const Dashboard = () => {
     }
     
     fetchData();
-  }, []);
+  },[]);
   const updateMessageStatus=async (e)=>{
     const secretCode = localStorage.getItem("voleeyo_login");
         await fetch("/api/setMeasageRead",
@@ -80,7 +73,7 @@ const Dashboard = () => {
       method:"post",
       body:JSON.stringify({secretCode,message:selectedMessage})
     })
-    setReply(null)
+    setReply("")
     setShowModal(false)
   };
   const handleNewMessageClick = () => {
@@ -104,8 +97,6 @@ const Dashboard = () => {
       isInbox:true
     };
 
-    notifications.sent.push(myMessage)
-    setNotifications({ ...notifications });
     // handle reply submission logic
     const response=await fetch("/api/sendNewMessage",
     {
@@ -116,10 +107,14 @@ const Dashboard = () => {
     clearNewMessageModal();
     if(response.ok)
       {
-        notifications.sent.pop()
+        // notifications.sent.pop()
         notifications.sent.push((await response.json()).message)
-        setNotifications({ ...notifications });
+        setNotifications({...notifications});
       }
+      else
+        alert("There was a problem delivering your message, please try again.")
+
+      console.log("notifications",notifications)
     
   };
   const clearNewMessageModal=()=>{
@@ -129,14 +124,14 @@ const Dashboard = () => {
   }
   const toggleNavMenu = () => {
     var navbar = document.getElementById("navbar");
-    if (isVisible) {
-      navbar.style.display = "none";
-      setIsVisible(false);
-    }
-    else {
-      navbar.style.display = "unset";
-      setIsVisible(true);
-    }
+    // if (isVisible) {
+    //   navbar.style.display = "none";
+    //   setIsVisible(false);
+    // }
+    // else {
+    //   navbar.style.display = "unset";
+    //   setIsVisible(true);
+    // }
   }
   const closeAndResetModal=()=>{
     setNewMessage("");
@@ -179,20 +174,19 @@ const Dashboard = () => {
   }
   return (
     <div className="notification">
-      <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu} />
       <div className="notification-content content">
         <div className="page-header">
           <h2>Your messages</h2>
           <div className="notification-tabs">
               <div
                 className={`notification-tab ${activeTabSection === "inbox" ? "active" : ""}`}
-                onClick={() => setActiveTabSection("inbox")}
+                onClick={() => {setActiveTabSection("inbox"); setNotifications({...notifications})}}
               >
                 Inbox
               </div>
               <div
                 className={`notification-tab ${activeTabSection === "sent" ? "active" : ""}`}
-                onClick={() => setActiveTabSection("sent")}
+                onClick={() =>{ setActiveTabSection("sent"); setNotifications({...notifications})}}
               >
                 Sent
               </div>
@@ -318,7 +312,7 @@ const Dashboard = () => {
           <ReactModal
             className="modal"
             isOpen={true}
-            onRequestClose={() => { setIsMessagingModalOpen(false); setNewMessage(null) }}
+            onRequestClose={() => { setIsMessagingModalOpen(false); setNewMessage("") }}
             ariaHideApp={false}
           >
             <div className="notifications-modal modal-content">
@@ -358,4 +352,4 @@ const Dashboard = () => {
     </div>
   );
 }
-export default Dashboard;
+export default Notifications;

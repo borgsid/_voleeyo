@@ -9,7 +9,8 @@ const SearchFriendsAction = async (req, res) => {
                 surname:"James",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
-                email:"sds@yopmail.com"
+                email:"sds@yopmail.com",
+                isFollowing:false
             },
             {
                 id:3,
@@ -17,7 +18,7 @@ const SearchFriendsAction = async (req, res) => {
                 surname:"Walber",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
-                email:"sds@yopmail.com"
+                email:"sds@yopmail.com",isFollowing:false
             },
             {
                 id:4,
@@ -25,7 +26,8 @@ const SearchFriendsAction = async (req, res) => {
                 surname:"West",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
-                email:"sds@yopmail.com"
+                email:"sds@yopmail.com",
+                isFollowing:false
             },
             {
                 id:5,
@@ -33,7 +35,8 @@ const SearchFriendsAction = async (req, res) => {
                 surname:"Brown",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
-                email:"sds@yopmail.com"
+                email:"sds@yopmail.com",
+                isFollowing:false
             },
             {
                 id:6,
@@ -41,7 +44,8 @@ const SearchFriendsAction = async (req, res) => {
                 surname:"O-marley",
                 profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
                 bio:"",
-                email:"sds@yopmail.com"
+                email:"sds@yopmail.com",
+                isFollowing:false
             }
         ]
         var searchResults =friends.filter(x=> 

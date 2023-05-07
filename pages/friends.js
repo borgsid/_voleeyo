@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import NavMenu from "./components/navMenu";
-
-const Friends = () => {
-  const [activeTab, setActiveTab] = useState("friends");
+import Image from 'next/image';
+const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp}) => {
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [secretCode, setSecretCode] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    setActiveTab("friends")
     const tryeSecretCode = localStorage.getItem("voleeyo_login");
     if (!tryeSecretCode) {
       window.location.href = "/";
@@ -29,9 +27,10 @@ const Friends = () => {
         setFriends(dataResp);
       }
     };
+    
     fetchData();
-  }, []);
-
+  },[activeTab,friendLookUp]);
+  
   const searchFriendsFunc = async (event) => {
     setSearchText(event?.target?.value ?? searchText);
     if (searchText?.trim().length >= 1) {
@@ -52,9 +51,7 @@ const Friends = () => {
     }
   };
 
-  const seeFriendNetwork = (friendObj) => {
-    window.location.href = `/friendsNetwork?id=${friendObj.id}&userName=${friendObj.name} ${friendObj.surname}`;
-  };
+  
 
   const addNewFriend = async (friendId) => {
     var resp = await fetch("/api/addNewFriend", {
@@ -63,24 +60,28 @@ const Friends = () => {
     });
     if (resp.status === 200) {
       setFriends(await resp.json());
+      searchFriends.map((x)=> {
+        if(x.id==friendId)
+          x.isFollowing=true;
+      })
+      setSearchFriends(searchFriends)
     } else {
       console.log("we couldnt add this friend at this time");
     }
   };
   const toggleNavMenu = () => {
     var navbar = document.getElementById("navbar");
-    if (isVisible) {
-      navbar.style.display = "none";
-      setIsVisible(false);
-    }
-    else {
-      navbar.style.display = "unset";
-      setIsVisible(true);
-    }
+    // if (isVisible) {
+    //   navbar.style.display = "none";
+    //   setIsNavBarVIsible(false);
+    // }
+    // else {
+    //   navbar.style.display = "unset";
+    //   setIsNavBarVIsible(true);
+    // }
   }
   return (
-    <div className="friends">
-      <NavMenu activeTab={activeTab} setActiveTab={setActiveTab} toggleNavMenu={toggleNavMenu} />
+   
       <div className="content-container">
         <div className="content">
           <div className="page-header">
@@ -96,14 +97,14 @@ const Friends = () => {
             {friends.map((friend) => (
               <div className="friend-card" key={friend.id}>
                 <div className="card-header">
-                  <img src={friend?.profilePic} alt="Friend profile picture" />
+                  <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
                   <div>
                     <h4>{friend.name} {friend.surname}</h4>
                     <p className="card-subtitle">{friend.email}</p>
                   </div>
                 </div>
                 <div className="card-body">
-                  <button className="friend-btn-network" type="button" onClick={() => { seeFriendNetwork(friend) }}>See Network</button>
+                  <button className="friend-btn-network" type="button" onClick={() => { setActiveTab("friendsNetwork");setFriendLookUp(friend);}}>See Network</button>
                 </div>
               </div>
             ))}
@@ -121,22 +122,20 @@ const Friends = () => {
             {searchFriends.map((friend) => (
               <div className="friend-card" key={friend.id}>
                 <div className="card-header">
-                  <img src={friend.profilePic} alt="Friend profile picture" />
+                  <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
                   <div>
                     <h4>{friend.name} {friend.surname}</h4>
                     <p className="card-subtitle">{friend.email}</p>
                   </div>
                 </div>
                 <div className="card-footer">
-                  <button className="add-friend-btn" onClick={() => { addNewFriend(friend.id) }}>Add Friend</button>
+                  { !friend.isFollowing&& <button className="add-friend-btn" onClick={() => { addNewFriend(friend.id) }}>Add Friend</button>}
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
-
-    </div>
   );
 
 }
