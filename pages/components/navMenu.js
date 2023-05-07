@@ -16,7 +16,6 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
   var tik_tok = tik_tokSvg;
 
   const handleTabClick = (tab) => {
-    console.log(" setting tab",tab)
     setActiveTab(tab);
   };
   const handleLogout = () => {

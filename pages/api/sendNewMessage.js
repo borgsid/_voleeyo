@@ -48,7 +48,6 @@ const SendNewMessageActiion = async (req, res) => {
     })
    
     var currentUser=  await resp.json();
-    console.log("currentUser",currentUser)
     if (currentUser.status&& body.message!=undefined) {
         body.message.messageFrom={
             id:currentUser.id,

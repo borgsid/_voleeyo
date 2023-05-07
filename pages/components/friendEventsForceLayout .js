@@ -5,7 +5,6 @@ const FriendEventsForceLayout = ({ data, width, height, onNodeClick ,selectedId}
   const svgRef = useRef(null);
 
   useEffect(() => {
-    console.log("selectedId",selectedId)
     const svg = d3.select(svgRef.current)
       .attr('width', width)
       .attr('height', height)

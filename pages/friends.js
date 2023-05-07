@@ -1,23 +1,16 @@
 import { useEffect, useState } from "react";
 import Image from 'next/image';
-const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp}) => {
+const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCode, setSecretCode}) => {
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [secretCode, setSecretCode] = useState("");
 
   useEffect(() => {
-    setActiveTab("friends")
-    const tryeSecretCode = localStorage.getItem("voleeyo_login");
-    if (!tryeSecretCode) {
-      window.location.href = "/";
-    }
-    setSecretCode(tryeSecretCode);
-
+    setSecretCode(localStorage.getItem("voleeyo_login"))
     const fetchData = async () => {
       const dataRaw = await fetch("/api/userFriends", {
         method: "POST",
-        body: JSON.stringify({ secretCode: tryeSecretCode }),
+        body: JSON.stringify({ secretCode:localStorage.getItem("voleeyo_login") }),
       });
       const dataResp = await dataRaw.json();
 

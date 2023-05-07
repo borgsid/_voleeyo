@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
-const Notifications = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}) => {
+const Notifications = ({ activeTab, setActiveTab, secrtCode,setSecretCode,friendLookUp,setFriendLookUp}) => {
   const [notifications, setNotifications] = useState({inbox:[],sent:[]});
   const [showModal, setShowModal] = useState(false);
   const [selectedMessage, setReplyMessage] = useState("");
@@ -14,9 +14,8 @@ const Notifications = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp})
   const [hideFilteredList,setHideFilteredList]=useState(true);
 
   useEffect(() => {
+    setSecretCode(localStorage.getItem("voleeyo_login"))
     setActiveTab("notifications")
-    console.log("friendLookUp",friendLookUp)
-    const secretCode = localStorage.getItem("voleeyo_login");
     var userId= friendLookUp?.receiverUserId
     var userName= friendLookUp?.receiverUserName
     if(userName?.length>0)
@@ -64,7 +63,6 @@ const Notifications = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp})
   };
 
   const handleSubmit = async(e) => {
-    const secretCode = localStorage.getItem("voleeyo_login");
     e.preventDefault();
     // handle reply submission logic
     selectedMessage.userMessage=reply;
@@ -113,9 +111,6 @@ const Notifications = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp})
       }
       else
         alert("There was a problem delivering your message, please try again.")
-
-      console.log("notifications",notifications)
-    
   };
   const clearNewMessageModal=()=>{
     setFilteredFriends([]);
@@ -173,7 +168,7 @@ const Notifications = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp})
     setHideFilteredList(true)
   }
   return (
-    <div className="notification">
+    activeTab=="notifications"&&<div className="notification">
       <div className="notification-content content">
         <div className="page-header">
           <h2>Your messages</h2>

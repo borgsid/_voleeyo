@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import Image from 'next/image';
 import ReactModal from 'react-modal';
 import pencil from "../assets/pencil-edit-button.svg"
-const Dashboard = ({activeTab,setActiveTab}) => {
+const Dashboard = ({activeTab,setActiveTab,secretCode,setSecretCode,hideNav ,setHideNav}) => {
     var svgPencil= pencil;
     const [events,setEvents]= useState([]);
     const [isModalOpen,setIsModalOpen] = useState();
@@ -17,18 +17,13 @@ const Dashboard = ({activeTab,setActiveTab}) => {
     const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
-        console.log("activeTab",activeTab)
-        var navbar = document.getElementById("navbar");
-        navbar.style.display = "unset";
-        const secretCode = localStorage.getItem("voleeyo_login");
-        if (!secretCode) {
-          location.href = "/login";
-          return;
+        setSecretCode(localStorage.getItem("voleeyo_login"))
+        setHideNav(false)
+        if(!hideNav){
+            console.log("hide nave",hideNav)
+            var navbar = document.getElementById("navbar");
+            navbar.style.display = "none";
         }
-        else
-            setIsNavBarVIsible(true)
-
-
         const fetchData = async ()=>{
             const dataRaw = await fetch("/api/userEventsCards", {
                 method: "POST",
@@ -42,8 +37,7 @@ const Dashboard = ({activeTab,setActiveTab}) => {
             setEvents(dataResp);
             }
         }
-        if(activeTab=="dashboard")
-            fetchData();
+        fetchData();
         setIsEdit(false);
       }, []);
        
@@ -120,7 +114,7 @@ const Dashboard = ({activeTab,setActiveTab}) => {
                 setIsNavBarVIsible(true);
             }
         }
-    return ( activeTab=="dashboard"&&isNavBarVIsible&&
+    return ( 
             <div className="content">
                 <div className="page-header">
                     <h2>Hi Demo User!</h2>

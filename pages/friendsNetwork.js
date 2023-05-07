@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as d3 from 'd3';
 import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
-const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}) => {
+const FriendsNetwork = ({ activeTab, setActiveTab, secretCode,friendLookUp,setFriendLookUp}) => {
   const [data, setData] = useState(null);
   const [activeNode, setActiveNode] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
@@ -9,11 +9,6 @@ const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}
   
   useEffect(() => {
     setActiveTab("friendsNetwork")
-    const secretCode = localStorage.getItem("voleeyo_login");
-    if (!secretCode) {
-      location.href = "/";
-      return;
-    }
     const fetchData = async () => {
       const dataRaw = await fetch("/api/friendsNetwork", {
         method: "POST",
@@ -39,8 +34,6 @@ const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}
     updateSelectedNode();
   }, [selectedId,activeTab]);
   const handleNodeClick = (d) => {
-    console.log("d",d)
-    console.log("SelectedId",selectedId)
     d3.selectAll('.node').select('circle').attr('fill', '#2c3e50');
     // Select relationships for clicked node
     const clickedCircle = d.target.__data__;

@@ -10,19 +10,19 @@ import  Header from "./components/Header";
 function App({ Component, pageProps }) {
   const [activeTab, setActiveTab] = useState(null);
   const [isVisible,setIsVisible]=useState(false);
-  const [secretCode, setSecretCode]= useState(null)
+  const [hideNav,setHideNav]= useState(true);
+  const [secretCode, setSecretCode]= useState("")
   const [friendLookUp,setFriendLookUp]=useState({});
 
   useEffect(()=>{
-    const testCode = localStorage.getItem("voleeyo_login");
-    setSecretCode(testCode)
-    if (testCode?.length>0) 
+    setSecretCode(localStorage.getItem("voleeyo_login"));
+    if (secretCode?.length>0) 
       setIsVisible(false);
     else
-      setIsVisible(true);
-
-    setActiveTab("index")
-  });
+     {
+        setIsVisible(true);
+      }
+  },[hideNav]);
   const toggleNavMenuFunc= ()=>{
     if(isVisible)
     {
@@ -39,15 +39,20 @@ function App({ Component, pageProps }) {
         </Head>
         <Header isVisible={isVisible} activeTab={ activeTab} setActiveTab={setActiveTab}/>
         <div className='main'>
-        <NavMenu 
+        {hideNav&&<NavMenu 
                 activeTab={activeTab} 
+                hideNav={hideNav}
+                setHideNav={setHideNav}
                 setActiveTab={setActiveTab} 
                 toggleNavMenu={toggleNavMenuFunc} 
-                secretCode={secretCode}/>
+                secretCode={secretCode}/>}
           <Component {...pageProps} 
-                    activeTab={activeTab} 
+                  hideNav={hideNav}
+                  setHideNav={setHideNav}
+                  activeTab={activeTab} 
                   setActiveTab={setActiveTab} 
                   secretCode={secretCode}
+                  setSecretCode={setSecretCode}
                   isVisible={isVisible} 
                   friendLookUp={friendLookUp}
                   setFriendLookUp={setFriendLookUp}/>
