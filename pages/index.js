@@ -75,7 +75,7 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
                   
               <div className="social-links">
                   <a href="https://www.buymeacoffee.com/sydneylukee" target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
-                  <a href="https://www.buymeacoffee.com/sydneylukee" target="_blank" rel="noopener noreferrer">Github repo</a>
+                  <a href="https://github.com/borgsid/_voleeyo" target="_blank" rel="noopener noreferrer">Github repo</a>
               </div>
             </div>
           }
