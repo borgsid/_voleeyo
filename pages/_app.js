@@ -5,6 +5,7 @@ import './css/dashboard.css';
 import './css/notifications.css';
 import './css/friends.css';
 import './css/friendsNetwork.css';
+import logo from "../assets/fav icon.png"
 import NavMenu from "./components/navMenu";
 import Header from "./components/Header";
 function App({ Component, pageProps }) {
@@ -40,6 +41,8 @@ function App({ Component, pageProps }) {
     <div className='container'>
       <Head>
         <title>Voleeyo: create your path!</title>
+        <link rel="icon" type="image/png" size="16x16" href={logo.src}></link>
+
       </Head>
       <Header isVisible={isVisible} activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className='main'>
