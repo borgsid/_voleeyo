@@ -129,7 +129,8 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
         setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
-      {activeTab == "friendsNetwork" && <FriendsNetwork hideNav={hideNav}
+      {activeTab == "friendsNetwork" && <FriendsNetwork
+        hideNav={hideNav}
         setHideNav={setHideNav}
         secretCode={secretCode}
         setSecretCode={setSecretCode}
@@ -145,7 +146,10 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
         setSecretCode={setSecretCode}
         activeTab={activeTab}
         setActiveTab={setActiveTab} />}
-      {activeTab == "privacy" && <Privacy secretCode={secretCode}
+      {activeTab == "privacy" && <Privacy
+        hideNav={hideNav}
+        setHideNav={setHideNav}
+        secretCode={secretCode}
         setSecretCode={setSecretCode}
         activeTab={activeTab}
         setActiveTab={setActiveTab} />}
