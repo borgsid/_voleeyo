@@ -39,7 +39,7 @@ const FriendEventsForceLayout = ({ data, width, height, onNodeClick ,selectedId}
 
     node.append('circle')
       .attr('r', 10)
-      .attr('fill', d => d.id === selectedId ? 'yellow' : 'blue')
+      .attr('fill', d => d.id == selectedId ? 'rgb(225, 215, 172)' : '#2c3e50')
       // .attr('fill',  'blue')
       .style('cursor', 'pointer');
 

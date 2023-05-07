@@ -41,7 +41,7 @@ const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}
   const handleNodeClick = (d) => {
     console.log("d",d)
     console.log("SelectedId",selectedId)
-    d3.selectAll('.node').select('circle').attr('fill', 'blue');
+    d3.selectAll('.node').select('circle').attr('fill', '#2c3e50');
     // Select relationships for clicked node
     const clickedCircle = d.target.__data__;
     setSelectedUserName(clickedCircle.userName);
@@ -55,8 +55,8 @@ const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}
     };
     relationships.forEach(rel => {
       const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
-      d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'yellow');
-      d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'yellow');
+      d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
+      d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
       if (clickedCircle.id == 1)
         relText.isCurrentUser = true
       relText.connections.push(`- connected to ${data.nodes.find(x => x.id == relatedNodeId).userName} through the: ${rel.eventName}.`);
@@ -111,7 +111,7 @@ const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}
                   {activeNode.connections.map((node, index) => (
                     <span key={index}>{node}</span>
                   ))}
-                  {!activeNode.isCurrentUser && <button type="button" className="friend-network" onClick={() => { setFriendLookUp({receiverUserId: activeNode.userId,receiverUserName:activeNode.clickedUser})}}>Contact {activeNode.clickedUser}</button>}
+                  {!activeNode.isCurrentUser && <button type="button" className="friend-network" onClick={() => { setActiveTab("notifications"); setFriendLookUp({receiverUserId: activeNode.userId,receiverUserName:activeNode.clickedUser})}}>Contact {activeNode.clickedUser}</button>}
                 </div>
               </div>)}
           </div>

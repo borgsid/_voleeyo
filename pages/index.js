@@ -5,7 +5,9 @@ import Dashboard from './dashboard';
 import Notifications from './notifications'
 import Friends from './friends'
 import FriendsNetwork from './friendsNetwork'
-
+import Account from './account';
+import About from './about';
+import Privacy from './privacy';
 const index = ({activeTab,setActiveTab,isVisible,friendLookUp,setFriendLookUp}) => {
   useEffect(()=>{
 
@@ -52,9 +54,12 @@ const index = ({activeTab,setActiveTab,isVisible,friendLookUp,setFriendLookUp}) 
         </div>
       }
       {activeTab=="dashboard"&&<Dashboard activeTab={activeTab} setActiveTab={setActiveTab}/>}
-      {activeTab=="notifications"&&<Notifications activeTab={activeTab} setActiveTab={setActiveTab}/>}
+      {activeTab=="notifications"&&<Notifications activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>}
       {activeTab=="friends"&&<Friends activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>}
       {activeTab=="friendsNetwork"&&<FriendsNetwork activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>}
+      {activeTab=="account"&&<Account activeTab={activeTab} setActiveTab={setActiveTab} />}
+       {activeTab=="about"&&<About activeTab={activeTab} setActiveTab={setActiveTab} />}
+       {activeTab=="privacy"&&<Privacy activeTab={activeTab} setActiveTab={setActiveTab} />}
     </div>
   );
 };

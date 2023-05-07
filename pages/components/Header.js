@@ -7,10 +7,10 @@ const Header = ({ isVisible, activeTab, setActiveTab }) => {
 
     const link1 = { link: "/login", name: "Login" };
     const link2 = { link: "/dashboard", name: "Dashboard", setActiveTab: setActiveTab };
-    const link3 = { link: "/account", name: "Account" };
-    const link4 = { link: "/privacy", name: "Privacy" };
-    const link5 = { link: "/contacct", name: "Contact" };
-    const link6 = { link: "/about", name: "About" };
+    const link3 = { link: "/account", name: "Account" , setActiveTab: setActiveTab };
+    const link4 = { link: "/privacy", name: "Privacy" , setActiveTab: setActiveTab };
+    const link5 = { link: "mailto:silsfinest@vodafone.it?subject=[Voleeyo] Contact request", name: "Contact" };
+    const link6 = { link: "/about", name: "About" , setActiveTab: setActiveTab };
     const handleMyAccountClick = () => {
         const loginCode = localStorage.getItem('voleeyo_login');
         if (!loginCode)
@@ -59,17 +59,17 @@ const Header = ({ isVisible, activeTab, setActiveTab }) => {
                     </li>
                     }
                      {!isVisible &&  <li>
-                        <a href={link3.link}>{link3.name}</a>
+                        <a onClick={() => { setActiveTab("account") }}>{link3.name}</a>
                     </li>
                     }
                     <li>
-                        <a href={link4.link}>{link4.name}</a>
+                        <a onClick={() => { setActiveTab("privacy") }}>{link4.name}</a>
                     </li>
                     <li>
                         <a href={link5.link}>{link5.name}</a>
                     </li>
                     <li>
-                        <a href={link6.link}>{link6.name}</a>
+                        <a onClick={() => { setActiveTab("about") }}>{link6.name}</a>
                     </li>
                 </ul>
             </div>

@@ -2,9 +2,6 @@
     display: flex;
     width: -webkit-fill-available;
   }
-  body{
-    background-color: #333333;
-  }
   .navbar {
     display: flex;
     flex-direction: column;

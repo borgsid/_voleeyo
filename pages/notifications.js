@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
-const Dashboard = ({ activeTab, setActiveTab}) => {
+const Notifications = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}) => {
   const [notifications, setNotifications] = useState({inbox:[],sent:[]});
   const [showModal, setShowModal] = useState(false);
   const [selectedMessage, setReplyMessage] = useState("");
@@ -15,12 +15,10 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
 
   useEffect(() => {
     setActiveTab("notifications")
-
+    console.log("friendLookUp",friendLookUp)
     const secretCode = localStorage.getItem("voleeyo_login");
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var userId= urlParams.get('receiverUserId');
-    var userName= urlParams.get('receiverUserName');
+    var userId= friendLookUp?.receiverUserId
+    var userName= friendLookUp?.receiverUserName
     if(userName?.length>0)
     {
       setReceiverUserId(userId);
@@ -354,4 +352,4 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
     </div>
   );
 }
-export default Dashboard;
+export default Notifications;
