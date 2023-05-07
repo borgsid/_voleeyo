@@ -50,13 +50,14 @@ const index = ({activeTab,setActiveTab,isVisible,friendLookUp,setFriendLookUp}) 
           </div>
         </div>
       }
-      {activeTab=="dashboard"&&<Dashboard activeTab={activeTab} setActiveTab={setActiveTab}/>}
-      {activeTab=="notifications"&&<Notifications activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>}
-      {activeTab=="friends"&&<Friends activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>}
-      {activeTab=="friendsNetwork"&&<FriendsNetwork activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>}
-      {activeTab=="account"&&<Account activeTab={activeTab} setActiveTab={setActiveTab} />}
-       {activeTab=="about"&&<About activeTab={activeTab} setActiveTab={setActiveTab} />}
-       {activeTab=="privacy"&&<Privacy activeTab={activeTab} setActiveTab={setActiveTab} />}
+      
+      <Dashboard activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <Notifications activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>
+      <Friends activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>
+      <FriendsNetwork activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>
+      <Account activeTab={activeTab} setActiveTab={setActiveTab} />
+       <About activeTab={activeTab} setActiveTab={setActiveTab} />
+       <Privacy activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>
   );
 };
