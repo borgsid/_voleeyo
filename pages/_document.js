@@ -8,7 +8,7 @@ export default function Document() {
         <meta property="og:description" content="built at buildspace during nights and weekeds" key="description"/>
         <meta
           property="og:image"
-          content="https://voleeyo-1.azurewebsites.net//_next/static/preview.jpg"
+          content="https://drive.google.com/file/d/1VQbZAVF_o5WGDYfbvHclrRbj2s8Hk3BD/preview"
         />
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Head>

@@ -233,3 +233,20 @@ body {
   .sydney-color{
     color:rgb(225, 215, 172) ;
   }
+
+  footer{
+    display: none;
+  }
+  
+@media only screen and (max-width: 600px) {
+ 
+  .main{
+    display: none;
+  }
+  header{
+    display: none !important;
+  }
+  footer{
+    display: flex;
+  }
+ }

@@ -45,6 +45,8 @@ function App({ Component, pageProps }) {
 
       </Head>
       <Header isVisible={isVisible} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <footer><span>not optimized for mobile</span></footer>
+
       <div className='main'>
         {!hideNav&& <NavMenu
           activeTab={activeTab}
