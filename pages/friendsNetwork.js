@@ -29,9 +29,9 @@ const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}
       }
     };
     const updateSelectedNode = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const idParam = urlParams.get('id');
-      const userName = urlParams.get('userName');
+      console.log("friendLookUp",friendLookUp)
+      const idParam = friendLookUp.id;
+      const userName = `${friendLookUp.name} ${friendLookUp.surname}`;
 
       setSelectedId(idParam);
       setSelectedUserName(userName);
