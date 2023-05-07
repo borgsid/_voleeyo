@@ -5,6 +5,7 @@ import './css/dashboard.css';
 import './css/notifications.css';
 import './css/friends.css';
 import './css/friendsNetwork.css';
+import './css/account.css'
 import logo from "../assets/fav icon.png"
 import NavMenu from "./components/navMenu";
 import Header from "./components/Header";
@@ -14,21 +15,40 @@ function App({ Component, pageProps }) {
   const [hideNav, setHideNav] = useState(true);
   const [secretCode, setSecretCode] = useState("")
   const [friendLookUp, setFriendLookUp] = useState({});
-  const [showSideMenu,setShowSideMenu]=useState(false);
+  const [showSideMenu, setShowSideMenu] = useState(false);
+  const [currentUser, setCurrentUser] = useState({})
   useEffect(() => {
+    const getUser = async () => {
+
+      var tempValue = localStorage.getItem("voleeyo_login");
+      if (tempValue) {
+
+        const response = await fetch('/api/checkSecret', {
+          method: 'POST',
+          body: JSON.stringify({ secretCode: tempValue }),
+        });
+        const resp = await response.json();
+        if (resp.name != undefined)
+         {
+           setCurrentUser(await resp)
+         } 
+      }
+    }
     setActiveTab("index")
     setHideNav(true);
     setSecretCode(localStorage.getItem("voleeyo_login"));
     if (secretCode?.length > 0) {
       setIsVisible(false);
       setHideNav(false)
+      getUser()
+      
     }
     else {
       setActiveTab("index")
       setHideNav(true)
       setIsVisible(true);
     }
-  }, [hideNav,showSideMenu]);
+  }, [hideNav, showSideMenu]);
   const toggleNavMenuFunc = () => {
     if (isVisible) {
       setIsVisible(false);
@@ -48,13 +68,15 @@ function App({ Component, pageProps }) {
       <footer><span>not optimized for mobile</span></footer>
 
       <div className='main'>
-        {!hideNav&& <NavMenu
+        {!hideNav && <NavMenu
           activeTab={activeTab}
           hideNav={hideNav}
           setHideNav={setHideNav}
           setActiveTab={setActiveTab}
           toggleNavMenu={toggleNavMenuFunc}
-          secretCode={secretCode} />}
+          secretCode={secretCode}
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser} />}
         <Component {...pageProps}
           hideNav={hideNav}
           setHideNav={setHideNav}

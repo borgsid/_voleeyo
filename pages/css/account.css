@@ -1,0 +1,35 @@
+.switch-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .switch-container h3 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .switch-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  
+  .switch-container input[type="checkbox"] {
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  
+  .switch-container input[type="checkbox"] + span {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .switch-container input[type="checkbox"]:checked + span {
+    color: #aaa;
+  }
+  

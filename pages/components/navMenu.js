@@ -5,7 +5,7 @@ import facebookSvg from "../../assets/iconmonstr-facebook-3.svg"
 import twitterSvg from "../../assets/iconmonstr-twitter-1.svg"
 import tik_tokSvg from "../../assets/iconmonstr-audio-thin.svg"
 
-const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUser }) => {
+const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUser ,setCurrentUser}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [surname, setSurname] = useState('');
@@ -26,6 +26,7 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
   useEffect(() => {
 
     const getUserData = () => {
+      console.log("currentUser",currentUser)
       if (currentUser) {
         const name = currentUser.name;
         const surname = currentUser.surname;
@@ -40,11 +41,11 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
 
   return (
     <div className="sidemenu navbar" id="navbar">
-      <svg onClick={toggleNavMenu} fill="white" viewBox="0 0 100 80" width="40" height="40">
+      {/* <svg onClick={toggleNavMenu} fill="white" viewBox="0 0 100 80" width="40" height="40">
         <rect width="100" height="20"></rect>
         <rect y="30" width="100" height="20"></rect>
         <rect y="60" width="100" height="20"></rect>
-      </svg>
+      </svg> */}
       <div className="profile avatar">
         <img
           src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp"
