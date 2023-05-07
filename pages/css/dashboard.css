@@ -1,4 +1,4 @@
-.dashboard {
+.index.dashboard {
     display: flex;
     width: -webkit-fill-available;
   }
@@ -14,6 +14,7 @@
     padding: 20px;
     height: inherit;
   }
+
   .page-header svg{
     display: none;
   }
@@ -231,6 +232,9 @@
   .buttons-line{
     display: flex;
     gap:50px;
+  }
+  #navbar.sidemenu.navbar{
+    display: none;
   }
 @media only screen and (max-width: 600px) {
   .page-header svg{

@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import Image from 'next/image';
 import ReactModal from 'react-modal';
 import pencil from "../assets/pencil-edit-button.svg"
-const Dashboard = (activeTab,setActiveTab) => {
+const Dashboard = ({activeTab,setActiveTab}) => {
     var svgPencil= pencil;
     const [events,setEvents]= useState([]);
     const [isModalOpen,setIsModalOpen] = useState();
@@ -17,9 +17,10 @@ const Dashboard = (activeTab,setActiveTab) => {
     const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
-        console.log("activeTab b",activeTab)
-        console.log("activeTab f",after)
         setActiveTab("dashboard")
+        console.log("activeTab",activeTab)
+        var navbar = document.getElementById("navbar");
+        navbar.style.display = "unset";
         const secretCode = localStorage.getItem("voleeyo_login");
         if (!secretCode) {
           location.href = "/login";
@@ -120,7 +121,6 @@ const Dashboard = (activeTab,setActiveTab) => {
             }
         }
     return ( isNavBarVIsible&&
-        <div className="dashboard">
             <div className="content">
                 <div className="page-header">
                     <h2>Hi Demo User!</h2>
@@ -196,7 +196,6 @@ const Dashboard = (activeTab,setActiveTab) => {
                 </ReactModal>
 
             </div>
-        </div>
       );
 }
 export default Dashboard;

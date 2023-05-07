@@ -16,7 +16,7 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
   var tik_tok = tik_tokSvg;
 
   const handleTabClick = (tab) => {
-    location.href = `/${tab}`
+    console.log(" setting tab",tab)
     setActiveTab(tab);
   };
   const handleLogout = () => {
@@ -25,10 +25,7 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
   };
 
   useEffect(() => {
-    if (activeTab != "index") {
-      var navbar = document.getElementById("navbar");
-      navbar.style.display = "unset";
-    }
+
     const getUserData = () => {
       if (currentUser) {
         const name = currentUser.name;
@@ -40,7 +37,7 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
       }
     }
     getUserData();
-  }, []);
+  }, [activeTab]);
 
   return (
     <div className="sidemenu navbar" id="navbar">
@@ -93,7 +90,7 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
             Notifications
           </li>
           <li
-            className={`tab ${activeTab === "friends" ? "active" : ""}`}
+            className={`tab ${activeTab === "friends"||activeTab === "friendsnetwork" ? "active" : ""}`}
             onClick={() => handleTabClick("friends")}
           >
             Friends

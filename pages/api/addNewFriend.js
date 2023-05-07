@@ -8,15 +8,16 @@ const AddNewFriendsAction = async (req, res) => {
             surname:"James",
             profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
             bio:"",
-            email:"sds@yopmail.com"
+            email:"sds@yopmail.com",
+            isFollowing:false
         },
         {
             id:3,
-            name:"Bob",
+            name:"Bobby",
             surname:"Walber",
             profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
             bio:"",
-            email:"sds@yopmail.com"
+            email:"sds@yopmail.com",isFollowing:false
         },
         {
             id:4,
@@ -24,7 +25,8 @@ const AddNewFriendsAction = async (req, res) => {
             surname:"West",
             profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
             bio:"",
-            email:"sds@yopmail.com"
+            email:"sds@yopmail.com",
+            isFollowing:false
         },
         {
             id:5,
@@ -32,7 +34,8 @@ const AddNewFriendsAction = async (req, res) => {
             surname:"Brown",
             profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
             bio:"",
-            email:"sds@yopmail.com"
+            email:"sds@yopmail.com",
+            isFollowing:false
         },
         {
             id:6,
@@ -40,7 +43,8 @@ const AddNewFriendsAction = async (req, res) => {
             surname:"O-marley",
             profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
             bio:"",
-            email:"sds@yopmail.com"
+            email:"sds@yopmail.com",
+            isFollowing:false
         }
     ]
     if (process.env.log_in_key==body.secretCode&& body.friendId) {
@@ -52,7 +56,9 @@ const AddNewFriendsAction = async (req, res) => {
         if(myFriendsRaw.status==200)
         {
             friends.push(...(await myFriendsRaw.json()));
-            friends.push(allUsers.find(x=> x.id==body.friendId))
+            var myNewFriend= allUsers.find(x=> x.id==body.friendId);
+            myNewFriend.isFollowing=true;
+            friends.push(myNewFriend)
             res.status(200).json(friends);
         }
         else

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Image from 'next/image';
 const Friends = ({ activeTab, setActiveTab}) => {
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
@@ -27,7 +28,7 @@ const Friends = ({ activeTab, setActiveTab}) => {
       }
     };
     fetchData();
-  }, []);
+  },[activeTab]);
 
   const searchFriendsFunc = async (event) => {
     setSearchText(event?.target?.value ?? searchText);
@@ -60,6 +61,11 @@ const Friends = ({ activeTab, setActiveTab}) => {
     });
     if (resp.status === 200) {
       setFriends(await resp.json());
+      searchFriends.map((x)=> {
+        if(x.id==friendId)
+          x.isFollowing=true;
+      })
+      setSearchFriends(searchFriends)
     } else {
       console.log("we couldnt add this friend at this time");
     }
@@ -76,7 +82,7 @@ const Friends = ({ activeTab, setActiveTab}) => {
     // }
   }
   return (
-    <div className="friends">
+   
       <div className="content-container">
         <div className="content">
           <div className="page-header">
@@ -92,7 +98,7 @@ const Friends = ({ activeTab, setActiveTab}) => {
             {friends.map((friend) => (
               <div className="friend-card" key={friend.id}>
                 <div className="card-header">
-                  <Image src={friend?.profilePic} alt="Friend profile picture" />
+                  <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
                   <div>
                     <h4>{friend.name} {friend.surname}</h4>
                     <p className="card-subtitle">{friend.email}</p>
@@ -117,22 +123,20 @@ const Friends = ({ activeTab, setActiveTab}) => {
             {searchFriends.map((friend) => (
               <div className="friend-card" key={friend.id}>
                 <div className="card-header">
-                  <Image src={friend.profilePic} alt="Friend profile picture" />
+                  <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
                   <div>
                     <h4>{friend.name} {friend.surname}</h4>
                     <p className="card-subtitle">{friend.email}</p>
                   </div>
                 </div>
                 <div className="card-footer">
-                  <button className="add-friend-btn" onClick={() => { addNewFriend(friend.id) }}>Add Friend</button>
+                  { !friend.isFollowing&& <button className="add-friend-btn" onClick={() => { addNewFriend(friend.id) }}>Add Friend</button>}
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
-
-    </div>
   );
 
 }

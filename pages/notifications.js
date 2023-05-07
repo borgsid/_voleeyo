@@ -14,12 +14,13 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
   const [hideFilteredList,setHideFilteredList]=useState(true);
 
   useEffect(() => {
-    setActiveTab("notification")
+    setActiveTab("notifications")
+
     const secretCode = localStorage.getItem("voleeyo_login");
-    if (!secretCode) {
-      location.href = "/";
-      return;
-    }
+    // if (!secretCode) {
+    //   // location.href = "/";
+    //   // return;
+    // }
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     var userId= urlParams.get('receiverUserId');
@@ -46,7 +47,7 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
     }
     
     fetchData();
-  }, []);
+  },[]);
   const updateMessageStatus=async (e)=>{
     const secretCode = localStorage.getItem("voleeyo_login");
         await fetch("/api/setMeasageRead",

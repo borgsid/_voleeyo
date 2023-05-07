@@ -9,6 +9,11 @@ const Login = ({ activeTab, setActiveTab}) => {
         setActiveTab("login")
         var navbar = document.getElementById("navbar");
         navbar.style.display = "none";
+
+        //still won get you far if you save it manually in local storage
+        const testCode = localStorage.getItem("voleeyo_login");
+        if (testCode)
+            window.location.href = '/';
     });
     const handleSecretCodeSubmit = async () => {
         try {
@@ -19,7 +24,7 @@ const Login = ({ activeTab, setActiveTab}) => {
             const { status } = await response.json();
             if (status) {
                 localStorage.setItem('voleeyo_login', secretCode);
-                window.location.href = '/dashboard';
+                window.location.href = '/';
             } else alert('Incorrect secret code, please try again.');
         } catch (error) {
             console.error(error);
@@ -33,22 +38,26 @@ const Login = ({ activeTab, setActiveTab}) => {
             </Head>
             <div className="section-one login">
                 <div className="section-one-text">
-
+            <h2>Get in touch with <a href="https://twitter.com/sydney_lukee">Sydney</a> on twitter or send him an 
+                <a href="mailto:silsfinest@vodafone.it?subject=[Voleeyo] Request access token &body= Hi,{add name} I'd like to request access to Voleeyo."> email</a> to access Voleeyo</h2>
+           
                     <form onSubmit={(e) => { e.preventDefault(); handleSecretCodeSubmit(); }}>
                         <label>
-                            Enter the secret code to log in:
+                            <span>
+                                Enter the secret code to log in:
+                            </span>
                             <input type="password" value={secretCode} onChange={(e) => setSecretCode(e.target.value)} />
                         </label>
                         <div className="btn-spacer login">
-                            <button type="submit">Log in</button>
-                            <button type="submit" className='close' onClick={() => { location.href = "/" }}>Close</button>
+                            <button type="submit" className="login">Log in</button>
+                            <button type="submit" className="close" onClick={(e) => { e.preventDefault();location.href = "/" }}>Close</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div className="section-two">
             <div className="section-two-image">
-            <Image alt="happy people hugging each other" src={imageLink.src}/>
+            <img src={imageLink?.src} width={512} height={512} alt="picture of friends" />
           </div>
             </div>
 

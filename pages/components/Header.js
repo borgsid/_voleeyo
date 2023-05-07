@@ -3,36 +3,34 @@ import Image from 'next/image';
 import logolink from "../../assets/voleeyo-logo.png"
 import { useState, useEffect } from 'react';
 
-const Header = (isVisible) => {
+const Header = ({ isVisible, activeTab, setActiveTab }) => {
 
-    var isLoginVisible = isVisible.isVisible;
-    console.log("isLoginVisible",isLoginVisible)
     const link1 = { link: "/login", name: "Login" };
-    const link2 = { link: "/dashboard", name: "Dashboard" };
+    const link2 = { link: "/dashboard", name: "Dashboard", setActiveTab: setActiveTab };
     const link3 = { link: "/account", name: "Account" };
     const link4 = { link: "/privacy", name: "Privacy" };
     const link5 = { link: "/contacct", name: "Contact" };
     const link6 = { link: "/about", name: "About" };
     const handleMyAccountClick = () => {
         const loginCode = localStorage.getItem('voleeyo_login');
-        if (!loginCode) 
-            location.href="/login"
-        else 
-        window.location.href = '/dashboard';
+        if (!loginCode)
+            location.href = "/login"
+        else
+            window.location.href = '/dashboard';
     };
 
-    
+
     const CheckLogAndGoToFriends = () => {
         const loginCode = localStorage.getItem('voleeyo_login');
-        if (!loginCode) 
-            location.href="/login"
-        else 
+        if (!loginCode)
+            location.href = "/login"
+        else
             window.location.href = '/friends';
 
     }
     const handleLogout = () => {
         localStorage.removeItem("voleeyo_login");
-        location.href = "/";
+        setActiveTab(null)
     };
 
     return (
@@ -45,17 +43,25 @@ const Header = (isVisible) => {
             <div className="nav">
                 <ul>
                     {
-                        isLoginVisible&&
+                        isVisible &&
                         <li>
-                            <a onClick={handleMyAccountClick}>{link1.name}</a>
+                            <a href="#" onClick={handleMyAccountClick}>{link1.name}</a>
                         </li>
                     }
-                    <li>
-                        <a href={link2.link}>{link2.name}</a>
+                    {
+                        !isVisible &&
+                        <li>
+                            <a href="" onClick={handleLogout} >Logout</a>
+                        </li>
+                    }
+                    {!isVisible && <li>
+                            <a onClick={() => { setActiveTab("dashboard") }}>{link2.name}</a>
                     </li>
-                    <li>
+                    }
+                     {!isVisible &&  <li>
                         <a href={link3.link}>{link3.name}</a>
                     </li>
+                    }
                     <li>
                         <a href={link4.link}>{link4.name}</a>
                     </li>

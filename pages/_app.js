@@ -23,15 +23,12 @@ function App({ Component, pageProps }) {
     setActiveTab("index")
   });
   const toggleNavMenuFunc= ()=>{
-    var navbar=document.getElementById("navbar");
     if(isVisible)
     {
-        navbar.style.display="none";
-        setIsVisible(false);
+      setIsVisible(false);
     }
     else{
-        navbar.style.display="unset";
-        setIsVisible(true);
+      setIsVisible(true);
     }
   }
   return (
@@ -39,7 +36,7 @@ function App({ Component, pageProps }) {
         <Head>
           <title>Voleeyo: create your path!</title>
         </Head>
-        <Header isVisible={isVisible}/>
+        <Header isVisible={isVisible} activeTab={ activeTab} setActiveTab={setActiveTab}/>
         <div className='main'>
         <NavMenu 
                 activeTab={activeTab} 
@@ -48,7 +45,9 @@ function App({ Component, pageProps }) {
                 secretCode={secretCode}/>
           <Component {...pageProps} 
                     activeTab={activeTab} 
-                  setActiveTab={setActiveTab}  />
+                  setActiveTab={setActiveTab} 
+                  secretCode={secretCode}
+                  isVisible={isVisible} />
         </div>
       </div>
     );
