@@ -99,8 +99,6 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
       isInbox:true
     };
 
-    // notifications.sent.push(myMessage)
-    // setNotifications({notifications });
     // handle reply submission logic
     const response=await fetch("/api/sendNewMessage",
     {

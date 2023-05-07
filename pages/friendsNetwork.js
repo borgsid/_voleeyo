@@ -29,7 +29,6 @@ const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}
       }
     };
     const updateSelectedNode = () => {
-      console.log("friendLookUp",friendLookUp)
       const idParam = friendLookUp.id;
       const userName = `${friendLookUp.name} ${friendLookUp.surname}`;
 
@@ -40,6 +39,8 @@ const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}
     updateSelectedNode();
   }, [selectedId,activeTab]);
   const handleNodeClick = (d) => {
+    console.log("d",d)
+    console.log("SelectedId",selectedId)
     d3.selectAll('.node').select('circle').attr('fill', 'blue');
     // Select relationships for clicked node
     const clickedCircle = d.target.__data__;
