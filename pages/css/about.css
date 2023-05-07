@@ -2,7 +2,7 @@
     max-width: 600px;
     margin: 0 auto;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1em;
     line-height: 1.5em;
   }
   
@@ -14,4 +14,16 @@
   .my-bio p {
     margin-bottom: 20px;
   }
-  
+  .sydney-milano{
+    color:#ACE1BD
+  }
+  .sydney-russia{
+    color:#E1ACD0
+  }
+
+  .sydney-america{
+    color: #ACB6E1;
+  }
+  .sydney-world{
+    color: #D3C587;
+  }
