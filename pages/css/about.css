@@ -1,0 +1,17 @@
+.my-bio {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.2em;
+    line-height: 1.5em;
+  }
+  
+  .my-bio h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .my-bio p {
+    margin-bottom: 20px;
+  }
+  

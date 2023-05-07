@@ -6,6 +6,7 @@ import './css/notifications.css';
 import './css/friends.css';
 import './css/friendsNetwork.css';
 import './css/account.css'
+import './css/about.css'
 import logo from "../assets/fav icon.png"
 import NavMenu from "./components/navMenu";
 import Header from "./components/Header";
