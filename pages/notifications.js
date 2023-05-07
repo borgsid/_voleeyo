@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
-const Notifications = ({ activeTab, setActiveTab, secrtCode,setSecretCode,friendLookUp,setFriendLookUp}) => {
+const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,friendLookUp,setFriendLookUp}) => {
   const [notifications, setNotifications] = useState({inbox:[],sent:[]});
   const [showModal, setShowModal] = useState(false);
   const [selectedMessage, setReplyMessage] = useState("");

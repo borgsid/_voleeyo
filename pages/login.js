@@ -4,27 +4,20 @@ import imageLink from "./../assets/00000-3174216882.png"
 import { useState, useEffect } from 'react';
 
 const Login = ({ hideNav, setHideNav, activeTab, setActiveTab, secretCode, setSecretCode }) => {
-    useEffect(() => {
-        console.log("hideNav",hideNav)
-        if (!hideNav) {
-            var navbar = document.getElementById("navbar");
-            navbar.style.display = "none";
-        }
-        //still won get you far if you save it manually in local storage
-        const testCode = localStorage.getItem("voleeyo_login");
-        // if (testCode!=undefined)
-        //     location.href = '/';
-    }, [hideNav]);
+    const[tempValue,setTempValue]=useState("");
+    
     const handleSecretCodeSubmit = async (e) => {
         e.preventDefault()
+        
         try {
             const response = await fetch('/api/checkSecret', {
                 method: 'POST',
-                body: JSON.stringify({ secretCode }),
+                body: JSON.stringify({ secretCode:tempValue }),
             });
             const { status } = await response.json();
             if (status) {
-                localStorage.setItem('voleeyo_login', secretCode);
+                setSecretCode(tempValue)
+                localStorage.setItem('voleeyo_login', tempValue);
                 setActiveTab("dashboard")
             } else alert('Incorrect secret code, please try again.');
         } catch (error) {
@@ -33,7 +26,7 @@ const Login = ({ hideNav, setHideNav, activeTab, setActiveTab, secretCode, setSe
         }
     };
     const setCurrentSecretCode = (code) => {
-        setSecretCode(code)
+        setTempValue(code)
     }
     return (
 

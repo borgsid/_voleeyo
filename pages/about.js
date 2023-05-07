@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 const About =({ activeTab, setActiveTab})=>{
     useEffect(()=>{
-        var navbar = document.getElementById("navbar");
-        navbar.style.display = "unset";
         setActiveTab("about")
     })
     return (

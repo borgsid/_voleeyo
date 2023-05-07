@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 
 const Privacy =({ activeTab, setActiveTab})=>{
     useEffect(()=>{
-        var navbar = document.getElementById("navbar");
-        navbar.style.display = "unset";
         setActiveTab("privacy")
     })
     return (

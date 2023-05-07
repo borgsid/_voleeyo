@@ -9,19 +9,51 @@ import Account from './account';
 import About from './about';
 import Privacy from './privacy';
 import Login from './login';
-const index = ({ hideNav, setHideNav, activeTab, setActiveTab, isVisible, friendLookUp, setFriendLookUp, secretCode, setSecretCode }) => {
+const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, setActiveTab, isVisible, friendLookUp, setFriendLookUp, secretCode, setSecretCode }) => {
+  const [currnerTab, setCurrentTab] = useState("index");
+  const canShowTab = () => {
+    setActiveTab("dashboard");
+    console.log("now activeTab", activeTab)
+    if (activeTab)
+      switch (activeTab) {
+        case "dashboard":
+        case "notifications":
+        case "friends":
+        case "friendsNetwork":
+          setShowSideMenu(true);
+          break;
+        case "index":
+        case "about":
+        case "privacy":
+        default:
+          setShowSideMenu(false);
+          break;
+      }
+    else
+      setShowSideMenu(false);
+
+    console.log("showSideMenu index", showSideMenu)
+  }
   useEffect(() => {
-    setSecretCode(localStorage.getItem("voleeyo_login"))
-    if (secretCode != undefined)
+    var testCode = localStorage.getItem("voleeyo_login")
+    if (testCode)
+      setSecretCode(testCode)
+    if (secretCode != undefined) {
       setHideNav(false)
-  }, [activeTab, secretCode,hideNav])
+      setCurrentTab("index")
+    }
+    else
+      setCurrentTab("login")
+
+    // canShowTab();
+  }, [activeTab, secretCode, hideNav])
   return (
     <div className="index dashboard">
-      {<div className="dashboard-container">
+      {(activeTab == "index" || activeTab == "login") && <div className="dashboard-container">
         <div className="section-one">
 
-          {secretCode?.length > 0
-            ? <div className="section-one-text">
+          {activeTab == "index" &&
+            <div className="section-one-text">
               {isVisible && <h1>Voleeyo: your LinkedIn for volunteers</h1>}
               {!isVisible && <h1>Welcome back to Voleeyo</h1>}
               <b>A place where to connect while giving back to the community</b>
@@ -38,24 +70,29 @@ const index = ({ hideNav, setHideNav, activeTab, setActiveTab, isVisible, friend
                 <a href="https://twitter.com/Voleeyo" target="_blank" rel="noopener noreferrer">Twitter</a>
               </div>
             </div>
-            : <Login
+          }
+          {((secretCode == null || secretCode?.length == 0) && activeTab == "login") &&
+            <Login
               hideNav={hideNav}
               setHideNav={setHideNav}
               secretCode={secretCode}
               setSecretCode={setSecretCode}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
-            />}
+            />
+          }
 
           {isVisible &&
             <div className="section-one-action">
-              <button onClick={() => { location.href = "/dashboard"; }}>Discover Voleeyo</button>
-              <button onClick={() => { location.href = "/dashboard"; }}>Join Voleeyo</button>
+              <button onClick={() => {
+                setActiveTab(currnerTab)
+              }}>Discover Voleeyo</button>
+              <button onClick={() => { setActiveTab(currnerTab) }}>Join Voleeyo</button>
             </div>
           }
           {!isVisible &&
             <div className="section-one-action">
-              <button onClick={() => { setActiveTab("dashboard") }}>Go to Daschboard</button>
+              <button onClick={() => { canShowTab() }}>Go to Dashboard</button>
             </div>
           }
         </div>
@@ -66,7 +103,6 @@ const index = ({ hideNav, setHideNav, activeTab, setActiveTab, isVisible, friend
         </div>
       </div>
       }
-
       {activeTab == "dashboard" && <Dashboard
         hideNav={hideNav}
         setHideNav={setHideNav}
@@ -76,43 +112,43 @@ const index = ({ hideNav, setHideNav, activeTab, setActiveTab, isVisible, friend
         setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
-      {/* <Notifications 
-                  hideNav={hideNav}
+      {activeTab == "notifications" && <Notifications
+        hideNav={hideNav}
         setHideNav={setHideNav}
         secretCode={secretCode}
         setSecretCode={setSecretCode}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
-        setFriendLookUp={setFriendLookUp}/>
-      <Friends hideNav={hideNav}
+        setFriendLookUp={setFriendLookUp} />}
+      {activeTab == "friends" && <Friends hideNav={hideNav}
         setHideNav={setHideNav}
         secretCode={secretCode}
         setSecretCode={setSecretCode}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
-        setFriendLookUp={setFriendLookUp}/>
-      <FriendsNetwork hideNav={hideNav}
+        setFriendLookUp={setFriendLookUp} />}
+      {activeTab == "friendsNetwork" && <FriendsNetwork hideNav={hideNav}
         setHideNav={setHideNav}
         secretCode={secretCode}
         setSecretCode={setSecretCode}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
-        setFriendLookUp={setFriendLookUp}/>
-      <Account secretCode={secretCode}
-                  setSecretCode={setSecretCode}
-                  activeTab={activeTab} 
-                  setActiveTab={setActiveTab} />
-       <About secretCode={secretCode}
-                  setSecretCode={setSecretCode}
-                  activeTab={activeTab} 
-                  setActiveTab={setActiveTab} />
-       <Privacy secretCode={secretCode}
-                  setSecretCode={setSecretCode}
-                  activeTab={activeTab} 
-                  setActiveTab={setActiveTab} /> */}
+        setFriendLookUp={setFriendLookUp} />}
+      {activeTab == "account" && <Account secretCode={secretCode}
+        setSecretCode={setSecretCode}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab} />}
+      {activeTab == "about" && <About secretCode={secretCode}
+        setSecretCode={setSecretCode}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab} />}
+      {activeTab == "privacy" && <Privacy secretCode={secretCode}
+        setSecretCode={setSecretCode}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab} />}
     </div>
   );
 };

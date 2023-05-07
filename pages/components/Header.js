@@ -25,7 +25,7 @@ const Header = ({ isVisible, activeTab, setActiveTab }) => {
                     {
                         isVisible &&
                         <li>
-                            <a onClick={()=>{setActiveTab("dashboard")} } >{link1.name}</a>
+                            <a onClick={()=>{setActiveTab("login")} } >{link1.name}</a>
                         </li>
                     }
                     {

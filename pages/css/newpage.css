@@ -12,7 +12,9 @@ body {
     flex-direction: column;
     height: 100vh;
   }
-  
+  hr{
+    width:inherit
+  }
   .header {
     display: flex;
     justify-content: space-between;
