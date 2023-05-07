@@ -11,6 +11,7 @@ function App({ Component, pageProps }) {
   const [activeTab, setActiveTab] = useState(null);
   const [isVisible,setIsVisible]=useState(false);
   const [secretCode, setSecretCode]= useState(null)
+  const [friendLookUp,setFriendLookUp]=useState({});
 
   useEffect(()=>{
     const testCode = localStorage.getItem("voleeyo_login");
@@ -47,7 +48,9 @@ function App({ Component, pageProps }) {
                     activeTab={activeTab} 
                   setActiveTab={setActiveTab} 
                   secretCode={secretCode}
-                  isVisible={isVisible} />
+                  isVisible={isVisible} 
+                  friendLookUp={friendLookUp}
+                  setFriendLookUp={setFriendLookUp}/>
         </div>
       </div>
     );

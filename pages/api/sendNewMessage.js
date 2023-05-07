@@ -59,7 +59,7 @@ const SendNewMessageActiion = async (req, res) => {
         body.message.messageTo.name=messageTO?.name;
         body.message.messageTo.surname=messageTO?.surname;
         body.message.isRead=false;
-        body.message.id+=100
+        body.message.id+=Math.floor(Math.random() * 100);
         res.status(200).json({message:body.message});
       }
       else {

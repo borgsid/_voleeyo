@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import * as d3 from 'd3';
 import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
-const FriendsNetwork = ({ activeTab, setActiveTab}) => {
+const FriendsNetwork = ({ activeTab, setActiveTab, friendLookUp,setFriendLookUp}) => {
   const [data, setData] = useState(null);
   const [activeNode, setActiveNode] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
   const [selectedUserName, setSelectedUserName] = useState("")
   
   useEffect(() => {
-    setActiveTab("friends")
+    setActiveTab("friendsNetwork")
     const secretCode = localStorage.getItem("voleeyo_login");
     if (!secretCode) {
       location.href = "/";
@@ -110,7 +110,7 @@ const FriendsNetwork = ({ activeTab, setActiveTab}) => {
                   {activeNode.connections.map((node, index) => (
                     <span key={index}>{node}</span>
                   ))}
-                  {!activeNode.isCurrentUser && <button type="button" className="friend-network" onClick={() => { location.href = `/notifications?receiverUserId=${activeNode.userId}&receiverUserName=${activeNode.clickedUser}` }}>Contact {activeNode.clickedUser}</button>}
+                  {!activeNode.isCurrentUser && <button type="button" className="friend-network" onClick={() => { setFriendLookUp({receiverUserId: activeNode.userId,receiverUserName:activeNode.clickedUser})}}>Contact {activeNode.clickedUser}</button>}
                 </div>
               </div>)}
           </div>

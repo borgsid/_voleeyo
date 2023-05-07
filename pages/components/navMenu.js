@@ -90,7 +90,7 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
             Notifications
           </li>
           <li
-            className={`tab ${activeTab === "friends"||activeTab === "friendsnetwork" ? "active" : ""}`}
+            className={`tab ${activeTab === "friends"||activeTab === "friendsNetwork" ? "active" : ""}`}
             onClick={() => handleTabClick("friends")}
           >
             Friends

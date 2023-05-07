@@ -6,7 +6,7 @@ import Notifications from './notifications'
 import Friends from './friends'
 import FriendsNetwork from './friendsNetwork'
 
-const index = ({activeTab,setActiveTab,isVisible}) => {
+const index = ({activeTab,setActiveTab,isVisible,friendLookUp,setFriendLookUp}) => {
   useEffect(()=>{
 
     setActiveTab("index")
@@ -53,8 +53,8 @@ const index = ({activeTab,setActiveTab,isVisible}) => {
       }
       {activeTab=="dashboard"&&<Dashboard activeTab={activeTab} setActiveTab={setActiveTab}/>}
       {activeTab=="notifications"&&<Notifications activeTab={activeTab} setActiveTab={setActiveTab}/>}
-      {activeTab=="friends"&&<Friends activeTab={activeTab} setActiveTab={setActiveTab}/>}
-      {activeTab=="friendsnetwork"&&<FriendsNetwork activeTab={activeTab} setActiveTab={setActiveTab}/>}
+      {activeTab=="friends"&&<Friends activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>}
+      {activeTab=="friendsNetwork"&&<FriendsNetwork activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>}
     </div>
   );
 };

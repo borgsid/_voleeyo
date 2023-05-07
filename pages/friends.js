@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Image from 'next/image';
-const Friends = ({ activeTab, setActiveTab}) => {
+const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp}) => {
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -27,9 +27,10 @@ const Friends = ({ activeTab, setActiveTab}) => {
         setFriends(dataResp);
       }
     };
+    
     fetchData();
-  },[activeTab]);
-
+  },[activeTab,friendLookUp]);
+  
   const searchFriendsFunc = async (event) => {
     setSearchText(event?.target?.value ?? searchText);
     if (searchText?.trim().length >= 1) {
@@ -50,9 +51,7 @@ const Friends = ({ activeTab, setActiveTab}) => {
     }
   };
 
-  const seeFriendNetwork = (friendObj) => {
-    window.location.href = `/friendsNetwork?id=${friendObj.id}&userName=${friendObj.name} ${friendObj.surname}`;
-  };
+  
 
   const addNewFriend = async (friendId) => {
     var resp = await fetch("/api/addNewFriend", {
@@ -105,7 +104,7 @@ const Friends = ({ activeTab, setActiveTab}) => {
                   </div>
                 </div>
                 <div className="card-body">
-                  <button className="friend-btn-network" type="button" onClick={() => { seeFriendNetwork(friend) }}>See Network</button>
+                  <button className="friend-btn-network" type="button" onClick={() => { setActiveTab("friendsNetwork");setFriendLookUp(friend);}}>See Network</button>
                 </div>
               </div>
             ))}

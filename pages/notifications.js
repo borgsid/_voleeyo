@@ -17,10 +17,6 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
     setActiveTab("notifications")
 
     const secretCode = localStorage.getItem("voleeyo_login");
-    // if (!secretCode) {
-    //   // location.href = "/";
-    //   // return;
-    // }
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     var userId= urlParams.get('receiverUserId');
@@ -79,7 +75,7 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
       method:"post",
       body:JSON.stringify({secretCode,message:selectedMessage})
     })
-    setReply(null)
+    setReply("")
     setShowModal(false)
   };
   const handleNewMessageClick = () => {
@@ -103,8 +99,8 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
       isInbox:true
     };
 
-    notifications.sent.push(myMessage)
-    setNotifications({notifications });
+    // notifications.sent.push(myMessage)
+    // setNotifications({notifications });
     // handle reply submission logic
     const response=await fetch("/api/sendNewMessage",
     {
@@ -115,10 +111,14 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
     clearNewMessageModal();
     if(response.ok)
       {
-        notifications.sent.pop()
+        // notifications.sent.pop()
         notifications.sent.push((await response.json()).message)
-        setNotifications({ ...notifications });
+        setNotifications({...notifications});
       }
+      else
+        alert("There was a problem delivering your message, please try again.")
+
+      console.log("notifications",notifications)
     
   };
   const clearNewMessageModal=()=>{
@@ -184,13 +184,13 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
           <div className="notification-tabs">
               <div
                 className={`notification-tab ${activeTabSection === "inbox" ? "active" : ""}`}
-                onClick={() => setActiveTabSection("inbox")}
+                onClick={() => {setActiveTabSection("inbox"); setNotifications({...notifications})}}
               >
                 Inbox
               </div>
               <div
                 className={`notification-tab ${activeTabSection === "sent" ? "active" : ""}`}
-                onClick={() => setActiveTabSection("sent")}
+                onClick={() =>{ setActiveTabSection("sent"); setNotifications({...notifications})}}
               >
                 Sent
               </div>
@@ -316,7 +316,7 @@ const Dashboard = ({ activeTab, setActiveTab}) => {
           <ReactModal
             className="modal"
             isOpen={true}
-            onRequestClose={() => { setIsMessagingModalOpen(false); setNewMessage(null) }}
+            onRequestClose={() => { setIsMessagingModalOpen(false); setNewMessage("") }}
             ariaHideApp={false}
           >
             <div className="notifications-modal modal-content">
