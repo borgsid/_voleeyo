@@ -214,14 +214,7 @@ const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,frien
               {/*this is the sent section */}
               {activeTabSection=="sent" &&<div className="card-header">
                 <h5>To: {message.messageTo.name} {message.messageTo.surname}</h5>
-                  {!message.isRead && message.messageFrom?.name?.length==0
-                  ? <span className="unread-indicator">sending</span>
-                  :!message.isRead && message.messageFrom?.name?.length>0
-                  ?<span className="unread-indicator">sent</span>
-                  :message.isRead && message.messageFrom?.name?.length
-                  ?<span className="read-indicator">Read</span>
-                   :<span className="unread-indicator">Unread</span>
-                  }
+                  <span className="unread-indicator">sent</span>
                 </div>
               }
               {/*this is the  inbox section */}
