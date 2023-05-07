@@ -52,12 +52,12 @@ const index = ({activeTab,setActiveTab,isVisible,friendLookUp,setFriendLookUp}) 
       }
       
       <Dashboard activeTab={activeTab} setActiveTab={setActiveTab}/>
-      <Notifications activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>
+      {/* <Notifications activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>
       <Friends activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>
       <FriendsNetwork activeTab={activeTab} setActiveTab={setActiveTab} friendLookUp={friendLookUp} setFriendLookUp={setFriendLookUp}/>
       <Account activeTab={activeTab} setActiveTab={setActiveTab} />
        <About activeTab={activeTab} setActiveTab={setActiveTab} />
-       <Privacy activeTab={activeTab} setActiveTab={setActiveTab} />
+       <Privacy activeTab={activeTab} setActiveTab={setActiveTab} /> */}
     </div>
   );
 };

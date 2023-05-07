@@ -17,7 +17,6 @@ const Dashboard = ({activeTab,setActiveTab}) => {
     const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
-        setActiveTab("dashboard")
         console.log("activeTab",activeTab)
         var navbar = document.getElementById("navbar");
         navbar.style.display = "unset";
@@ -43,7 +42,8 @@ const Dashboard = ({activeTab,setActiveTab}) => {
             setEvents(dataResp);
             }
         }
-        fetchData();
+        if(activeTab=="dashboard")
+            fetchData();
         setIsEdit(false);
       }, []);
        
@@ -120,7 +120,7 @@ const Dashboard = ({activeTab,setActiveTab}) => {
                 setIsNavBarVIsible(true);
             }
         }
-    return ( isNavBarVIsible&&
+    return ( activeTab=="dashboard"&&isNavBarVIsible&&
             <div className="content">
                 <div className="page-header">
                     <h2>Hi Demo User!</h2>
