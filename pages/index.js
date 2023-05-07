@@ -10,9 +10,7 @@ import About from './about';
 import Privacy from './privacy';
 const index = ({activeTab,setActiveTab,isVisible,friendLookUp,setFriendLookUp}) => {
   useEffect(()=>{
-    console.log("active tab",activeTab)
-    setActiveTab("index")
-  },[activeTab])
+  },[])
   return (
     <div className="index dashboard">
       {activeTab=="index"&&<div className="dashboard-container">
