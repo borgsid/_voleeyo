@@ -4,7 +4,7 @@ function WorldEvents() {
   return (
     <div className="page">
           <div className="content">
-        <button tyep="submit" onClick={()=>{location.href="/api/auth/login"}}>login</button>
+        <button tyep="submit">login</button>
       </div>
           </div>
   );

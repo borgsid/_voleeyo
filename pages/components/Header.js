@@ -17,7 +17,7 @@ const Header = ({ isVisible, activeTab, setActiveTab }) => {
         <header className="header">
             <div className="logo">
                 <a href="/">
-                    <Image alt="logo icon" src={logolink.src} width={67} height={30} />
+                    <Image alt="logo icon" src={logolink?.src} width={67} height={30} />
                 </a>
             </div>
             <div className="nav">
@@ -25,17 +25,17 @@ const Header = ({ isVisible, activeTab, setActiveTab }) => {
                     {
                         isVisible &&
                         <li>
-                            <a onClick={()=>{setActiveTab("login")} } >{link1.name}</a>
+                            <a onClick={()=>{location.href="/api/auth/login"} } >{link1.name}</a>
                         </li>
                     }
                     {
                         !isVisible &&
                         <li>
-                            <a href="" onClick={()=>{
+                            <a  onClick={()=>{
                                 localStorage.removeItem("voleeyo_login");
-                                setActiveTab(null);
+                                setActiveTab("");
                             }} >Logout</a>
-                        </li>
+                        </li> 
                     }
                     {!isVisible && <li>
                             <a onClick={() => { setActiveTab("dashboard") }}>{link2.name}</a>
@@ -54,7 +54,7 @@ const Header = ({ isVisible, activeTab, setActiveTab }) => {
                     <li>
                         <a onClick={() => { setActiveTab("about") }}>{link6.name}</a>
                     </li>
-                </ul>
+                </ul> 
             </div>
         </header>
     );

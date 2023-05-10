@@ -97,9 +97,9 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
           {isVisible &&
             <div className="section-one-action">
               <button onClick={() => {
-                setActiveTab(currnerTab)
+                location.href="/api/auth/login"
               }}>Discover Voleeyo</button>
-              <button onClick={() => { setActiveTab(currnerTab) }}>Join Voleeyo</button>
+              <button onClick={() => {location.href="/api/auth/login" }}>Join Voleeyo</button>
             </div>
           }
           {!isVisible &&
