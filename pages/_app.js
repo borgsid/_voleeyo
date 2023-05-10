@@ -9,7 +9,7 @@ import './css/account.css'
 import './css/about.css'
 import logo from "../assets/fav icon.png"
 import NavMenu from "./components/navMenu";
-import Header from "./components/Header";
+// import Header from "./components/Header";
 function App({ Component, pageProps }) {
   const [activeTab, setActiveTab] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -65,7 +65,7 @@ function App({ Component, pageProps }) {
         <link rel="icon" type="image/png" size="16x16" href={logo.src}></link>
 
       </Head>
-      <Header isVisible={isVisible} activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* <Header isVisible={isVisible} activeTab={activeTab} setActiveTab={setActiveTab} /> */}
       <footer><span>not optimized for mobile</span></footer>
 
       <div className='main'>

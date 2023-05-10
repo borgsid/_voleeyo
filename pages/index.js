@@ -1,16 +1,19 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
+
 import imageLink from '../assets//00000-3174216882.png'
-import Dashboard from './dashboard';
-import Notifications from './notifications'
-import Friends from './friends'
-import FriendsNetwork from './friendsNetwork'
-import Account from './account';
-import About from './about';
-import Privacy from './privacy';
+// import Dashboard from './dashboard';
+// import Notifications from './notifications'
+// import Friends from './friends'
+// import FriendsNetwork from './friendsNetwork'
+// import Account from './account';
+// import About from './about';
+// import Privacy from './privacy';
 import Login from './login';
 const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, setActiveTab, isVisible, friendLookUp, setFriendLookUp, secretCode, setSecretCode }) => {
   const [currnerTab, setCurrentTab] = useState("index");
+  const [isTest, setIsTest] = useState(true)
   const canShowTab = () => {
     setActiveTab("dashboard");
     console.log("now activeTab", activeTab)
@@ -48,11 +51,12 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
     // canShowTab();
   }, [activeTab, secretCode, hideNav])
   return (
+    <UserProvider>
     <div className="index dashboard">
       {(activeTab == "index" || activeTab == "login") && <div className="dashboard-container">
         <div className="section-one">
 
-          {activeTab == "index" &&
+          {activeTab == "index" &&!isTest&&
             <div className="section-one-text">
               {isVisible && <h1>Voleeyo: your LinkedIn for volunteers</h1>}
               {!isVisible && <h1>Welcome back to Voleeyo</h1>}
@@ -79,7 +83,7 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
               </div>
             </div>
           }
-          {((secretCode == null || secretCode?.length == 0) && activeTab == "login") &&
+          {((secretCode == null || secretCode?.length == 0) && activeTab == "login") &&isTest&&
             <Login
               hideNav={hideNav}
               setHideNav={setHideNav}
@@ -90,7 +94,7 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
             />
           }
 
-          {isVisible &&
+          {isVisible &&!isTest&&
             <div className="section-one-action">
               <button onClick={() => {
                 setActiveTab(currnerTab)
@@ -104,14 +108,14 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
             </div>
           }
         </div>
-        <div className="section-two">
+       {!isTest&& <div className="section-two">
           <div className="section-two-image">
             <img src={imageLink?.src} width={512} height={512} alt="picture of friends" />
           </div>
-        </div>
+        </div>}
       </div>
       }
-      {activeTab == "dashboard" && <Dashboard
+    {!isTest &&<> {activeTab == "dashboard" && <Dashboard
         hideNav={hideNav}
         setHideNav={setHideNav}
         secretCode={secretCode}
@@ -161,7 +165,9 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
         setSecretCode={setSecretCode}
         activeTab={activeTab}
         setActiveTab={setActiveTab} />}
+    </>}
     </div>
+</UserProvider>
   );
 };
 
