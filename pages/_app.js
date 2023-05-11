@@ -7,6 +7,7 @@ import './css/friends.css';
 import './css/friendsNetwork.css';
 import './css/account.css'
 import './css/about.css'
+import { UserProvider } from '@auth0/nextjs-auth0/client';  
 import logo from "../assets/fav icon.png"
 import NavMenu from "./components/navMenu";
 import Header from "./components/Header";
@@ -58,7 +59,9 @@ function App({ Component, pageProps }) {
       setIsVisible(true);
     }
   }
+
   return (
+    <UserProvider><>
     <div className='container'>
       <Head>
         <title>Voleeyo: create your path!</title>
@@ -92,6 +95,7 @@ function App({ Component, pageProps }) {
           setFriendLookUp={setFriendLookUp} />
       </div>
     </div>
+    </></UserProvider>
   );
 }
 export default App;

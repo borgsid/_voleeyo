@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
-
 import imageLink from '../assets//00000-3174216882.png'
 import Dashboard from './dashboard';
 import Notifications from './notifications'
@@ -11,7 +9,9 @@ import Account from './account';
 import About from './about';
 import Privacy from './privacy';
 import Login from './login';
-const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, setActiveTab, isVisible, friendLookUp, setFriendLookUp, secretCode, setSecretCode }) => {
+import { useUser } from '@auth0/nextjs-auth0/client';
+export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, setActiveTab, friendLookUp, setFriendLookUp }) =>{
+  const { user, error, isLoading } = useUser();
   const [currnerTab, setCurrentTab] = useState("index");
   const [isTest, setIsTest] = useState(true)
   const canShowTab = () => {
@@ -38,52 +38,43 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
     console.log("showSideMenu index", showSideMenu)
   }
   useEffect(() => {
-    var testCode = localStorage.getItem("voleeyo_login")
-    if (testCode)
-      setSecretCode(testCode)
-    if (secretCode != undefined) {
-      setHideNav(false)
-      setCurrentTab("index")
-    }
-    else
-      setCurrentTab("login")
-
+    setCurrentTab("index")
     // canShowTab();
-  }, [activeTab, secretCode, hideNav])
+  }, [])
+ 
   return (
-    <UserProvider>
     <div className="index dashboard">
       {(activeTab == "index" || activeTab == "login") && <div className="dashboard-container">
         <div className="section-one">
 
-          {activeTab == "index"&&
+          {activeTab == "index" &&
             <div className="section-one-text">
-              {isVisible && <h1>Voleeyo: your LinkedIn for volunteers</h1>}
-              {!isVisible && <h1>Welcome back to Voleeyo</h1>}
+              {!user && <h1>Voleeyo: your LinkedIn for volunteers</h1>}
+              {user && <h1>Welcome back to Voleeyo</h1>}
               <b>A place where to connect while giving back to the community</b>
               {
-                isVisible && <p>
+                user && <p>
                   Voleeyo is a platform where volunteers connect to improve skills, make friends, and find job opportunities.<br />
                   Join a community of like-minded individuals, work on impactful initiatives, and showcase your skills. <br />
                   Make a difference today with Voleeyo.
                 </p>
               }
-              {!isVisible && <p>Find out what you friends have been up to and connect with new ones!</p>}
+              {user && <p>Find out what you friends have been up to and connect with new ones!</p>}
               <div className="social-links">
                 <a href="#" target="_blank" rel="noopener noreferrer">Instagram (Coming soon)</a>
                 <a href="https://twitter.com/Voleeyo" target="_blank" rel="noopener noreferrer">Twitter (WIP)</a>
               </div>
-                  <br/>
-                  <br/>
-                  <span>Like what I'm doing, here are some links</span>
-                  
+              <br />
+              <br />
+              <span>Like what I'm doing, here are some links</span>
+
               <div className="social-links">
-                  <a href="https://www.buymeacoffee.com/sydneylukee" target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
-                  <a href="https://github.com/borgsid/_voleeyo" target="_blank" rel="noopener noreferrer">Github repo</a>
+                <a href="https://www.buymeacoffee.com/sydneylukee" target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
+                <a href="https://github.com/borgsid/_voleeyo" target="_blank" rel="noopener noreferrer">Github repo</a>
               </div>
             </div>
           }
-          {((secretCode == null || secretCode?.length == 0) && activeTab == "login") &&
+          {(activeTab == "login") &&
             <Login
               hideNav={hideNav}
               setHideNav={setHideNav}
@@ -94,28 +85,28 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
             />
           }
 
-          {isVisible &&
+          {user &&
             <div className="section-one-action">
               <button onClick={() => {
-                location.href="/api/auth/login"
+                location.href = "/api/auth/login"
               }}>Discover Voleeyo</button>
-              <button onClick={() => {location.href="/api/auth/login" }}>Join Voleeyo</button>
+              <button onClick={() => { location.href = "/api/auth/login" }}>Join Voleeyo</button>
             </div>
           }
-          {!isVisible &&
+          {user &&
             <div className="section-one-action">
               <button onClick={() => { canShowTab() }}>Go to Dashboard</button>
             </div>
           }
         </div>
-       {!isTest&& <div className="section-two">
+        {!isTest && <div className="section-two">
           <div className="section-two-image">
-            <img src={imageLink?.src} width={512} height={512} alt="picture of friends" />
+            <img src={imageLink.src} width={512} height={512} alt="picture of friends" />
           </div>
         </div>}
       </div>
       }
-    {activeTab == "dashboard" && <Dashboard
+      {activeTab == "dashboard" && <Dashboard
         hideNav={hideNav}
         setHideNav={setHideNav}
         secretCode={secretCode}
@@ -166,8 +157,6 @@ const index = ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, 
         activeTab={activeTab}
         setActiveTab={setActiveTab} />}
     </div>
-</UserProvider>
+
   );
 };
-
-export default index;

@@ -2,9 +2,9 @@
 import Image from 'next/image';
 import logolink from "../../assets/voleeyo-logo.png"
 import { useState, useEffect } from 'react';
-
-const Header = ({ isVisible, activeTab, setActiveTab }) => {
-
+import { useUser } from '@auth0/nextjs-auth0/client';
+const Header = ({  activeTab, setActiveTab }) => {
+    const { user, error, isLoading } = useUser();
     const link1 = {  name: "Login", setActiveTab: setActiveTab };
     const link2 = {  name: "Dashboard", setActiveTab: setActiveTab };
     const link3 = {  name: "Account" , setActiveTab: setActiveTab };
@@ -23,25 +23,24 @@ const Header = ({ isVisible, activeTab, setActiveTab }) => {
             <div className="nav">
                 <ul>
                     {
-                        isVisible &&
+                        !user &&
                         <li>
                             <a onClick={()=>{location.href="/api/auth/login"} } >{link1.name}</a>
                         </li>
                     }
                     {
-                        !isVisible &&
+                         user &&
                         <li>
                             <a  onClick={()=>{
-                                localStorage.removeItem("voleeyo_login");
-                                setActiveTab("");
+                                location.href="/api/auth/logout"
                             }} >Logout</a>
                         </li> 
                     }
-                    {!isVisible && <li>
+                    { user && <li>
                             <a onClick={() => { setActiveTab("dashboard") }}>{link2.name}</a>
                     </li>
                     }
-                     {!isVisible &&  <li>
+                     { user &&  <li>
                         <a onClick={() => { setActiveTab("account") }}>{link3.name}</a>
                     </li>
                     }
