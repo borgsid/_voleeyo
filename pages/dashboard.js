@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import Image from 'next/image';
 import ReactModal from 'react-modal';
 import pencil from "../assets/pencil-edit-button.svg"
-const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav, setHideNav }) => {
+import { WithApiAuthRequired } from "@auth0/nextjs-auth0";
+const Dashboard = ({ activeTab, setActiveTab, hideNav, setHideNav }) => {
     var svgPencil = pencil;
     const [events, setEvents] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState();
@@ -17,16 +18,13 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
     const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
-        setSecretCode(localStorage.getItem("voleeyo_login"))
+        setActiveTab("dashboard")
         setHideNav(false)
         if (!hideNav) {
             console.log("hide nave", hideNav)
         }
         const fetchData = async () => {
-            const dataRaw = await fetch("/api/userEventsCards", {
-                method: "POST",
-                body: JSON.stringify({ secretCode }),
-            });
+            const dataRaw = await fetch("/api/userEventsCards");
             const dataResp = await dataRaw.json();
 
             if (dataResp.length === 0) {
@@ -35,10 +33,10 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
                 setEvents(dataResp);
             }
         }
-        if (secretCode) {
-            fetchData();
-            setIsEdit(false);
-        }
+       
+        fetchData();
+        setIsEdit(false);
+       
     }, []);
 
 
@@ -56,7 +54,7 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
             eventName,
             eventLocation,
             eventYear,
-            eventRole,
+            eventRole
         };
         var link = isEdit
             ? "/api/updateUserEvent"

@@ -8,7 +8,6 @@ import FriendsNetwork from './friendsNetwork'
 import Account from './account';
 import About from './about';
 import Privacy from './privacy';
-import Login from './login';
 import { useUser } from '@auth0/nextjs-auth0/client';
 export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, setActiveTab, friendLookUp, setFriendLookUp }) =>{
   const { user, error, isLoading } = useUser();
@@ -74,16 +73,6 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
               </div>
             </div>
           }
-          {(activeTab == "login") &&
-            <Login
-              hideNav={hideNav}
-              setHideNav={setHideNav}
-              secretCode={secretCode}
-              setSecretCode={setSecretCode}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-            />
-          }
 
           {user &&
             <div className="section-one-action">
@@ -109,53 +98,49 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
       {activeTab == "dashboard" && <Dashboard
         hideNav={hideNav}
         setHideNav={setHideNav}
-        secretCode={secretCode}
-        setSecretCode={setSecretCode}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
       {activeTab == "notifications" && <Notifications
         hideNav={hideNav}
         setHideNav={setHideNav}
-        secretCode={secretCode}
-        setSecretCode={setSecretCode}
+        Code={Code}
+        setCode={setCode}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
       {activeTab == "friends" && <Friends hideNav={hideNav}
         setHideNav={setHideNav}
-        secretCode={secretCode}
-        setSecretCode={setSecretCode}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
       {activeTab == "friendsNetwork" && <FriendsNetwork
         hideNav={hideNav}
         setHideNav={setHideNav}
-        secretCode={secretCode}
-        setSecretCode={setSecretCode}
+        Code={Code}
+        setCode={setCode}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
-      {activeTab == "account" && <Account secretCode={secretCode}
-        setSecretCode={setSecretCode}
+      {activeTab == "account" && <Account Code={Code}
+        setCode={setCode}
         activeTab={activeTab}
-        setActiveTab={setActiveTab} />}
-      {activeTab == "about" && <About secretCode={secretCode}
-        setSecretCode={setSecretCode}
+         />}
+      {activeTab == "about" && <About Code={Code}
+        setCode={setCode}
         activeTab={activeTab}
-        setActiveTab={setActiveTab} />}
+         />}
       {activeTab == "privacy" && <Privacy
         hideNav={hideNav}
         setHideNav={setHideNav}
-        secretCode={secretCode}
-        setSecretCode={setSecretCode}
+        Code={Code}
+        setCode={setCode}
         activeTab={activeTab}
-        setActiveTab={setActiveTab} />}
+         />}
     </div>
 
   );

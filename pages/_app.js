@@ -11,6 +11,7 @@ import { UserProvider } from '@auth0/nextjs-auth0/client';
 import logo from "../assets/fav icon.png"
 import NavMenu from "./components/navMenu";
 import Header from "./components/Header";
+import { useUser } from '@auth0/nextjs-auth0/client';
 function App({ Component, pageProps }) {
   const [activeTab, setActiveTab] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -20,30 +21,12 @@ function App({ Component, pageProps }) {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [currentUser, setCurrentUser] = useState({})
   useEffect(() => {
-    const getUser = async () => {
-
-      var tempValue = localStorage.getItem("voleeyo_login");
-      if (tempValue) {
-
-        const response = await fetch('/api/checkSecret', {
-          method: 'POST',
-          body: JSON.stringify({ secretCode: tempValue }),
-        });
-        const resp = await response.json();
-        if (resp.name != undefined)
-         {
-           setCurrentUser(await resp)
-         } 
-      }
-    }
     setActiveTab("index")
     setHideNav(true);
-    setSecretCode(localStorage.getItem("voleeyo_login"));
-    if (secretCode?.length > 0) {
+    if (useUser) {
+      setActiveTab("dashboard")
       setIsVisible(false);
       setHideNav(false)
-      getUser()
-      
     }
     else {
       setActiveTab("index")
