@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
-const Privacy = ({ hideNav, setHideNav, activeTab, setActiveTab, secretCode, setSecretCode }) => {
+const Privacy = ({ hideNav, setHideNav, activeTab, setActiveTab }) => {
     const [consent, setConsent] = useState(true);
     const [showDelete, setShowDelete] = useState(false);
     const {user} = useUser();
     const removeData = async () => {
 
-        var resp = await fetch("/api/userPrivacySettings", {
-            method: "post",
-            body: JSON.stringify({
-                secretCode
-            })
+        var resp = await fetch(`/api/userPrivacySettings/${user.sub.split("|")[1]}`, 
+        {
+            method: "get"
         });
 
         var text = await resp.json();
@@ -26,11 +24,7 @@ const Privacy = ({ hideNav, setHideNav, activeTab, setActiveTab, secretCode, set
 
     }
     const handleDeleteData = async () => {
-        if (await removeData()) {
-            localStorage.removeItem("voleeyo_login");
-            setHideNav(true)
-            setConsent(false);
-        }
+       await removeData()
     }
    
 
