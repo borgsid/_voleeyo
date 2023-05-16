@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
-const Privacy = ({ hideNav, setHideNav, activeTab, setActiveTab }) => {
+const Privacy = () => {
     const [consent, setConsent] = useState(true);
     const [showDelete, setShowDelete] = useState(false);
     const {user} = useUser();
