@@ -15,8 +15,8 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
   const [isTest, setIsTest] = useState(true)
   const canShowTab = () => {
     setActiveTab("dashboard");
-    console.log("now activeTab", activeTab)
-    if (activeTab)
+    
+    if (activeTab!=undefined)
       switch (activeTab) {
         case "dashboard":
         case "notifications":
@@ -33,14 +33,7 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
       }
     else
       setShowSideMenu(false);
-
-    console.log("showSideMenu index", showSideMenu)
-  }
-  useEffect(() => {
-    setCurrentTab("index")
-    // canShowTab();
-  }, [])
- 
+  } 
   return (
     <div className="index dashboard">
       {(activeTab == "index" || activeTab == "login") && <div className="dashboard-container">
@@ -48,17 +41,17 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
 
           {activeTab == "index" &&
             <div className="section-one-text">
-              {!user && <h1>Voleeyo: your LinkedIn for volunteers</h1>}
-              {user && <h1>Welcome back to Voleeyo</h1>}
+              {!(user??false) && <h1>Voleeyo: your LinkedIn for volunteers</h1>}
+              {(user??false) && <h1>Welcome back to Voleeyo, {user.given_name}</h1>}
               <b>A place where to connect while giving back to the community</b>
               {
-                user && <p>
+                !(user??false) && <p>
                   Voleeyo is a platform where volunteers connect to improve skills, make friends, and find job opportunities.<br />
                   Join a community of like-minded individuals, work on impactful initiatives, and showcase your skills. <br />
                   Make a difference today with Voleeyo.
                 </p>
               }
-              {user && <p>Find out what you friends have been up to and connect with new ones!</p>}
+              {(user??false) && <p>Find out what you friends have been up to and connect with new ones!</p>}
               <div className="social-links">
                 <a href="#" target="_blank" rel="noopener noreferrer">Instagram (Coming soon)</a>
                 <a href="https://twitter.com/Voleeyo" target="_blank" rel="noopener noreferrer">Twitter (WIP)</a>
@@ -74,15 +67,17 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
             </div>
           }
 
-          {user &&
+          {!(user??false) &&
             <div className="section-one-action">
               <button onClick={() => {
                 location.href = "/api/auth/login"
-              }}>Discover Voleeyo</button>
+              }}>
+                Discover Voleeyo
+              </button>
               <button onClick={() => { location.href = "/api/auth/login" }}>Join Voleeyo</button>
             </div>
           }
-          {user &&
+          {(user??false) &&
             <div className="section-one-action">
               <button onClick={() => { canShowTab() }}>Go to Dashboard</button>
             </div>
@@ -99,7 +94,7 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
         hideNav={hideNav}
         setHideNav={setHideNav}
         activeTab={activeTab}
-        
+        setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
       {activeTab == "notifications" && <Notifications
@@ -114,7 +109,7 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
       {activeTab == "friends" && <Friends hideNav={hideNav}
         setHideNav={setHideNav}
         activeTab={activeTab}
-        
+        setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
       {activeTab == "friendsNetwork" && <FriendsNetwork
@@ -123,7 +118,7 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
         Code={Code}
         setCode={setCode}
         activeTab={activeTab}
-        
+        setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
       {activeTab == "account" && <Account Code={Code}

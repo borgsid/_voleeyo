@@ -11,28 +11,18 @@ import { UserProvider } from '@auth0/nextjs-auth0/client';
 import logo from "../assets/fav icon.png"
 import NavMenu from "./components/navMenu";
 import Header from "./components/Header";
-import { useUser } from '@auth0/nextjs-auth0/client';
 function App({ Component, pageProps }) {
-  const [activeTab, setActiveTab] = useState(null);
+  const [activeTab, setActiveTab] = useState("index");
   const [isVisible, setIsVisible] = useState(false);
   const [hideNav, setHideNav] = useState(true);
   const [secretCode, setSecretCode] = useState("")
   const [friendLookUp, setFriendLookUp] = useState({});
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [currentUser, setCurrentUser] = useState({})
+  
   useEffect(() => {
-    setActiveTab("index")
-    setHideNav(true);
-    if (useUser) {
-      setActiveTab("dashboard")
-      setIsVisible(false);
-      setHideNav(false)
-    }
-    else {
-      setActiveTab("index")
       setHideNav(true)
       setIsVisible(true);
-    }
   }, [hideNav, showSideMenu]);
   const toggleNavMenuFunc = () => {
     if (isVisible) {
@@ -44,41 +34,41 @@ function App({ Component, pageProps }) {
   }
 
   return (
-    <UserProvider><>
-    <div className='container'>
-      <Head>
-        <title>Voleeyo: create your path!</title>
-        <link rel="icon" type="image/png" size="16x16" href={logo.src}></link>
+    <UserProvider>
+      <div className='container'>
+        <Head>
+          <title>Voleeyo: create your path!</title>
+          <link rel="icon" type="image/png" size="16x16" href={logo.src}></link>
 
-      </Head>
-      <Header isVisible={isVisible} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <footer><span>not optimized for mobile</span></footer>
+        </Head>
+        <Header isVisible={isVisible} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <footer><span>not optimized for mobile</span></footer>
 
-      <div className='main'>
-        {!hideNav && <NavMenu
-          activeTab={activeTab}
-          hideNav={hideNav}
-          setHideNav={setHideNav}
-          setActiveTab={setActiveTab}
-          toggleNavMenu={toggleNavMenuFunc}
-          secretCode={secretCode}
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser} />}
-        <Component {...pageProps}
-          hideNav={hideNav}
-          setHideNav={setHideNav}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          secretCode={secretCode}
-          setSecretCode={setSecretCode}
-          isVisible={isVisible}
-          showSideMenu={showSideMenu}
-          setShowSideMenu={setShowSideMenu}
-          friendLookUp={friendLookUp}
-          setFriendLookUp={setFriendLookUp} />
+        <div className='main'>
+          {!hideNav && <NavMenu
+            activeTab={activeTab}
+            hideNav={hideNav}
+            setHideNav={setHideNav}
+            setActiveTab={setActiveTab}
+            toggleNavMenu={toggleNavMenuFunc}
+            secretCode={secretCode}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser} />}
+          <Component {...pageProps}
+            hideNav={hideNav}
+            setHideNav={setHideNav}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            secretCode={secretCode}
+            setSecretCode={setSecretCode}
+            isVisible={isVisible}
+            showSideMenu={showSideMenu}
+            setShowSideMenu={setShowSideMenu}
+            friendLookUp={friendLookUp}
+            setFriendLookUp={setFriendLookUp} />
+        </div>
       </div>
-    </div>
-    </></UserProvider>
+    </UserProvider>
   );
 }
 export default App;

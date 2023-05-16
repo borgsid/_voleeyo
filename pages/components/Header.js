@@ -23,24 +23,24 @@ const Header = ({  activeTab, setActiveTab }) => {
             <div className="nav">
                 <ul>
                     {
-                        !user &&
+                        !(user??true) &&
                         <li>
                             <a onClick={()=>{location.href="/api/auth/login"} } >{link1.name}</a>
                         </li>
                     }
                     {
-                         user &&
+                         (user??false) &&
                         <li>
                             <a  onClick={()=>{
                                 location.href="/api/auth/logout"
                             }} >Logout</a>
                         </li> 
                     }
-                    { user && <li>
+                    { (user??false) && <li>
                             <a onClick={() => { setActiveTab("dashboard") }}>{link2.name}</a>
                     </li>
                     }
-                     { user &&  <li>
+                     { (user??false) &&  <li>
                         <a onClick={() => { setActiveTab("account") }}>{link3.name}</a>
                     </li>
                     }

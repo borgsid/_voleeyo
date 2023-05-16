@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Image from 'next/image';
 import ReactModal from 'react-modal';
 import pencil from "../assets/pencil-edit-button.svg"
-import { WithApiAuthRequired } from "@auth0/nextjs-auth0";
-const Dashboard = ({ activeTab, setActiveTab, hideNav, setHideNav }) => {
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNav }) {
     var svgPencil = pencil;
     const [events, setEvents] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState();
@@ -189,4 +189,4 @@ const Dashboard = ({ activeTab, setActiveTab, hideNav, setHideNav }) => {
         </div>
     );
 }
-export default Dashboard;
+export const getServerSideProps = withPageAuthRequired();
