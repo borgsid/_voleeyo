@@ -3,7 +3,9 @@ import Image from 'next/image';
 import ReactModal from 'react-modal';
 import pencil from "../assets/pencil-edit-button.svg"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useUser } from "@auth0/nextjs-auth0/client";
 export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNav }) {
+    const {user} = useUser();
     var svgPencil = pencil;
     const [events, setEvents] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState();
@@ -23,7 +25,10 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
         setHideNav(false)
         console.log("hide nav after", hideNav)
         const fetchData = async () => {
-            const dataRaw = await fetch("/api/userEventsCards");
+            const dataRaw = await fetch(`/api/user/EventsCards/${user.sub.split("|")[1]}`,
+            {
+                method:"get"
+            });
             const dataResp = await dataRaw.json();
 
             if (dataResp.length === 0) {
@@ -55,16 +60,13 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
             eventYear,
             eventRole
         };
-        var link = isEdit
-            ? "/api/updateUserEvent"
-            : "/api/saveUserEvent";
-        const response = await fetch(link, {
-            method: "POST",
-            body: JSON.stringify({
-                data,
-                secretCode
-            }),
-        });
+        var apiService = isEdit
+            ? "updateUserEvent"
+            : "saveUserEvent";
+        const response = await fetch(`/api/user/${apiService}/${user.sub.split("|")[1]}`, {
+            method: "GET",
+            }
+        );
 
         if (!response.ok) {
             alert("Failed to save event.");
