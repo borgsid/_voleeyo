@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-
+import { useUser } from '@auth0/nextjs-auth0/client';
 const Privacy = ({ hideNav, setHideNav, activeTab, setActiveTab, secretCode, setSecretCode }) => {
     const [consent, setConsent] = useState(true);
     const [showDelete, setShowDelete] = useState(false);
+    const {user} = useUser();
     const removeData = async () => {
 
         var resp = await fetch("/api/userPrivacySettings", {
@@ -31,30 +32,7 @@ const Privacy = ({ hideNav, setHideNav, activeTab, setActiveTab, secretCode, set
             setConsent(false);
         }
     }
-    useEffect(() => {
-        const runcheck = async () => {
-            try {
-                const response = await fetch('/api/checkSecret', {
-                    method: 'POST',
-                    body: JSON.stringify({ secretCode }),
-                });
-                const { status } = await response.json();
-                if (status) {
-                    // setSecretCode(tempValue)
-                    setShowDelete(true)
-                    // localStorage.setItem('voleeyo_login', tempValue);
-                } else alert('Incorrect secret code, please try again.');
-            } catch (error) {
-                console.error(error);
-                alert('An error occurred, please try again later.');
-            }
-        }
-        setActiveTab("privacy")
-        // var tempValue= localStorage.getItem("voleeyo_login");
-
-        if (secretCode)
-            runcheck();
-    }, [secretCode])
+   
 
     return (
         <div className="privacy-container">
@@ -63,12 +41,12 @@ const Privacy = ({ hideNav, setHideNav, activeTab, setActiveTab, secretCode, set
                     By using the website of Voleeyo, you accept to be tracked across the site. <br />
                     The data you input will be used solely for matching with other users.<br />
                     By continuing to do so, you automatically accept the terms and conditions. <br />
-                    You may remove your consent at any time in the accounts section{showDelete ? 'by clicking "Delete data"' : ''}.
+                    You may remove your consent at any time in the accounts section{(user??false) ? 'by clicking "Delete data"' : ''}.
                 </p>
             ) : (
                 <p>Your data has been deleted.</p>
             )}
-            {showDelete && <button className="delete-data-button" onClick={handleDeleteData}>Delete data</button>}
+            {(user??false) && <button className="delete-data-button" onClick={handleDeleteData}>Delete data</button>}
 
             <style jsx>{`
           .privacy-container {

@@ -19,10 +19,9 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
 
     useEffect(() => {
         setActiveTab("dashboard")
+        console.log("hide nav before", hideNav)
         setHideNav(false)
-        if (!hideNav) {
-            console.log("hide nave", hideNav)
-        }
+        console.log("hide nav after", hideNav)
         const fetchData = async () => {
             const dataRaw = await fetch("/api/userEventsCards");
             const dataResp = await dataRaw.json();

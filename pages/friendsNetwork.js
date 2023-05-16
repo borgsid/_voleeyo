@@ -10,9 +10,9 @@ const FriendsNetwork = ({ activeTab, setActiveTab, secretCode,friendLookUp,setFr
   useEffect(() => {
     setActiveTab("friendsNetwork")
     const fetchData = async () => {
-      const dataRaw = await fetch("/api/friendsNetwork", {
-        method: "POST",
-        body: JSON.stringify({ secretCode }),
+      const dataRaw = await fetch(`/api/friendsNetwork/${user.sub.split("|")[1]}`,
+      {
+        method: "Get"
       });
       const dataResp = await dataRaw.json();
       if (dataResp != undefined) {

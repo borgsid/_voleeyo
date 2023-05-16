@@ -100,10 +100,9 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
       {activeTab == "notifications" && <Notifications
         hideNav={hideNav}
         setHideNav={setHideNav}
-        Code={Code}
-        setCode={setCode}
-        activeTab={activeTab}
         
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
       {activeTab == "friends" && <Friends hideNav={hideNav}
@@ -115,25 +114,23 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
       {activeTab == "friendsNetwork" && <FriendsNetwork
         hideNav={hideNav}
         setHideNav={setHideNav}
-        Code={Code}
-        setCode={setCode}
+        
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
-      {activeTab == "account" && <Account Code={Code}
-        setCode={setCode}
+      {activeTab == "account" && <Account  
+        
         activeTab={activeTab}
          />}
-      {activeTab == "about" && <About Code={Code}
-        setCode={setCode}
+      {activeTab == "about" && <About 
+        
         activeTab={activeTab}
          />}
       {activeTab == "privacy" && <Privacy
         hideNav={hideNav}
         setHideNav={setHideNav}
-        Code={Code}
-        setCode={setCode}
+        
         activeTab={activeTab}
          />}
     </div>

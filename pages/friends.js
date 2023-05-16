@@ -6,11 +6,9 @@ const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCo
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    setSecretCode(localStorage.getItem("voleeyo_login"))
     const fetchData = async () => {
       const dataRaw = await fetch("/api/userFriends", {
-        method: "POST",
-        body: JSON.stringify({ secretCode:localStorage.getItem("voleeyo_login") }),
+        method: "Get"
       });
       const dataResp = await dataRaw.json();
 

@@ -21,7 +21,6 @@ function App({ Component, pageProps }) {
   const [currentUser, setCurrentUser] = useState({})
   
   useEffect(() => {
-      setHideNav(true)
       setIsVisible(true);
   }, [hideNav, showSideMenu]);
   const toggleNavMenuFunc = () => {
