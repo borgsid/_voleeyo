@@ -27,7 +27,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
       setActiveTabSection("sent");
     }
     const fetchData = async () => {
-      const dataRaw = await fetch(`/api/userNotifications/${user.sub.split("|")[1]}`, {
+      const dataRaw = await fetch(`/api/user/Notifications/${user.sub.split("|")[1]}`, {
         method: "post" 
       });
       const dataResp = await dataRaw.json();
@@ -42,7 +42,6 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     fetchData();
   },[]);
   const updateMessageStatus=async (e)=>{
-    const secretCode = localStorage.getItem("voleeyo_login");
         await fetch(`/api/setMeasageRead/${user.sub.split("|")[1]}`,
         {
           method:"post",

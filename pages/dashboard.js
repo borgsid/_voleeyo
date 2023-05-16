@@ -60,13 +60,15 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
             eventYear,
             eventRole
         };
-        var apiService = isEdit
+        var link = isEdit
             ? "updateUserEvent"
             : "saveUserEvent";
-        const response = await fetch(`/api/user/${apiService}/${user.sub.split("|")[1]}`, {
-            method: "GET",
-            }
-        );
+        const response = await fetch(`/api/user/${link}/${user.sub.split("|")[1]}`, {
+            method: "POST",
+            body: JSON.stringify({
+                data
+            }),
+        });
 
         if (!response.ok) {
             alert("Failed to save event.");

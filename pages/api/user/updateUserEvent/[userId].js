@@ -1,13 +1,12 @@
 const UpdateUserEventAction = async (req, res) => {
     const body=JSON.parse(req.body);
     //Check for different statuses to send proper payload
-    if (process.env.log_in_key==body.secretCode) {
+    if (req.query?.userId) {
         const baseUri= process.env.baseUri;
-        const userEventsRaw = await fetch(`${baseUri}userEventsCards`,
-        { method: "POST",
-            body: JSON.stringify({ secretCode:body.secretCode })
+        const userEventsRaw = await fetch(`${baseUri}user/EventsCards/${req.query?.userId}`,
+        { 
+            method: "Get"
         });
-
         const currentUserEvents = await userEventsRaw.json();
         if(currentUserEvents.length>0){
             var oldevent =currentUserEvents.find(event=> event.id== body.data.id)

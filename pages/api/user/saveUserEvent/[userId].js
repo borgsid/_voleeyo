@@ -1,8 +1,9 @@
 const SaveUserEventAction = async (req, res) => {
+    const body=JSON.parse(req.body);
     //Check for different statuses to send proper payload
     if (req.query?.userId) {
         const baseUri= process.env.baseUri;
-        const userEventsRaw = await fetch(`${baseUri}userEventsCards/${req.query?.userId}`,
+        const userEventsRaw = await fetch(`${baseUri}user/EventsCards/${req.query?.userId}`,
         { 
             method: "Get"
         });
