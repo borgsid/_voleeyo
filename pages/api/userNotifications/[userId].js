@@ -1,7 +1,7 @@
 const UserNotificationsAction = async (req, res) => {
-    const body=JSON.parse(req.body);
+    console.log("req",req.query.userId)
     //Check for different statuses to send proper payload
-    if (process.env.log_in_key==body.secretCode) {
+    if (req.query?.userId!=undefined) {
         const userNotifications={
             inbox:[
             {

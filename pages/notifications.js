@@ -28,7 +28,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     }
     const fetchData = async () => {
       const dataRaw = await fetch(`/api/userNotifications/${user.sub.split("|")[1]}`, {
-        method: "Get" 
+        method: "post" 
       });
       const dataResp = await dataRaw.json();
 
