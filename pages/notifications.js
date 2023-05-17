@@ -42,7 +42,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     fetchData();
   },[]);
   const updateMessageStatus=async (e)=>{
-        await fetch(`/api/setMeasageRead/${user.sub.split("|")[1]}`,
+        await fetch(`/api/user/setMeasageRead/${user.sub.split("|")[1]}`,
         {
           method:"post",
           body:JSON.stringify({message:e})
@@ -65,7 +65,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     e.preventDefault();
     // handle reply submission logic
     selectedMessage.userMessage=reply;
-    await fetch(`/api/setMeasageRead/${user.sub.split("|")[1]}`,
+    await fetch(`/api/user/setMeasageRead/${user.sub.split("|")[1]}`,
     {
       method:"post",
       body:JSON.stringify({message:selectedMessage})
@@ -94,7 +94,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     };
 
     // handle reply submission logic
-    const response=await fetch(`/api/sendNewMessage/${user.sub.split("|")[1]}`,
+    const response=await fetch(`/api/user/sendNewMessage/${user.sub.split("|")[1]}`,
     {
       method:"post",
       body:JSON.stringify({message:myMessage})
@@ -150,7 +150,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
       const secretCode = localStorage.getItem("voleeyo_login");
       const searchText = e.target.value.toLowerCase();
     
-      var friendsRaw= await fetch(`/api/searchInAllFriends/${user.sub.split("|")[1]}`,
+      var friendsRaw= await fetch(`/api/search/InAllFriends/${user.sub.split("|")[1]}`,
       {
         method: "POST",
         body: JSON.stringify({ searchText }),

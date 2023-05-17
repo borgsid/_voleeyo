@@ -1,7 +1,6 @@
 const SearchFriendsAction = async (req, res) => {
-    const body=JSON.parse(req.body);
     //Check for different statuses to send proper payload
-    if (process.env.log_in_key==body.secretCode && body?.searchText?.trim().length>=1) {
+    if (req.query?.userId) {
         const friends=[
             {
                 id:2,
