@@ -2,8 +2,8 @@ import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
 
 export default withApiAuthRequired(async function UserEventsAction(req, res) {
   // Check for different statuses to send proper payload
-  const { user, accessToken } = getSession(req);
-  console.log("accessToken",accessToken)
+  const session = await getSession(req,res);
+  const {user} = session;
   const myEvents = [
     {
       id: 1,
@@ -49,7 +49,9 @@ export default withApiAuthRequired(async function UserEventsAction(req, res) {
     }
   ];
 
-  res.status(200).json(myEvents);
-  
+  if (user) {
+    res.status(200).json(myEvents);
+  } else {
+    res.status(400).json([]);
   }
-);
+});
