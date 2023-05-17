@@ -2,7 +2,7 @@ import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
 
 export default withApiAuthRequired(async (req, res)=> {
   // Check for different statuses to send proper payload
- 
+const body = JSON.parse(req.body);
   const session = await getSession(req,res);
   const {user} = session;
   const myEvents = [
@@ -49,7 +49,7 @@ export default withApiAuthRequired(async (req, res)=> {
       eventRole: "Volunteer"
     }
   ];
-  const eventToRemove= myEvents.find(x=> x.id==(json.parse( req.body)).cardId);
+  const eventToRemove= myEvents.find(x=> x.id==body.cardId);
   myEvents.splice(myEvents.indexOf(eventToRemove),1);
   if (user) {
     res.status(200).json(myEvents);
