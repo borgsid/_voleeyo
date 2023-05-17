@@ -239,6 +239,7 @@ body {
   }
 .delete-icon{
   margin-left: auto;
+  cursor: pointer;
 }
   .nav ul {
     list-style: none;

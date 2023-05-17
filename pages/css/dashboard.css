@@ -197,6 +197,8 @@
   }
 .inline-modal{
     display: inline-block;
+    max-width: min-content;
+    margin: 0 40px;
 }
   
 .event-card {

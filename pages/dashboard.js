@@ -116,6 +116,22 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
             setIsNavBarVIsible(true);
         }
     }
+    const deleteCard= async(cardId)=>{
+
+        var resp = await fetch(`/api/user/deleteEvent/${user.sub.split("|")[1]}`,
+        {
+            method:"post",
+            body:JSON.stringify({cardId})
+        })
+
+        if(resp.ok){
+            const currentEvents= await resp.json();
+            setEvents(currentEvents);
+            resetValues();
+        }
+        else
+            alert("There was an error processing your request");
+    }
     return (
         <div className="content">
             <div className="page-header">
@@ -149,7 +165,7 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
                     {eventId&&
-                        <div className="delete-icon" onClick={() => deleteCard(eventId)}>
+                        <div className="delete-icon" onClick={()=>{deleteCard(eventId)}}>
                             <Image alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />
                         </div>
                     }
