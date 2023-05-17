@@ -3,6 +3,10 @@
     border-radius: 8px;
     margin-bottom: 16px;
     padding: 16px;
+    cursor: pointer;
+  }
+  .notification-card:hover {
+    box-shadow: 0 2px 4px  rgb(225, 215, 172, 0.9); 
   }
   
   .card-header {

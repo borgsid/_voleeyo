@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import Image from 'next/image';
 import ReactModal from 'react-modal';
 import pencil from "../assets/pencil-edit-button.svg"
+import binIcon from "../assets/bin-delete-button.svg"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
 export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNav }) {
     const {user} = useUser();
     var svgPencil = pencil;
+    var svgBin= binIcon;
     const [events, setEvents] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState();
     const [isEdit, setIsEdit] = useState(false);
@@ -117,7 +119,7 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
     return (
         <div className="content">
             <div className="page-header">
-                <h2>Hi Demo User!</h2>
+                <h2>Hi {user.name}, </h2>
                 <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
                     <rect width="100" height="20"></rect>
                     <rect y="30" width="100" height="20"></rect>
@@ -146,6 +148,11 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
             <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={resetValues} ariaHideApp={false}>
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
+                    {eventId&&
+                        <div className="delete-icon" onClick={() => deleteCard(eventId)}>
+                            <Image alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />
+                        </div>
+                    }
                         <input type="number" readOnly hidden id="event-id" defaultValue={eventId} />
                         {isEdit
                             ? <h2>Edit Event:</h2>

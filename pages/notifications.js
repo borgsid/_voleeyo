@@ -42,7 +42,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     fetchData();
   },[]);
   const updateMessageStatus=async (e)=>{
-        await fetch(`/api/user/setMeasageRead/${user.sub.split("|")[1]}`,
+        await fetch(`/api/user/setMessageRead/${user.sub.split("|")[1]}`,
         {
           method:"post",
           body:JSON.stringify({message:e})
@@ -65,7 +65,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     e.preventDefault();
     // handle reply submission logic
     selectedMessage.userMessage=reply;
-    await fetch(`/api/user/setMeasageRead/${user.sub.split("|")[1]}`,
+    await fetch(`/api/user/setMessageRead/${user.sub.split("|")[1]}`,
     {
       method:"post",
       body:JSON.stringify({message:selectedMessage})

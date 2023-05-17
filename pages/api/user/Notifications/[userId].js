@@ -1,4 +1,6 @@
-const UserNotificationsAction = async (req, res) => {
+import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
+
+export default withApiAuthRequired( async (req, res) => {
     console.log("req",req.query.userId)
     //Check for different statuses to send proper payload
     if (req.query?.userId!=undefined) {
@@ -63,5 +65,4 @@ const UserNotificationsAction = async (req, res) => {
       else {
         res.status(400).json({});
       }
-  };
-  export default UserNotificationsAction;
+  });

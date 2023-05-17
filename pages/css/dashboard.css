@@ -229,6 +229,10 @@
   .event-card:hover .edit-icon i {
     color: #333333;
   }
+
+  .event-card:hover {
+    box-shadow: 0 2px 4px  rgb(225, 215, 172, 0.9); 
+  }
   .buttons-line{
     display: flex;
     gap:50px;
