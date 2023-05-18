@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import Image from 'next/image';
-const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCode, setSecretCode}) => {
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import {useUser} from "@auth0/nextjs-auth0/client"
+export default  function Friends ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp}) {
+  const {user} = useUser();
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    setSecretCode(localStorage.getItem("voleeyo_login"))
     const fetchData = async () => {
-      const dataRaw = await fetch("/api/userFriends", {
-        method: "POST",
-        body: JSON.stringify({ secretCode:localStorage.getItem("voleeyo_login") }),
+      const dataRaw = await fetch(`/api/user/Friends/${user.sub?.split("|")[1]}`, 
+      {
+        method: "Get"
       });
       const dataResp = await dataRaw.json();
 
@@ -27,9 +29,10 @@ const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCo
   const searchFriendsFunc = async (event) => {
     setSearchText(event?.target?.value ?? searchText);
     if (searchText?.trim().length >= 1) {
-      var resultRaw = await fetch("/api/searchFriends", {
+      var resultRaw = await fetch(`/api/search/Friends/${user.sub?.split("|")[1]}`, 
+      {
         method: "POST",
-        body: JSON.stringify({ secretCode, searchText }),
+        body: JSON.stringify({ searchText }),
       });
 
       if (resultRaw.status === 200) {
@@ -47,9 +50,9 @@ const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCo
   
 
   const addNewFriend = async (friendId) => {
-    var resp = await fetch("/api/addNewFriend", {
+    var resp = await fetch(`/api/friends/addNewFriends/${user.sub.split("|")[1]}`, {
       method: "POST",
-      body: JSON.stringify({ secretCode, friendId }),
+      body: JSON.stringify({ friendId }),
     });
     if (resp.status === 200) {
       setFriends(await resp.json());
@@ -131,5 +134,5 @@ const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCo
       </div>
   );
 
-}
-export default Friends;
+};
+export const getServerSideProps = withPageAuthRequired();

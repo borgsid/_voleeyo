@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
-const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,friendLookUp,setFriendLookUp}) => {
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import {useUser} from "@auth0/nextjs-auth0/client"
+export default function Notifications({ activeTab, setActiveTab,friendLookUp,setFriendLookUp}){
   const [notifications, setNotifications] = useState({inbox:[],sent:[]});
   const [showModal, setShowModal] = useState(false);
   const [selectedMessage, setReplyMessage] = useState("");
@@ -12,9 +14,8 @@ const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,frien
   const [activeTabSection,setActiveTabSection]= useState("inbox");
   const [filteredFriends,setFilteredFriends]=useState([]);
   const [hideFilteredList,setHideFilteredList]=useState(true);
-
+  const {user} = useUser();
   useEffect(() => {
-    setSecretCode(localStorage.getItem("voleeyo_login"))
     setActiveTab("notifications")
     var userId= friendLookUp?.receiverUserId
     var userName= friendLookUp?.receiverUserName
@@ -26,9 +27,8 @@ const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,frien
       setActiveTabSection("sent");
     }
     const fetchData = async () => {
-      const dataRaw = await fetch("/api/userNotifications", {
-        method: "POST",
-        body: JSON.stringify({ secretCode }),
+      const dataRaw = await fetch(`/api/user/Notifications/${user.sub.split("|")[1]}`, {
+        method: "post" 
       });
       const dataResp = await dataRaw.json();
 
@@ -42,11 +42,10 @@ const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,frien
     fetchData();
   },[]);
   const updateMessageStatus=async (e)=>{
-    const secretCode = localStorage.getItem("voleeyo_login");
-        await fetch("/api/setMeasageRead",
+        await fetch(`/api/user/setMessageRead/${user.sub.split("|")[1]}`,
         {
           method:"post",
-          body:JSON.stringify({secretCode,message:e})
+          body:JSON.stringify({message:e})
         }
       )
   }
@@ -66,10 +65,10 @@ const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,frien
     e.preventDefault();
     // handle reply submission logic
     selectedMessage.userMessage=reply;
-    await fetch("/api/setMeasageRead",
+    await fetch(`/api/user/setMessageRead/${user.sub.split("|")[1]}`,
     {
       method:"post",
-      body:JSON.stringify({secretCode,message:selectedMessage})
+      body:JSON.stringify({message:selectedMessage})
     })
     setReply("")
     setShowModal(false)
@@ -80,7 +79,6 @@ const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,frien
     setIsMessagingModalOpen(true);
   }
   const handleNewMessageSubmit = async(e) => {
-    const secretCode = localStorage.getItem("voleeyo_login");
     e.preventDefault();
     const myMessage= {
       id: 0,
@@ -96,10 +94,10 @@ const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,frien
     };
 
     // handle reply submission logic
-    const response=await fetch("/api/sendNewMessage",
+    const response=await fetch(`/api/user/sendNewMessage/${user.sub.split("|")[1]}`,
     {
       method:"post",
-      body:JSON.stringify({secretCode,message:myMessage})
+      body:JSON.stringify({message:myMessage})
     })
     setIsMessagingModalOpen(false)
     clearNewMessageModal();
@@ -152,9 +150,10 @@ const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,frien
       const secretCode = localStorage.getItem("voleeyo_login");
       const searchText = e.target.value.toLowerCase();
     
-      var friendsRaw= await fetch("/api/searchInAllFriends", {
+      var friendsRaw= await fetch(`/api/search/InAllFriends/${user.sub.split("|")[1]}`,
+      {
         method: "POST",
-        body: JSON.stringify({ secretCode, searchText }),
+        body: JSON.stringify({ searchText }),
       });
       if(friendsRaw.ok){
         const filteredFriends =await friendsRaw.json();
@@ -340,4 +339,4 @@ const Notifications = ({ activeTab, setActiveTab, secretCode,setSecretCode,frien
     </div>
   );
 }
-export default Notifications;
+export const getServerSideProps = withPageAuthRequired();

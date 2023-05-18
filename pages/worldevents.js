@@ -1,15 +1,10 @@
 import React from "react";
+import { WithPageAuthRequired } from "@auth0/nextjs-auth0";
+export default function WorldEvents() {
+  
 
-function WorldEvents() {
-  return (
-    <div className="page">
-          <div className="content">
-
-      <h1>World Events</h1>
-      :coming soon
-          </div>
-    </div>
-  );
+  return (<a href="/api/auth/login">Login</a>);
+  
 }
 
-export default WorldEvents;
+// export const getServerSideProps= WithPageAuthRequired();

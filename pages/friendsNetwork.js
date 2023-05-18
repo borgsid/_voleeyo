@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
+import {withPageAuthRequired} from "@auth0/nextjs-auth0"
+import { useUser } from "@auth0/nextjs-auth0/client";
 import * as d3 from 'd3';
 import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
-const FriendsNetwork = ({ activeTab, setActiveTab, secretCode,friendLookUp,setFriendLookUp}) => {
+export default function FriendsNetwork ({ activeTab, setActiveTab, secretCode,friendLookUp,setFriendLookUp}) {
   const [data, setData] = useState(null);
   const [activeNode, setActiveNode] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
   const [selectedUserName, setSelectedUserName] = useState("")
-  
+  const {user} = useUser();
   useEffect(() => {
     setActiveTab("friendsNetwork")
     const fetchData = async () => {
-      const dataRaw = await fetch("/api/friendsNetwork", {
-        method: "POST",
-        body: JSON.stringify({ secretCode }),
+      const dataRaw = await fetch(`/api/friends/Network/${user.sub.split("|")[1]}`,
+      {
+        method: "Get"
       });
       const dataResp = await dataRaw.json();
       if (dataResp != undefined) {
@@ -113,4 +115,5 @@ const FriendsNetwork = ({ activeTab, setActiveTab, secretCode,friendLookUp,setFr
     </div>
   );
 }
-export default FriendsNetwork;
+
+export const getServerSideProps = withPageAuthRequired();

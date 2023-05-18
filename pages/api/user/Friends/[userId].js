@@ -1,7 +1,10 @@
-const UserFriendsAction = async (req, res) => {
-    const body=JSON.parse(req.body);
+import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
+
+export default withApiAuthRequired(async (req, res) => {
     //Check for different statuses to send proper payload
-    if (process.env.log_in_key==body.secretCode) {
+    const session = await getSession(req,res);
+    const {user} =session;
+    if (user) {
         const friends=[
 
             {
@@ -28,5 +31,4 @@ const UserFriendsAction = async (req, res) => {
       else {
         res.status(400).json([]);
       }
-  };
-  export default UserFriendsAction;
+  });

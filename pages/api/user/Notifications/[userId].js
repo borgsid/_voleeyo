@@ -1,7 +1,9 @@
-const UserNotificationsAction = async (req, res) => {
-    const body=JSON.parse(req.body);
+import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
+
+export default withApiAuthRequired( async (req, res) => {
+    console.log("req",req.query.userId)
     //Check for different statuses to send proper payload
-    if (process.env.log_in_key==body.secretCode) {
+    if (req.query?.userId!=undefined) {
         const userNotifications={
             inbox:[
             {
@@ -63,5 +65,4 @@ const UserNotificationsAction = async (req, res) => {
       else {
         res.status(400).json({});
       }
-  };
-  export default UserNotificationsAction;
+  });

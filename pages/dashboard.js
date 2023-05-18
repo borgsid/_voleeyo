@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import Image from 'next/image';
 import ReactModal from 'react-modal';
 import pencil from "../assets/pencil-edit-button.svg"
-const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav, setHideNav }) => {
+import binIcon from "../assets/bin-delete-button.svg"
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useUser } from "@auth0/nextjs-auth0/client";
+export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNav }) {
+    const {user} = useUser();
     var svgPencil = pencil;
+    var svgBin= binIcon;
     const [events, setEvents] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState();
     const [isEdit, setIsEdit] = useState(false);
@@ -17,15 +22,14 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
     const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
-        setSecretCode(localStorage.getItem("voleeyo_login"))
+        setActiveTab("dashboard")
+        console.log("hide nav before", hideNav)
         setHideNav(false)
-        if (!hideNav) {
-            console.log("hide nave", hideNav)
-        }
+        console.log("hide nav after", hideNav)
         const fetchData = async () => {
-            const dataRaw = await fetch("/api/userEventsCards", {
-                method: "POST",
-                body: JSON.stringify({ secretCode }),
+            const dataRaw = await fetch(`/api/user/EventsCards/${user.sub.split("|")[1]}`,
+            {
+                method:"get"
             });
             const dataResp = await dataRaw.json();
 
@@ -35,10 +39,10 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
                 setEvents(dataResp);
             }
         }
-        if (secretCode) {
-            fetchData();
-            setIsEdit(false);
-        }
+       
+        fetchData();
+        setIsEdit(false);
+       
     }, []);
 
 
@@ -56,16 +60,15 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
             eventName,
             eventLocation,
             eventYear,
-            eventRole,
+            eventRole
         };
         var link = isEdit
-            ? "/api/updateUserEvent"
-            : "/api/saveUserEvent";
-        const response = await fetch(link, {
+            ? "updateUserEvent"
+            : "saveUserEvent";
+        const response = await fetch(`/api/user/${link}/${user.sub.split("|")[1]}`, {
             method: "POST",
             body: JSON.stringify({
-                data,
-                secretCode
+                data
             }),
         });
 
@@ -99,7 +102,7 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
         setModEditEventLocation(null);
         setModEditEventYear(null);
         setModEditEventRole(null);
-        setEventId(null)
+        setEventId(0)
         setIsModalOpen(false)
     }
     const toggleNavMenu = () => {
@@ -113,10 +116,26 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
             setIsNavBarVIsible(true);
         }
     }
+    const deleteCard= async(cardId)=>{
+
+        var resp = await fetch(`/api/user/deleteEvent/${user.sub.split("|")[1]}`,
+        {
+            method:"post",
+            body:JSON.stringify({cardId})
+        })
+
+        if(resp.ok){
+            const currentEvents= await resp.json();
+            setEvents(currentEvents);
+            resetValues();
+        }
+        else
+            alert("There was an error processing your request");
+    }
     return (
         <div className="content">
             <div className="page-header">
-                <h2>Hi Demo User!</h2>
+                <h2>Hi {user.name}, </h2>
                 <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
                     <rect width="100" height="20"></rect>
                     <rect y="30" width="100" height="20"></rect>
@@ -145,6 +164,11 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
             <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={resetValues} ariaHideApp={false}>
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
+                    {eventId>0&&
+                        <div className="delete-icon" onClick={()=>{deleteCard(eventId)}}>
+                            <Image alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />
+                        </div>
+                    }
                         <input type="number" readOnly hidden id="event-id" defaultValue={eventId} />
                         {isEdit
                             ? <h2>Edit Event:</h2>
@@ -191,4 +215,4 @@ const Dashboard = ({ activeTab, setActiveTab, secretCode, setSecretCode, hideNav
         </div>
     );
 }
-export default Dashboard;
+export const getServerSideProps = withPageAuthRequired();

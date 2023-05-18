@@ -1,4 +1,6 @@
-const SendNewMessageActiion = async (req, res) => {
+import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
+
+export default withApiAuthRequired( async (req, res) => {
     const friends=[
         {
             id:2,
@@ -42,17 +44,13 @@ const SendNewMessageActiion = async (req, res) => {
         }
     ];
     const body=JSON.parse(req.body);
-    var resp = await fetch(`${process.env.baseUri}checkSecret`,{
-        method:"post",
-        body:JSON.stringify({secretCode:body.secretCode})
-    })
-   
-    var currentUser=  await resp.json();
-    if (currentUser.status&& body.message!=undefined) {
+    const session = await getSession(req,res);
+    const {user} = session;
+    if (user) {
         body.message.messageFrom={
-            id:currentUser.id,
-            name:currentUser.name,
-            surname: currentUser.surname
+            id:user.sub.split("|")[1],
+            name:user.given_name,
+            surname: user.family_name
         }
         var messageTO= friends.find(x=> x.id== body.message.messageTo.id);
         body.message.messageTo.name=messageTO?.name;
@@ -64,5 +62,4 @@ const SendNewMessageActiion = async (req, res) => {
       else {
         res.status(400).json({});
       }
-  };
-  export default SendNewMessageActiion;
+  });
