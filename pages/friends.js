@@ -9,7 +9,7 @@ const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCo
 
   useEffect(() => {
     const fetchData = async () => {
-      const dataRaw = await fetch(`/api/user/Friends/${user.sub?.split("|")[0]}`, 
+      const dataRaw = await fetch(`/api/user/Friends/${user.sub?.split("|")[1]}`, 
       {
         method: "Get"
       });
@@ -28,7 +28,7 @@ const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCo
   const searchFriendsFunc = async (event) => {
     setSearchText(event?.target?.value ?? searchText);
     if (searchText?.trim().length >= 1) {
-      var resultRaw = await fetch(`/api/search/Friends${user.sub?.split("|")[0]}`, 
+      var resultRaw = await fetch(`/api/search/Friends${user.sub?.split("|")[1]}`, 
       {
         method: "POST",
         body: JSON.stringify({ searchText }),

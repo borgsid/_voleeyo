@@ -1,7 +1,10 @@
-const SearchInAllFriendsAction = (req, res) => {
-    const body=JSON.parse(req.body);
+import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
+
+export default withApiAuthRequired((req, res) => {
     //Check for different statuses to send proper payload
-    if (process.env.log_in_key==body.secretCode && body?.searchText?.trim().length>=1) {
+    if (req.query?.userId) 
+    {
+        const body = JSON.parse(req.body);
         const friends=[
             {
                 id:2,
@@ -56,5 +59,4 @@ const SearchInAllFriendsAction = (req, res) => {
     else {
         res.status(400).json([]);
     }
-  };
-  export default SearchInAllFriendsAction;
+  });
