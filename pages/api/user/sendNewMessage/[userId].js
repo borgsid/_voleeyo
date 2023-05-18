@@ -50,9 +50,8 @@ export default withApiAuthRequired( async (req, res) => {
         body.message.messageFrom={
             id:user.sub.split("|")[1],
             name:user.given_name,
-            surname: user.given_surname
+            surname: user.family_name
         }
-        console.log("hahah",body.message.messageFrom)
         var messageTO= friends.find(x=> x.id== body.message.messageTo.id);
         body.message.messageTo.name=messageTO?.name;
         body.message.messageTo.surname=messageTO?.surname;

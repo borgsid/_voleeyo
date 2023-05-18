@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Image from 'next/image';
-import {useUser} from "@auth0/nextjs-auth0/client";
-const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCode, setSecretCode}) => {
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import {useUser} from "@auth0/nextjs-auth0/client"
+export default  function Friends ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp}) {
   const {user} = useUser();
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
@@ -28,7 +29,7 @@ const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCo
   const searchFriendsFunc = async (event) => {
     setSearchText(event?.target?.value ?? searchText);
     if (searchText?.trim().length >= 1) {
-      var resultRaw = await fetch(`/api/search/Friends${user.sub?.split("|")[1]}`, 
+      var resultRaw = await fetch(`/api/search/Friends/${user.sub?.split("|")[1]}`, 
       {
         method: "POST",
         body: JSON.stringify({ searchText }),
@@ -49,9 +50,9 @@ const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCo
   
 
   const addNewFriend = async (friendId) => {
-    var resp = await fetch("/api/friends/addNewFriend", {
+    var resp = await fetch(`/api/friends/addNewFriends/${user.sub.split("|")[1]}`, {
       method: "POST",
-      body: JSON.stringify({ secretCode, friendId }),
+      body: JSON.stringify({ friendId }),
     });
     if (resp.status === 200) {
       setFriends(await resp.json());
@@ -133,5 +134,5 @@ const Friends = ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp,secretCo
       </div>
   );
 
-}
-export default Friends;
+};
+export const getServerSideProps = withPageAuthRequired();

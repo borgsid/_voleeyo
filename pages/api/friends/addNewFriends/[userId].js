@@ -1,6 +1,10 @@
-const AddNewFriendsAction = async (req, res) => {
+import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
+
+export default withApiAuthRequired(async (req, res) => {
     const body=JSON.parse(req.body);
     //Check for different statuses to send proper payload
+    const session = await getSession(req,res);
+    const {user} = session;
     const allUsers=[
         {
             id:2,
@@ -47,11 +51,14 @@ const AddNewFriendsAction = async (req, res) => {
             isFollowing:false
         }
     ]
-    if (process.env.log_in_key==body.secretCode&& body.friendId) {
+    if (user&& body.friendId) {
         const friends=[];
-        var myFriendsRaw= await fetch(`${process.env.baseUri}userFriends`,{
+        var myFriendsRaw= await fetch(`${process.env.baseUri}user/Friends/${user.sub.split("|")[1]}`,{
             method: "POST",
-            body:JSON.stringify({secretCode:body.secretCode})
+            headers: {
+                'cookie': `${req.headers.cookie}`,
+                'content-type': 'text/plain;charset=UTF-8'
+            }
         });
         if(myFriendsRaw.status==200)
         {
@@ -67,5 +74,4 @@ const AddNewFriendsAction = async (req, res) => {
     else {
         res.status(400).json([]);
     }
-  };
-  export default AddNewFriendsAction;
+  });

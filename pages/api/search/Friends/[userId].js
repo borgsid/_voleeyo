@@ -1,5 +1,10 @@
-const SearchFriendsAction = async (req, res) => {
+import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
+
+export default withApiAuthRequired(async (req, res) => {
     //Check for different statuses to send proper payload
+    const body= JSON.parse(req.body);
+    const session= await getSession(req,res);
+    const {user} =session;
     if (req.query?.userId) {
         const friends=[
             {
@@ -53,9 +58,13 @@ const SearchFriendsAction = async (req, res) => {
             || body.searchText.toLocaleLowerCase().includes(x.name.toLocaleLowerCase())
             || body.searchText.toLocaleLowerCase().includes(x.surname.toLocaleLowerCase())
             ));
-        var myFriendsRaw= await fetch(`${process.env.baseUri}userFriends`,{
-            method: "POST",
-            body:JSON.stringify({secretCode:body.secretCode})
+        
+        var myFriendsRaw= await fetch(`${process.env.baseUri}/user/Friends/${user.sub.split("|")[1]}`,{
+            method: "Get",
+            headers: {
+                'cookie': `${req.headers.cookie}`,
+                'content-type': 'text/plain;charset=UTF-8'
+            }
         });
         if(myFriendsRaw.status==200)
         {
@@ -63,9 +72,10 @@ const SearchFriendsAction = async (req, res) => {
             var clearExistingFriends=searchResults.filter(x=> !myFriendsIds.includes(x.id));
             res.status(200).json(clearExistingFriends);
         }
+        else
+            res.status(400).json([]);
     }
     else {
     res.status(400).json([]);
     }
-  };
-  export default SearchFriendsAction;
+  });
