@@ -1,5 +1,8 @@
-const FriendsNetworkAction = async (req, res) => {
-    const body=JSON.parse(req.body);
+import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
+
+export default withApiAuthRequired(async (req, res) => {
+    const session = await getSession(req,res);
+    const {user} =session;
     //Check for different statuses to send proper payload
     const network={ 
         nodes: [
@@ -25,10 +28,9 @@ const FriendsNetworkAction = async (req, res) => {
             { source: '1', target: '3', value: 1, eventName: 'Community Garden', yearOfParticipation: 2020 },
           ]
     };
-
-    if (process.env.log_in_key==body.secretCode) 
+    
+    if (user) 
         res.status(200).json(network);
     else 
         res.status(400).json([]);
-  };
-  export default FriendsNetworkAction;
+  });
