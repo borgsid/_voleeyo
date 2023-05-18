@@ -11,7 +11,6 @@ import Privacy from './privacy';
 import { useUser } from '@auth0/nextjs-auth0/client';
 export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, setActiveTab, friendLookUp, setFriendLookUp }) =>{
   const { user, error, isLoading } = useUser();
-  const [currnerTab, setCurrentTab] = useState("index");
   const [isTest, setIsTest] = useState(false)
   const canShowTab = () => {
     setActiveTab("dashboard");
@@ -114,13 +113,12 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
       {activeTab == "friendsNetwork" && <FriendsNetwork
         hideNav={hideNav}
         setHideNav={setHideNav}
-        
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         friendLookUp={friendLookUp}
         setFriendLookUp={setFriendLookUp} />}
       {activeTab == "account" && <Account  
-        
+        setActiveTab={setActiveTab}
         activeTab={activeTab}
          />}
       {activeTab == "about" && <About 
@@ -130,7 +128,7 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
       {activeTab == "privacy" && <Privacy
         hideNav={hideNav}
         setHideNav={setHideNav}
-        
+        setActiveTab={setActiveTab}
         activeTab={activeTab}
          />}
     </div>

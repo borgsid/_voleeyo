@@ -5,7 +5,8 @@ import facebookSvg from "../../assets/iconmonstr-facebook-3.svg"
 import twitterSvg from "../../assets/iconmonstr-twitter-1.svg"
 import tik_tokSvg from "../../assets/iconmonstr-audio-thin.svg"
 import { useUser } from "@auth0/nextjs-auth0/client";
-const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUser ,setCurrentUser}) => {
+const NavMenu = ({ activeTab, setActiveTab}) => {
+  const {user}= useUser()
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [surname, setSurname] = useState('');
@@ -26,14 +27,10 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
   useEffect(() => {
 
     const getUserData = () => {
-      console.log("currentUser",currentUser)
-      if (currentUser) {
-        const name = currentUser.name;
-        const surname = currentUser.surname;
-        const email = currentUser.email;
-        setName(name);
-        setSurname(surname);
-        setEmail(email);
+      if (user) {
+        setName(user.given_name);
+        setSurname(user.family_name);
+        setEmail(user.email);
       }
     }
     getUserData();
@@ -56,16 +53,16 @@ const NavMenu = ({ activeTab, setActiveTab, toggleNavMenu, secretCode, currentUs
       <div className="socials">
         <ul>
           <li>
-            <a href="#"><Image alt="social icon" src={instagam.src} width={instagam.width} height={instagam.height} /></a>
+            <a href="https://www.instagr.am/borgsid"><Image alt="social icon" src={instagam.src} width={instagam.width} height={instagam.height} /></a>
           </li>
           <li>
-            <a href="#"><Image alt="social icon" src={facebook} width={facebook.width} height={facebook.height}/></a>
+            <a href="https://www.facebook.com/sydneyisaiah.lukee"><Image alt="social icon" src={facebook} width={facebook.width} height={facebook.height}/></a>
           </li>
           <li>
-            <a href="#"><Image alt="social icon" src={twitter} width={twitter.width} height={twitter.height}/></a>
+            <a href="https://www.twitter.com/borgsid"><Image alt="social icon" src={twitter} width={twitter.width} height={twitter.height}/></a>
           </li>
           <li>
-            <a href="#"><Image alt="social icon" src={tik_tok} width={tik_tok.width} height={tik_tok.height} /></a>
+            <a href="https://www.tiktok.com/discover/borgsid"><Image alt="social icon" src={tik_tok} width={tik_tok.width} height={tik_tok.height} /></a>
           </li>
         </ul>
       </div>
