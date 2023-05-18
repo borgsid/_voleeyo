@@ -102,7 +102,7 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
         setModEditEventLocation(null);
         setModEditEventYear(null);
         setModEditEventRole(null);
-        setEventId(null)
+        setEventId(0)
         setIsModalOpen(false)
     }
     const toggleNavMenu = () => {
@@ -164,7 +164,7 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
             <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={resetValues} ariaHideApp={false}>
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
-                    {eventId&&
+                    {eventId>0&&
                         <div className="delete-icon" onClick={()=>{deleteCard(eventId)}}>
                             <Image alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />
                         </div>

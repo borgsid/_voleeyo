@@ -5,7 +5,7 @@ export default withApiAuthRequired(async (req, res)=> {
 const body = JSON.parse(req.body);
   const session = await getSession(req,res);
   const {user} = session;
-  const myEvents = [
+  var myEvents = [
     {
       id: 1,
       eventName: "Charity Walk",
@@ -50,7 +50,8 @@ const body = JSON.parse(req.body);
     }
   ];
   const eventToRemove= myEvents.find(x=> x.id==body.cardId);
-  myEvents.splice(myEvents.indexOf(eventToRemove),1);
+  console.log("eventToRemove",eventToRemove)
+  myEvents=[... myEvents.filter(x=> x.id!=body.cardId)];
   if (user) {
     res.status(200).json(myEvents);
   } else {
