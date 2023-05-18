@@ -59,7 +59,7 @@ const NavMenu = ({ activeTab, setActiveTab}) => {
             <a href="https://www.facebook.com/sydneyisaiah.lukee"><Image alt="social icon" src={facebook} width={facebook.width} height={facebook.height}/></a>
           </li>
           <li>
-            <a href="https://www.twitter.com/borgsid"><Image alt="social icon" src={twitter} width={twitter.width} height={twitter.height}/></a>
+            <a href="https://www.twitter.com/sydney_lukee"><Image alt="social icon" src={twitter} width={twitter.width} height={twitter.height}/></a>
           </li>
           <li>
             <a href="https://www.tiktok.com/discover/borgsid"><Image alt="social icon" src={tik_tok} width={tik_tok.width} height={tik_tok.height} /></a>
