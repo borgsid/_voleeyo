@@ -17,15 +17,13 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
     const [modEditEventName, setModEditEventName] = useState('');
     const [modEditEventLocation, setModEditEventLocation] = useState('');
     const [modEditEventRole, setModEditEventRole] = useState('');
-    const [modEditEventYear, setModEditEventYear] = useState('');
+    const [modEditEventYear, setModEditEventYear] = useState(0);
     const [eventId, setEventId] = useState(0);
     const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
         setActiveTab("dashboard")
-        console.log("hide nav before", hideNav)
         setHideNav(false)
-        console.log("hide nav after", hideNav)
         const fetchData = async () => {
             const dataRaw = await fetch(`/api/user/EventsCards/${user.sub.split("|")[1]}`,
             {
@@ -55,8 +53,14 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
         const eventRole = document.getElementById("event-role").value;
         const id = document.getElementById("event-id").value;
 
-        const data = {
+        const data = isEdit?{
             id,
+            eventName,
+            eventLocation,
+            eventYear,
+            eventRole
+        }:
+        {
             eventName,
             eventLocation,
             eventYear,
@@ -100,7 +104,7 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
         setIsEdit(false);
         setModEditEventName(null);
         setModEditEventLocation(null);
-        setModEditEventYear(null);
+        setModEditEventYear(0);
         setModEditEventRole(null);
         setEventId(0)
         setIsModalOpen(false)
@@ -190,8 +194,8 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
                         <div className="inline-modal">
                             <label htmlFor="event-year">Event Year:</label>
                             {isEdit
-                                ? <input type="text" id="event-year" defaultValue={modEditEventYear} />
-                                : <input type="text" id="event-year" />
+                                ? <input type="number" id="event-year" defaultValue={modEditEventYear} />
+                                : <input type="number" id="event-year" />
                             }
                         </div>
                         <div className="inline-modal">
