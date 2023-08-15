@@ -4,14 +4,15 @@ const EventModel = (myCurrentEvents) => {
         return []
     
     var tempEvents = []
-    myCurrentEvents.data.map(x => x.attributes).forEach((x, index) => {
+    myCurrentEvents.data.map(x => x).forEach((x, index) => {
         tempEvents.push(
             {
                 id: index + 1,
-                eventName: x.eventName,
-                eventYear: x.eventYear,
-                eventLocation: x.eventLocation,
-                eventRole: x.eventRole
+                eventUID:x.uid,
+                eventName: x.attributes.eventName,
+                eventYear: x.attributes.eventYear,
+                eventLocation: x.attributes.eventLocation,
+                eventRole: x.attributes.eventRole
             }
         );
     });

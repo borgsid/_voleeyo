@@ -19,6 +19,7 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
     const [modEditEventRole, setModEditEventRole] = useState('');
     const [modEditEventYear, setModEditEventYear] = useState(0);
     const [eventId, setEventId] = useState(0);
+    const [eventGuid, setEventGuiD] = useState(null);
     const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
 
     useEffect(() => {
@@ -52,9 +53,11 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
         const eventYear = document.getElementById("event-year").value;
         const eventRole = document.getElementById("event-role").value;
         const id = document.getElementById("event-id").value;
+        const uid = document.getElementById("event-uid").value;
 
         const data = isEdit?{
             id,
+            uid,
             eventName,
             eventLocation,
             eventYear,
@@ -98,6 +101,7 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
         setModEditEventYear(event.eventYear);
         setModEditEventRole(event.eventRole);
         setEventId(event.id)
+        setEventGuiD(event.eventUID)
         setIsModalOpen(true);
     }
     const resetValues = () => {
@@ -107,6 +111,7 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
         setModEditEventYear(0);
         setModEditEventRole(null);
         setEventId(0)
+        setEventGuiD(null)
         setIsModalOpen(false)
     }
     const toggleNavMenu = () => {
@@ -120,12 +125,12 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
             setIsNavBarVIsible(true);
         }
     }
-    const deleteCard= async(cardId)=>{
+    const deleteCard= async(cardGuid)=>{
 
         var resp = await fetch(`/api/user/deleteEvent/${user.sub.split("|")[1]}`,
         {
             method:"post",
-            body:JSON.stringify({cardId})
+            body:JSON.stringify({cardGuid})
         })
 
         if(resp.ok){
@@ -169,11 +174,12 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
                     {eventId>0&&
-                        <div className="delete-icon" onClick={()=>{deleteCard(eventId)}}>
+                       
+                        <div className="delete-icon" onClick={()=>{deleteCard(eventGuid)}}>
                             <Image alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />
                         </div>
                     }
-                        <input type="number" readOnly hidden id="event-id" defaultValue={eventId} />
+                        <input type="text" readOnly hidden id="event-uid" defaultValue={eventGuid} />
                         {isEdit
                             ? <h2>Edit Event:</h2>
                             : <h2>New Event:</h2>}
