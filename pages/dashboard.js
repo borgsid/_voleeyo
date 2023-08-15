@@ -5,6 +5,7 @@ import pencil from "../assets/pencil-edit-button.svg"
 import binIcon from "../assets/bin-delete-button.svg"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import AutocompleteInput from "../pages/components/inputEventsWithSuggestions"
 export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNav }) {
     const {user} = useUser();
     var svgPencil = pencil;
@@ -183,16 +184,14 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
                             : <h2>New Event:</h2>}
                         <div className="inline-modal">
                             <label htmlFor="event-name">Event Name:</label>
-                            {isEdit
-                                ? <input type="text" id="event-name" defaultValue={modEditEventName} />
-                                : <input type="text" id="event-name" />
-                            }
+                            <AutocompleteInput isEdit={isEdit} modEditEventName={modEditEventName}/>
                         </div>
                         <div className="inline-modal">
                             <label htmlFor="event-location">Event Location:</label>
                             {isEdit
                                 ? <input type="text" id="event-location" defaultValue={modEditEventLocation} />
-                                : <input type="text" id="event-location" />
+                                : 
+                                <input type="text" id="event-location" />
                             }
                         </div>
                         <div className="inline-modal">

@@ -5,11 +5,11 @@ export default withApiAuthRequired(async function UpdateUserEventAction(req, res
   //Check for different statuses to send proper payload
   if (req.query?.userId) {
     const model = JSON.parse(req.body).data;
-console.log("model",model)
     var updateEventRaw = await fetch(`${process.env.DESKREE_BASE_URL}/events/${model.uid}`, {
       method: "post",
       body: JSON.stringify(
         {
+          userId:req.query?.userId,
           eventYear: model.eventYear,
           eventLocation: model.eventLocation,
           eventName: model.eventName,
@@ -20,7 +20,7 @@ console.log("model",model)
         "content-type": "application/json; charset=utf-8"
       }
     })
-    console.log("updateEventRaw",updateEventRaw)
+
     if (updateEventRaw.status != 200)
       res.status(400).json([]);
     else {

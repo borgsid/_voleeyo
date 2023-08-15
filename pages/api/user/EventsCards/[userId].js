@@ -6,7 +6,10 @@ export default withApiAuthRequired(async function UserEventsAction(req, res) {
   // Check for different statuses to send proper payload
   const session = await getSession(req, res);
   const { user } = session;
-  var myCurrentEventsRaw = await fetch(`${process.env.DESKREE_BASE_URL}/events`, {
+  var querystring=req.query?.userId!="0"?
+    `?where=[{"attribute":"userId","operator":"=","value":"${req.query?.userId}"}]`
+    :"";
+  var myCurrentEventsRaw = await fetch(`${process.env.DESKREE_BASE_URL}/events${querystring}`, {
     method: "get"
   })
 

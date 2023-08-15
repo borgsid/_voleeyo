@@ -2,8 +2,10 @@ import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
 export default withApiAuthRequired(async (req, res) => {
     const eventModel = JSON.parse(req.body).data;
+    
     //Check for different statuses to send proper payload
     if (req.query?.userId) {
+        eventModel.userId= req.query?.userId;
         //save event then link to user
         var savedEventRaw = await fetch(`${process.env.DESKREE_BASE_URL}/events`, {
             method: "post",
