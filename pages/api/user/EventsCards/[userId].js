@@ -15,6 +15,5 @@ export default withApiAuthRequired(async function UserEventsAction(req, res) {
 
   const myCurrentEvents = await myCurrentEventsRaw.json();
   var resp = EventModel(myCurrentEvents);
-  console.log("resp",resp)
   res.status(200).json(resp);
 });

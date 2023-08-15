@@ -52,11 +52,9 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
         const eventLocation = document.getElementById("event-location").value;
         const eventYear = document.getElementById("event-year").value;
         const eventRole = document.getElementById("event-role").value;
-        const id = document.getElementById("event-id").value;
         const uid = document.getElementById("event-uid").value;
 
         const data = isEdit?{
-            id,
             uid,
             eventName,
             eventLocation,
