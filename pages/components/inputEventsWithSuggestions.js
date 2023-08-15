@@ -40,16 +40,33 @@ const AutocompleteInput = (dataModel) => {
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value.split('-')[0]);
-    handleSuggestionRole(event.target.value.split('-'))
+    handleSuggestionRole(event.target.value.split('-'));
+    handleSuggestionLocation(event.target.value.split('-'));
+    handleSuggestionYear(event.target.value.split('-'));
     setShowSuggestions(true);
   };
 
   const handleSuggestionRole = (nameArray) => {
     const length = nameArray?.length;
     console.log(nameArray)
-    const currentEvent=suggestions.find(x=> x.eventRole.includes(nameArray[length-1]))
+    const currentEvent = suggestions.find(x => x.eventName.includes(nameArray[0])&& x.eventRole?.includes(nameArray[length - 1]))
+    if (currentEvent != undefined)
+      document.getElementById("event-role").value = currentEvent.eventRole;
+  };
+  const handleSuggestionLocation = (nameArray) => {
+    const length = nameArray?.length;
+    console.log(nameArray)
+    const currentEvent = suggestions.find(x => x.eventName.includes(nameArray[0])&&x.eventRole.includes(nameArray[length - 1]))
+    if (currentEvent != undefined)
+      document.getElementById("event-location").value = currentEvent.eventLocation;
+  };
 
-    document.getElementById("event-role").value=currentEvent.eventRole;
+  const handleSuggestionYear = (nameArray) => {
+    const length = nameArray?.length;
+    console.log(nameArray)
+    const currentEvent = suggestions.find(x => x.eventName.includes(nameArray[0])&&x.eventRole.includes(nameArray[length - 1]))
+    if (currentEvent != undefined)
+      document.getElementById("event-year").value = currentEvent.eventYear;
   };
 
   return (
