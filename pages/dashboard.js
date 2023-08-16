@@ -5,7 +5,8 @@ import pencil from "../assets/pencil-edit-button.svg"
 import binIcon from "../assets/bin-delete-button.svg"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import AutocompleteInput from "../pages/components/inputEventsWithSuggestions"
+import AutocompleteInput from "../pages/components/inputEventsWithSuggestions";
+import Loader from "./components/loader"
 export default function Dashboard({ activeTab, setActiveTab, hideNav, setHideNav }) {
     const { user } = useUser();
     var svgPencil = pencil;
@@ -175,22 +176,18 @@ export default function Dashboard({ activeTab, setActiveTab, hideNav, setHideNav
                     ))}
                 </div>
             }
-            {isLoadingCards && <h3>Loading...</h3>}
+            {isLoadingCards && <h3 id="loading-header">Loading <Loader /></h3>}
             <button className="fab" onClick={() => setIsModalOpen(true)}>+</button>
             <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={resetValues} ariaHideApp={false}>
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
                         {eventId > 0 && !isDeleteLoading &&
-
                             <div className="delete-icon" onClick={() => { deleteCard(eventGuid) }}>
                                 <Image alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />
                             </div>
                         }
                         {eventId > 0 && isDeleteLoading &&
-
-                            <div className="delete-icon" >
-                                ...
-                            </div>
+                            <Loader />
                         }
                         <input type="text" readOnly hidden id="event-uid" defaultValue={eventGuid} />
                         {isEdit
@@ -231,7 +228,7 @@ export default function Dashboard({ activeTab, setActiveTab, hideNav, setHideNav
                                 <button type="submit">Add Event</button>
                             }
                             {isLoading &&
-                                <button type="button">...</button>
+                                <Loader />
                             }
                             <button type="button" className="btn-search" onClick={resetValues}>Close</button>
                         </div>

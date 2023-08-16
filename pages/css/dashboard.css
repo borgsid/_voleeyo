@@ -171,6 +171,7 @@
     border: none;
     border-radius: 4px;
     box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
     padding: 8px 12px;
     margin-bottom: 16px;
     width: -webkit-fill-available;
@@ -250,6 +251,35 @@ input[type=number] {
     display: flex;
     gap:50px;
   }
+
+#loading-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+  
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid  rgb(225, 215, 172, 0.9);
+  width: 5px;
+  height: 5px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 @media only screen and (max-width: 600px) {
   .page-header svg{
     display: unset;

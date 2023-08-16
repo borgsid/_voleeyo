@@ -38,8 +38,11 @@ const NavMenu = ({ activeTab, setActiveTab}) => {
 
   return (
     <div className="sidemenu navbar" id="navbar">
-      <div className="profile avatar">
-        <img
+      <div className="profile avatar"onClick={()=>{handleTabClick('profile')}}>
+        <img className="card"
+          style={{
+            boxShadow: activeTab=='profile'? '0px 0px 20px rgb(225, 215, 172, 0.4)':'none',
+          }}
           src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp"
           alt="User profile picture"
         />

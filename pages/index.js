@@ -8,6 +8,7 @@ import FriendsNetwork from './friendsNetwork'
 import Account from './account';
 import About from './about';
 import Privacy from './privacy';
+import Profile from './profile'
 import { useUser } from '@auth0/nextjs-auth0/client';
 export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab, setActiveTab, friendLookUp, setFriendLookUp }) =>{
   const { user, error, isLoading } = useUser();
@@ -21,6 +22,7 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
         case "notifications":
         case "friends":
         case "friendsNetwork":
+        case "profile":
           setShowSideMenu(true);
           break;
         case "index":
@@ -126,6 +128,12 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
         activeTab={activeTab}
          />}
       {activeTab == "privacy" && <Privacy
+        hideNav={hideNav}
+        setHideNav={setHideNav}
+        setActiveTab={setActiveTab}
+        activeTab={activeTab}
+         />}
+        {activeTab == "profile" && <Profile
         hideNav={hideNav}
         setHideNav={setHideNav}
         setActiveTab={setActiveTab}
