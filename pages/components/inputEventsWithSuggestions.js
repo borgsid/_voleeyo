@@ -83,6 +83,7 @@ const AutocompleteInput = (dataModel) => {
             id="event-name"
             list="suggestionsList"
             autoComplete="off"
+            required
           />
           {showSuggestions && (
             <datalist id="suggestionsList">

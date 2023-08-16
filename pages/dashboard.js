@@ -6,10 +6,10 @@ import binIcon from "../assets/bin-delete-button.svg"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import AutocompleteInput from "../pages/components/inputEventsWithSuggestions"
-export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNav }) {
-    const {user} = useUser();
+export default function Dashboard({ activeTab, setActiveTab, hideNav, setHideNav }) {
+    const { user } = useUser();
     var svgPencil = pencil;
-    var svgBin= binIcon;
+    var svgBin = binIcon;
     const [events, setEvents] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState();
     const [isEdit, setIsEdit] = useState(false);
@@ -22,15 +22,18 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
     const [eventId, setEventId] = useState(0);
     const [eventGuid, setEventGuiD] = useState(null);
     const [isNavBarVIsible, setIsNavBarVIsible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+    const [isLoadingCards, setIsLoadingCards] = useState(true);
 
     useEffect(() => {
         setActiveTab("dashboard")
         setHideNav(false)
         const fetchData = async () => {
             const dataRaw = await fetch(`/api/user/EventsCards/${user.sub.split("|")[1]}`,
-            {
-                method:"get"
-            });
+                {
+                    method: "get"
+                });
             const dataResp = await dataRaw.json();
 
             if (dataResp.length === 0) {
@@ -38,36 +41,37 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
             } else {
                 setEvents(dataResp);
             }
+            setIsLoadingCards(false)
+
         }
-       
+
         fetchData();
         setIsEdit(false);
-       
     }, []);
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const secretCode = localStorage.getItem("voleeyo_login");
+        setIsLoading(true)
         const eventName = document.getElementById("event-name").value;
         const eventLocation = document.getElementById("event-location").value;
         const eventYear = document.getElementById("event-year").value;
         const eventRole = document.getElementById("event-role").value;
         const uid = document.getElementById("event-uid").value;
 
-        const data = isEdit?{
+        const data = isEdit ? {
             uid,
             eventName,
             eventLocation,
             eventYear,
             eventRole
-        }:
-        {
-            eventName,
-            eventLocation,
-            eventYear,
-            eventRole
-        };
+        } :
+            {
+                eventName,
+                eventLocation,
+                eventYear,
+                eventRole
+            };
         var link = isEdit
             ? "updateUserEvent"
             : "saveUserEvent";
@@ -81,7 +85,7 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
         if (!response.ok) {
             alert("Failed to save event.");
         }
-
+        setIsLoading(false)
         setEvents(await response.json());
         resetValues();
     };
@@ -124,21 +128,22 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
             setIsNavBarVIsible(true);
         }
     }
-    const deleteCard= async(cardGuid)=>{
-
+    const deleteCard = async (cardGuid) => {
+        setIsDeleteLoading(true);
         var resp = await fetch(`/api/user/deleteEvent/${user.sub.split("|")[1]}`,
-        {
-            method:"post",
-            body:JSON.stringify({cardGuid})
-        })
+            {
+                method: "post",
+                body: JSON.stringify({ cardGuid })
+            })
 
-        if(resp.ok){
-            const currentEvents= await resp.json();
+        if (resp.ok) {
+            const currentEvents = await resp.json();
             setEvents(currentEvents);
             resetValues();
         }
         else
             alert("There was an error processing your request");
+        setIsDeleteLoading(false);
     }
     return (
         <div className="content">
@@ -151,46 +156,55 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
                 </svg>
             </div>
             <h3>These are your Volunteer events, add and edit them as you like.</h3>
-            <div className="dashboard-cards cards-container">
-                {events.map((event, index) => (
-                    <div key={index} className="event-card"
-                        onMouseEnter={() => handleMouseEnter(index)}
-                        onMouseLeave={handleMouseLeave}>
-                        <h4>{event.eventName}</h4>
-                        <p>{event.eventLocation}</p>
-                        <p>{event.eventYear}</p>
-                        <p>{event.eventRole}</p>
-                        {hoverIndex === index && (
-                            <div className="edit-icon" onClick={() => handleEditClick(event)}>
-                                <Image alt="pencil icon" height={svgPencil.height} src={svgPencil.src} width={svgPencil.width} />
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
+            {
+                !isLoadingCards && <div className="dashboard-cards cards-container">
+                    {events.map((event, index) => (
+                        <div key={index} className="event-card"
+                            onMouseEnter={() => handleMouseEnter(index)}
+                            onMouseLeave={handleMouseLeave}>
+                            <h4>{event.eventName}</h4>
+                            <p>{event.eventLocation}</p>
+                            <p>{event.eventYear}</p>
+                            <p>{event.eventRole}</p>
+                            {hoverIndex === index && (
+                                <div className="edit-icon" onClick={() => handleEditClick(event)}>
+                                    <Image alt="pencil icon" height={svgPencil.height} src={svgPencil.src} width={svgPencil.width} />
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            }
+            {isLoadingCards && <h3>Loading...</h3>}
             <button className="fab" onClick={() => setIsModalOpen(true)}>+</button>
             <ReactModal className="modal" isOpen={isModalOpen} onRequestClose={resetValues} ariaHideApp={false}>
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
-                    {eventId>0&&
-                       
-                        <div className="delete-icon" onClick={()=>{deleteCard(eventGuid)}}>
-                            <Image alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />
-                        </div>
-                    }
+                        {eventId > 0 && !isDeleteLoading &&
+
+                            <div className="delete-icon" onClick={() => { deleteCard(eventGuid) }}>
+                                <Image alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />
+                            </div>
+                        }
+                        {eventId > 0 && isDeleteLoading &&
+
+                            <div className="delete-icon" >
+                                ...
+                            </div>
+                        }
                         <input type="text" readOnly hidden id="event-uid" defaultValue={eventGuid} />
                         {isEdit
                             ? <h2>Edit Event:</h2>
                             : <h2>New Event:</h2>}
                         <div className="inline-modal">
                             <label htmlFor="event-name">Event Name:</label>
-                            <AutocompleteInput isEdit={isEdit} modEditEventName={modEditEventName}/>
+                            <AutocompleteInput isEdit={isEdit} modEditEventName={modEditEventName} />
                         </div>
                         <div className="inline-modal">
                             <label htmlFor="event-location">Event Location:</label>
                             {isEdit
                                 ? <input type="text" id="event-location" defaultValue={modEditEventLocation} />
-                                : 
+                                :
                                 <input type="text" id="event-location" />
                             }
                         </div>
@@ -209,9 +223,15 @@ export default function Dashboard ({ activeTab, setActiveTab, hideNav, setHideNa
                             }
                         </div>
                         <div className="buttons-line">
-                            {isEdit
-                                ? <button type="submit">Update Event</button>
-                                : <button type="submit">Add Event</button>
+
+                            {isEdit && !isLoading &&
+                                <button type="submit">Update Event</button>
+                            }
+                            {!isEdit && !isLoading &&
+                                <button type="submit">Add Event</button>
+                            }
+                            {isLoading &&
+                                <button type="button">...</button>
                             }
                             <button type="button" className="btn-search" onClick={resetValues}>Close</button>
                         </div>
