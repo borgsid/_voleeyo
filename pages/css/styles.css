@@ -417,18 +417,6 @@ textarea {
     display: flex;
     place-content: space-between;
   }
-  
-  /* Loading ring animation */
-  .loader {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: inline-block;
-    border-top: 2px solid #FFF;
-    border-right: 2px solid transparent;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-}
 
 @keyframes rotation {
     0% {

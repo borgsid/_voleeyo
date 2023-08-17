@@ -8,6 +8,7 @@ import './css/friendsNetwork.css';
 import './css/account.css'
 import './css/about.css'
 import './css/userProfile.css';
+import './css/navBar.css';
 import { UserProvider } from '@auth0/nextjs-auth0/client';  
 import logo from "../assets/fav icon.png"
 import NavMenu from "./components/navMenu";

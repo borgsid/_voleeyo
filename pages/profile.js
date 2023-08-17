@@ -1,9 +1,22 @@
-import { useState } from 'react';
-const UserProfile = () => {
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState('');
-  const [bio, setBio] = useState('');
+import React, { useState, useEffect } from 'react';
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import Loader from "./components/loader"
+import pencil from "../assets/pencil-edit-button.svg";
+
+export default function UserProfile({setActiveTab}) {
+  const { user } = useUser()
+  const [name, setName] = useState(null);
+  const [surname, setSurname] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [bio, setBio] = useState(null);
+  const [vUid, setVuid] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isCanceling, setIsCanceling] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [disableButtons, setDisableButtons] = useState(false);
+  const [usersNames, setUsersNames] = useState(null)
+  const svgPencil = pencil;
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -13,77 +26,125 @@ const UserProfile = () => {
     setSurname(e.target.value);
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
   const handleBioChange = (e) => {
     setBio(e.target.value);
   };
 
-  const handleSave = () => {
-    // Handle saving the user profile data
-    // You can send an API request or perform any necessary actions here
-    console.log('Saving profile...');
+  async function handleSave() {
+    setIsSaving(true);
+    setDisableButtons(true);
+    var userId = user.sub.split("|")[1];
+    var operation= surname?`update`:`save`;
+    var respRaw = await fetch(`/api/user/userProfileSettings/${operation}/${userId}`, {
+      method: 'post',
+      body: JSON.stringify({
+        v_uid:vUid,
+        surname,
+        name,
+        bio,
+        userId
+      })
+    });
+
+    if (respRaw.status !== 200)
+      alert("Error during data save");
+    
+    setIsSaving(false);
+    setDisableButtons(false);
   };
 
-  const handleCancel = () => {
-    // Handle canceling changes
-    // You might want to reset the form fields to their initial values
-    console.log('Canceling changes...');
+  function handleCancel() {
+    setActiveTab('dashboard')
   };
 
-  const handleDelete = () => {
-    // Handle deleting the user profile
-    // You can prompt the user for confirmation and send a delete request
-    console.log('Deleting profile...');
+  function handleDelete() {
+    setIsDeleting(true)
+    setDisableButtons(true);
   };
 
+  useEffect(() => {
+    const setUserValues = async () => {
+      var respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
+      
+      if (respRaw.status === 200) {
+        var currentUser = await respRaw.json();
+        setName(currentUser.name);
+        setSurname(currentUser.surname);
+        setUsersNames(`${currentUser.name} ${currentUser.surname}`);
+        setBio(currentUser.bio);
+        setVuid(currentUser.v_uid)
+      }
+    }
+
+    setUserValues();
+    setActiveTab('profile')
+  }, []);
+
+  
   return (
-    <div className="user-profile">
-      <div className="main-profile avatar">
-        <img
-          className="card"
-          style={{
-            boxShadow: '0px 0px 20px rgba(225, 215, 172, 0.4)',
-          }}
-          src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp"
-          alt="User profile picture"
-        />
-      </div>
-      <div className="profile-details">
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={handleNameChange}
-        />
-        <input
-          type="text"
-          placeholder="Surname"
-          value={surname}
-          onChange={handleSurnameChange}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={handleEmailChange}
-        />
-        <textarea
-          placeholder="Bio/Description"
-          value={bio}
-          onChange={handleBioChange}
-        />
-        <div className="button-container">
-          <button className="save-button" onClick={handleSave}>Save</button>
-          <button className="cancel-button" onClick={handleCancel}>Cancel</button>
-          <button className="delete-button" onClick={handleDelete}>Delete Profile</button>
-        </div>
+    <div className="profile-margin">
+      <h2>Hi {usersNames}, here you can change your personal info{email ? " eccept for your email" : ""}. </h2>
+      <div className="user-profile">
 
+        <div className="main-profile avatar">
+          <img
+            className=" profile-img"
+            src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp"
+            alt="User profile picture"
+          />
+        </div>
+        {/* <img className="edit-prifile"
+          style={{ alignSelf: 'start' }}
+          src={svgPencil.src} width={svgPencil.width} height={svgPencil.height} /> */}
+        <div className="profile-details">
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={handleNameChange}
+          />
+          <input
+            type="text"
+            placeholder="Surname"
+            value={surname}
+            onChange={handleSurnameChange}
+          />
+          {
+            email && <input
+              readOnly
+              disabled
+              type="email"
+              placeholder="Email"
+              value={email}
+            />
+          }
+          <textarea
+            placeholder="Bio/Description"
+            value={bio}
+            onChange={handleBioChange}
+          />
+          <div className="button-container">
+            {
+              isSaving
+                ? <Loader />
+                : <button className="save-button" disabled={disableButtons} onClick={handleSave}>Save</button>
+            }
+            {
+              isCanceling
+                ? <Loader color={'#2c3e50'} />
+                : <button className="cancel-button" disabled={disableButtons} onClick={handleCancel} >Cancel</button>
+            }
+            {
+              isDeleting
+                ? <Loader color={'grey'} />
+                : <button className="delete-button" disabled={disableButtons} onClick={handleDelete} >Delete Profile</button>
+            }
+          </div>
+
+        </div>
       </div>
     </div>
   );
 };
 
-export default UserProfile;
+export const getServerSideProps = withPageAuthRequired();

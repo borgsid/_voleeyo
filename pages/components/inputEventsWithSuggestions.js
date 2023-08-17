@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const AutocompleteInput = (dataModel) => {
+const AutocompleteEventCard = (dataModel) => {
   const [inputValue, setInputValue] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -48,14 +48,12 @@ const AutocompleteInput = (dataModel) => {
 
   const handleSuggestionRole = (nameArray) => {
     const length = nameArray?.length;
-    console.log(nameArray)
     const currentEvent = suggestions.find(x => x.eventName.includes(nameArray[0])&& x.eventRole?.includes(nameArray[length - 1]))
     if (currentEvent != undefined)
       document.getElementById("event-role").value = currentEvent.eventRole;
   };
   const handleSuggestionLocation = (nameArray) => {
     const length = nameArray?.length;
-    console.log(nameArray)
     const currentEvent = suggestions.find(x => x.eventName.includes(nameArray[0])&&x.eventRole.includes(nameArray[length - 1]))
     if (currentEvent != undefined)
       document.getElementById("event-location").value = currentEvent.eventLocation;
@@ -63,7 +61,6 @@ const AutocompleteInput = (dataModel) => {
 
   const handleSuggestionYear = (nameArray) => {
     const length = nameArray?.length;
-    console.log(nameArray)
     const currentEvent = suggestions.find(x => x.eventName.includes(nameArray[0])&&x.eventRole.includes(nameArray[length - 1]))
     if (currentEvent != undefined)
       document.getElementById("event-year").value = currentEvent.eventYear;
@@ -101,4 +98,4 @@ const AutocompleteInput = (dataModel) => {
   );
 };
 
-export default AutocompleteInput;
+export default AutocompleteEventCard;

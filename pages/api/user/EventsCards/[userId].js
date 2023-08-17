@@ -1,11 +1,10 @@
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import EventModel from "../../Models/eventResponseModel";
-import { json } from "d3";
 
 export default withApiAuthRequired(async function UserEventsAction(req, res) {
-  // Check for different statuses to send proper payload
   const session = await getSession(req, res);
   const { user } = session;
+  //TODO sorting &sorted[param]=eventYear&sorted[how]=asc
   var querystring=req.query?.userId!="0"?
     `?where=[{"attribute":"userId","operator":"=","value":"${req.query?.userId}"}]`
     :"";

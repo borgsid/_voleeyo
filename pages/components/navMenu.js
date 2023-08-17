@@ -4,33 +4,39 @@ import instagamSvg from "../../assets/iconmonstr-instagram-11.svg"
 import facebookSvg from "../../assets/iconmonstr-facebook-3.svg"
 import twitterSvg from "../../assets/iconmonstr-twitter-1.svg"
 import tik_tokSvg from "../../assets/iconmonstr-audio-thin.svg"
+import pencil from "../../assets/pencil-edit-button-yellow.svg";
 import { useUser } from "@auth0/nextjs-auth0/client";
 const NavMenu = ({ activeTab, setActiveTab}) => {
-  const {user}= useUser()
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [surname, setSurname] = useState('');
-
+  const { user } = useUser()
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [surname, setSurname] = useState(null);
+  const svgPencil = pencil;
   var instagam = instagamSvg;
   var facebook = facebookSvg;
   var twitter = twitterSvg;
   var tik_tok = tik_tokSvg;
-
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
   const handleLogout = () => {
-    localStorage.removeItem("voleeyo_login");
-    location.href = "/";
+    location.href = "/api/auth/logout";
   };
-
   useEffect(() => {
-
-    const getUserData = () => {
+    const getUserData = async () => {
       if (user) {
-        setName(user.given_name);
+        setName(user.given_name ?? "N/D");
         setSurname(user.family_name);
         setEmail(user.email);
+
+        if (!user.family_name) {
+          var respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
+          if (respRaw.status == 200) {
+            var currentUser = await respRaw.json();
+            setName(currentUser.name)
+            setSurname(currentUser.surname)
+          }
+        }
       }
     }
     getUserData();
@@ -38,10 +44,10 @@ const NavMenu = ({ activeTab, setActiveTab}) => {
 
   return (
     <div className="sidemenu navbar" id="navbar">
-      <div className="profile avatar"onClick={()=>{handleTabClick('profile')}}>
+      <div className="profile avatar" onClick={() => { handleTabClick('profile') }}>
         <img className="card"
           style={{
-            boxShadow: activeTab=='profile'? '0px 0px 20px rgb(225, 215, 172, 0.4)':'none',
+            boxShadow: activeTab == 'profile' ? '0px 0px 20px rgb(225, 215, 172, 0.4)' : 'none',
           }}
           src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp"
           alt="User profile picture"
@@ -49,6 +55,12 @@ const NavMenu = ({ activeTab, setActiveTab}) => {
       </div>
       <div className="name">
         <h4>{name} {surname}</h4>
+        {
+          !(name && surname) && activeTab != 'profile' &&
+          <Image onClick={() => { handleTabClick("profile") }}
+            className="edit-prifile"
+            alt="pencil icon" height={svgPencil.height} src={svgPencil.src} width={svgPencil.width} />
+        }
       </div>
       <div className="name">
         <p>{email}</p>
@@ -59,10 +71,10 @@ const NavMenu = ({ activeTab, setActiveTab}) => {
             <a href="https://www.instagr.am/borgsid"><Image alt="social icon" src={instagam.src} width={instagam.width} height={instagam.height} /></a>
           </li>
           <li>
-            <a href="https://www.facebook.com/sydneyisaiah.lukee"><Image alt="social icon" src={facebook} width={facebook.width} height={facebook.height}/></a>
+            <a href="https://www.facebook.com/sydneyisaiah.lukee"><Image alt="social icon" src={facebook} width={facebook.width} height={facebook.height} /></a>
           </li>
           <li>
-            <a href="https://www.twitter.com/sydney_lukee"><Image alt="social icon" src={twitter} width={twitter.width} height={twitter.height}/></a>
+            <a href="https://www.twitter.com/sydney_lukee"><Image alt="social icon" src={twitter} width={twitter.width} height={twitter.height} /></a>
           </li>
           <li>
             <a href="https://www.tiktok.com/discover/borgsid"><Image alt="social icon" src={tik_tok} width={tik_tok.width} height={tik_tok.height} /></a>
@@ -85,7 +97,7 @@ const NavMenu = ({ activeTab, setActiveTab}) => {
             Notifications
           </li>
           <li
-            className={`tab ${activeTab === "friends"||activeTab === "friendsNetwork" ? "active" : ""}`}
+            className={`tab ${activeTab === "friends" || activeTab === "friendsNetwork" ? "active" : ""}`}
             onClick={() => handleTabClick("friends")}
           >
             Friends

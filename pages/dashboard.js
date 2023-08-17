@@ -5,9 +5,9 @@ import pencil from "../assets/pencil-edit-button.svg"
 import binIcon from "../assets/bin-delete-button.svg"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import AutocompleteInput from "../pages/components/inputEventsWithSuggestions";
+import AutocompleteEventCard from "../pages/components/inputEventsWithSuggestions";
 import Loader from "./components/loader"
-export default function Dashboard({ activeTab, setActiveTab, hideNav, setHideNav }) {
+export default function Dashboard({setActiveTab, hideNav, setHideNav }) {
     const { user } = useUser();
     var svgPencil = pencil;
     var svgBin = binIcon;
@@ -43,13 +43,11 @@ export default function Dashboard({ activeTab, setActiveTab, hideNav, setHideNav
                 setEvents(dataResp);
             }
             setIsLoadingCards(false)
-
         }
 
         fetchData();
         setIsEdit(false);
     }, []);
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -195,7 +193,7 @@ export default function Dashboard({ activeTab, setActiveTab, hideNav, setHideNav
                             : <h2>New Event:</h2>}
                         <div className="inline-modal">
                             <label htmlFor="event-name">Event Name:</label>
-                            <AutocompleteInput isEdit={isEdit} modEditEventName={modEditEventName} />
+                            <AutocompleteEventCard isEdit={isEdit} modEditEventName={modEditEventName} />
                         </div>
                         <div className="inline-modal">
                             <label htmlFor="event-location">Event Location:</label>

@@ -6,7 +6,7 @@ const Privacy = () => {
     const {user} = useUser();
     const removeData = async () => {
 
-        var resp = await fetch(`/api/userPrivacySettings/${user.sub.split("|")[1]}`, 
+        var resp = await fetch(`/api/userProfileSettings/privacy/${user.sub.split("|")[1]}`, 
         {
             method: "get"
         });
