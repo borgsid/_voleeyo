@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 const AutocompleteEventCard = (dataModel) => {
-  const [inputValue, setInputValue] = useState(null);
+  const [inputValue, setInputValue] = useState(dataModel.isEdit ? dataModel.modEditEventName : '');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
 
   const isEdit = dataModel.isEdit;
   const modEditEventName = dataModel.modEditEventName;
@@ -39,10 +40,11 @@ const AutocompleteEventCard = (dataModel) => {
   }, [inputValue]);
 
   const handleInputChange = (event) => {
-    setInputValue(event.target.value.split('-')[0]);
-    handleSuggestionRole(event.target.value.split('-'));
-    handleSuggestionLocation(event.target.value.split('-'));
-    handleSuggestionYear(event.target.value.split('-'));
+    const value = event.target.value;
+    setInputValue(value);
+    handleSuggestionRole(value.split('-'));
+    handleSuggestionLocation(value.split('-'));
+    handleSuggestionYear(value.split('-'));
     setShowSuggestions(true);
   };
 

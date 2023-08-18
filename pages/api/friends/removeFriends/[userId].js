@@ -13,6 +13,7 @@ export default withApiAuthRequired(async (req, res) => {
                 method: "delete"
             }
         );
+        console.log(modelData.friendUid,JSON.stringify(await removeFriendRaw.json()))
         if (removeFriendRaw.status == 200) {
             var myFriendsRaw = await fetch(`${process.env.baseUri}user/Friends/${user.sub.split("|")[1]}`, {
                 method: "GET",

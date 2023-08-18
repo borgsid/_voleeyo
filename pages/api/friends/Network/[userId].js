@@ -35,10 +35,11 @@ export default withApiAuthRequired(async (req, res) => {
           if (userDetail.meta?.total > 0) {
             var userDetailList=userDetail.data[0];
             //map user events
-            console.log("nodeList",nodeList)
             network.nodes.push( {
-              id: userDetailList.attributes.userId,
-              userName: `${userDetailList.attributes.name} ${userDetailList.attributes.surname}`,
+              id: userDetailList.attributes.userId.replace(/[^a-zA-Z0-9]/g, ''),
+              userName: userDetailList.attributes.userId==req.query?.userId
+              ?'You'
+              :`${userDetailList.attributes.name} ${userDetailList.attributes.surname}`,
               group: 0
             })
           }
@@ -55,8 +56,8 @@ export default withApiAuthRequired(async (req, res) => {
           //create a relation ship between the users and the event
           network.links.push(
             {
-              source: userEvents[i].userId,
-              target: userEvents[i + 1].userId,
+              source: userEvents[i].userId.replace(/[^a-zA-Z0-9]/g, ''),
+              target: userEvents[i + 1].userId.replace(/[^a-zA-Z0-9]/g, ''),
               value: 2,
               eventName: userEvents[i].eventName,
               yearOfParticipation: userEvents[i].eventYear
@@ -64,7 +65,6 @@ export default withApiAuthRequired(async (req, res) => {
           )
         }
       }
-      console.log(network)
       res.status(200).json(network);
     }
     else

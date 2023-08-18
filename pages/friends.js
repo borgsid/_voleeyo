@@ -38,7 +38,7 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
     setSearchText(event?.target?.value ?? searchText);
     setIsLoadingSearch(true)
 
-    if (searchText?.trim().length >= 3) {
+    if (searchText?.trim().length >2) {
       var resultRaw = await fetch(`/api/search/Friends/${user.sub?.split("|")[1]}`,
         {
           method: "POST",
@@ -100,18 +100,6 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
     setIsDeleting(false);
     setIsLoading(false);
   };
-
-  const toggleNavMenu = () => {
-    var navbar = document.getElementById("navbar");
-    // if (isVisible) {
-    //   navbar.style.display = "none";
-    //   setIsNavBarVIsible(false);
-    // }
-    // else {
-    //   navbar.style.display = "unset";
-    //   setIsNavBarVIsible(true);
-    // }
-  }
   return (
 
     <div className="content-container">
@@ -122,7 +110,7 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
             && <Loader color={'#2c3e50'} />
           }
           </h2>
-          <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
+          <svg  viewBox="0 0 100 80" width="40" height="40">
             <rect width="100" height="20"></rect>
             <rect y="30" width="100" height="20"></rect>
             <rect y="60" width="100" height="20"></rect>

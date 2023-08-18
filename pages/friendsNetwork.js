@@ -3,6 +3,7 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import * as d3 from "d3";
 import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
+import Loader from "./components/loader";
 
 export default function FriendsNetwork({
   setActiveTab,
@@ -14,7 +15,6 @@ export default function FriendsNetwork({
   const [selectedId, setSelectedId] = useState(0);
   const [selectedUserName, setSelectedUserName] = useState("");
   const { user } = useUser();
-  var counter= 0;
   useEffect(() => {
     const fetchData = async () => {
       const dataRaw = await fetch(
@@ -61,14 +61,26 @@ export default function FriendsNetwork({
       const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
       d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
       d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
-      if (clickedCircle.id == 1)
+      if (clickedCircle.id ==user.sub.split("|")[1])
         relText.isCurrentUser = true
       relText.connections.push(`- connected to ${data.nodes.find(x => x.id == relatedNodeId).userName} through the: ${rel.eventName}.`);
     });
     setActiveNode(relText);
   }
   if (!data) {
-    return null; 
+    return ( <div className="friends frinds-network">
+    <div className="constnet-container">
+      <div className="content">
+        <div className="page-header">
+        <h2>Your Friends network</h2>
+
+      <center>
+      <Loader/>
+      </center>
+      </div>
+      </div>
+      </div>
+    </div>); 
   }
 
   return (
