@@ -13,7 +13,6 @@ export default withApiAuthRequired(async (req, res) => {
   if (!user)
     res.status(400).json({});
   else {
-    console.log(req.body)
     var savedProfileRaw = await fetch(`${process.env.DESKREE_BASE_URL}/volunteers/${v_uid}`, {
       method: "post",
       body:JSON.stringify({

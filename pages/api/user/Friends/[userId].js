@@ -10,29 +10,30 @@ export default withApiAuthRequired(async (req, res) => {
         if (myfriendsRaw.status == 200) {
             var myfriends = await myfriendsRaw.json();
             if (myfriends.meta?.total > 0) {
-                var queryStringVOlunteers = [];
-                myfriends.data?.map(x =>
-                    queryStringVOlunteers.push({ attribute: "userId", operator: "=", value: `${x.attributes.followingUserId}` })
-                );
-                const userDetailRaw = await fetch(`${process.env.DESKREE_BASE_URL}/volunteers?where=${JSON.stringify(queryStringVOlunteers)}`);
-                if (userDetailRaw.status == 200) {
-                    var userDetail = await userDetailRaw.json();
-                    if (userDetail.meta?.total > 0) {
-                        myfriends.data?.forEach((x, index) => {
-                            var currentTempUser = userDetail.data.find(d => d.attributes.userId == x.attributes.followingUserId);
-                            friends.push({
-                                id: index + 1,
-                                userId: currentTempUser.attributes.userId,
-                                name: currentTempUser.attributes.name,
-                                surname: currentTempUser.attributes.surname,
-                                profilePic: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                                bio: currentTempUser.attributes.bio,
-                                f_uid:x.uid
-                            });
-                        })
+                myfriends.data?.map(async (x) => {
+                    var queryStringVOlunteers = [{ attribute: "userId", operator: "=", value: `${x.attributes.followingUserId}` }];
+                    const userDetailRaw = await fetch(`${process.env.DESKREE_BASE_URL}/volunteers?where=${JSON.stringify(queryStringVOlunteers)}`);
+                    if (userDetailRaw.status == 200) {
+                        var userDetail = await userDetailRaw.json();
+                        console.log("userDetail",userDetail)
+                        if (userDetail.meta?.total > 0) {
+                            myfriends.data?.forEach((x, index) => {
+                                var currentTempUser = userDetail.data.find(d => d.attributes.userId == x.attributes.followingUserId);
+                                friends.push({
+                                    id: index + 1,
+                                    userId: currentTempUser.attributes.userId,
+                                    name: currentTempUser.attributes.name,
+                                    surname: currentTempUser.attributes.surname,
+                                    profilePic: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
+                                    bio: currentTempUser.attributes.bio,
+                                    f_uid: x.uid
+                                });
+                            })
 
+                        }
                     }
                 }
+                );
             }
         }
         res.status(200).json(friends);

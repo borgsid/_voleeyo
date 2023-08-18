@@ -76,7 +76,7 @@ export default function FriendsNetwork ({ activeTab, setActiveTab, secretCode,fr
           <div className="page-header">
             <h2>Your Friends network</h2>
             <div className="card-header">
-              <span>Drag or click on <b>{selectedUserName}</b> to find out how you can start network.</span>
+              <span>Drag or click on <b>{selectedUserName}</b> to find out how you can start to network.</span>
             </div>
             <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
               <rect width="100" height="20"></rect>

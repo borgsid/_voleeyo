@@ -12,7 +12,8 @@ const EventModel = (myCurrentEvents) => {
                 eventName: x.attributes.eventName,
                 eventYear: x.attributes.eventYear,
                 eventLocation: x.attributes.eventLocation,
-                eventRole: x.attributes.eventRole
+                eventRole: x.attributes.eventRole,
+                userId:x.attributes.userId
             }
         );
     });

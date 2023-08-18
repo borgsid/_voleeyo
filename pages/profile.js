@@ -45,7 +45,7 @@ export default function UserProfile({setActiveTab}) {
         userId
       })
     });
-
+    console.log(respRaw)
     if (respRaw.status !== 200)
       alert("Error during data save");
     

@@ -5,8 +5,10 @@ export default withApiAuthRequired(async (req, res) => {
   const {name} = JSON.parse(req.body);
   const {surname} = JSON.parse(req.body);
   const {bio} = JSON.parse(req.body);
-    const session = await getSession(req, res);
+  
+  const session = await getSession(req, res);
   const { user } = session;
+  const userId=   user.sub.split("|")[1];
   if (!user)
     res.status(400).json({});
   else {
@@ -15,12 +17,14 @@ export default withApiAuthRequired(async (req, res) => {
       body:JSON.stringify({
         name,
         surname,
-        bio
+        bio,
+        userId
       }),
       headers:{
         "content-type":"application/json; charset=utf-8"
     }
     })
+    console.log(savedProfileRaw)
     if (savedProfileRaw.status != 200)
       res.status(400).json({});
     else {
