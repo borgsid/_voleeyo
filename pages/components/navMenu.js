@@ -9,8 +9,8 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 const NavMenu = ({ activeTab, setActiveTab}) => {
   const { user } = useUser()
   const [name, setName] = useState(null);
-  const [email, setEmail] = useState(null);
   const [surname, setSurname] = useState(null);
+  const [email, setEmail] = useState(null);
   const svgPencil = pencil;
   var instagam = instagamSvg;
   var facebook = facebookSvg;
@@ -25,18 +25,15 @@ const NavMenu = ({ activeTab, setActiveTab}) => {
   useEffect(() => {
     const getUserData = async () => {
       if (user) {
-        setName(user.given_name ?? "N/D");
-        setSurname(user.family_name);
-        setEmail(user.email);
 
-        if (!user.family_name) {
-          var respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
-          if (respRaw.status == 200) {
-            var currentUser = await respRaw.json();
-            setName(currentUser.name)
-            setSurname(currentUser.surname)
-          }
+        var respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
+        if (respRaw.status == 200) {
+          var currentUser = await respRaw.json();
+          setName(currentUser.name)
+          setSurname(currentUser.surname)
         }
+        else
+          setActiveTab('profile');
       }
     }
     getUserData();

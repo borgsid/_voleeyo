@@ -34,7 +34,7 @@ export default function UserProfile({setActiveTab}) {
     setIsSaving(true);
     setDisableButtons(true);
     var userId = user.sub.split("|")[1];
-    var operation= surname?`update`:`save`;
+    var operation= vUid?`update`:`save`;
     var respRaw = await fetch(`/api/user/userProfileSettings/${operation}/${userId}`, {
       method: 'post',
       body: JSON.stringify({
@@ -45,12 +45,13 @@ export default function UserProfile({setActiveTab}) {
         userId
       })
     });
-    console.log(respRaw)
     if (respRaw.status !== 200)
       alert("Error during data save");
-    
-    setIsSaving(false);
-    setDisableButtons(false);
+    else{
+      setActiveTab('dashboard')
+      // setIsSaving(false);
+      // setDisableButtons(false);
+    }
   };
 
   function handleCancel() {
@@ -83,7 +84,11 @@ export default function UserProfile({setActiveTab}) {
   
   return (
     <div className="profile-margin">
+      <center>{
+        !usersNames&&<Loader color={'#2c3e50'}/>
+        }
       <h2>Hi {usersNames}, here you can change your personal info{email ? " eccept for your email" : ""}. </h2>
+      </center>
       <div className="user-profile">
 
         <div className="main-profile avatar">
