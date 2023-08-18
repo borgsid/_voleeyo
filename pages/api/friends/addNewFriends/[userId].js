@@ -13,8 +13,8 @@ export default withApiAuthRequired(async (req, res) => {
                 method: "post",
                 body: JSON.stringify(
                     {
-                        followingUserId: modelData.friendUserId,
-                        followedUserId: user.sub.split("|")[1]
+                        followingUserId: user.sub.split("|")[1],
+                        followedUserId: modelData.friendUserId
                     }
                 ),
                 headers: {
