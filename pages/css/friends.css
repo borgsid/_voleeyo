@@ -109,3 +109,10 @@ button.friend-btn-network[type="button"]{
   display: flex;
   gap:10px;
 }
+.card-body.my-friends{
+  display: flex;
+    justify-content: space-between;
+}
+.card-body.my-friends img{
+  cursor: pointer;
+}

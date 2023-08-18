@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import Loader from "./components/loader";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { useUser } from "@auth0/nextjs-auth0/client"
+import { useUser } from "@auth0/nextjs-auth0/client";
+import Image from 'next/image';
+import binIcon from "../assets/bin-delete-button.svg"
+
 export default function Friends({ activeTab, setActiveTab, friendLookUp, setFriendLookUp }) {
   const { user } = useUser();
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingSearch, setIsLoadingSearch] = useState(false)
-
+  const [isLoadingSearch, setIsLoadingSearch] = useState(false);
+  const [isDeleting,setIsDeleting]=useState(false)
+  const svgBin=binIcon;
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
@@ -74,6 +78,29 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
     setSearchFriends([]);
     setIsLoading(false);
   };
+
+  const removeFriend = async (friendUid) => {
+    setIsLoading(true);
+    setIsDeleting(true);
+    var resp = await fetch(`/api/friends/removeFriends/${user.sub.split("|")[1]}`, {
+      method: "POST",
+      body: JSON.stringify({ friendUid }),
+    });
+    if (resp.status === 200) {
+      setFriends(await resp.json());
+      searchFriends.map((x) => {
+        if (x.id == friendUid)
+          x.isFollowing = true;
+      })
+      setSearchFriends(searchFriends)
+    } else {
+      alert("we couldnt remove this friend at this time");
+    }
+    setSearchFriends([]);
+    setIsDeleting(false);
+    setIsLoading(false);
+  };
+
   const toggleNavMenu = () => {
     var navbar = document.getElementById("navbar");
     // if (isVisible) {
@@ -112,8 +139,15 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
                   <p className="card-subtitle">{friend.email}</p>
                 </div>
               </div>
-              <div className="card-body">
-                <button className="friend-btn-network" type="button" onClick={() => { setActiveTab("friendsNetwork"); setFriendLookUp(friend); }}>See Network</button>
+              <div className="card-body my-friends">
+                <button className="friend-btn-network" 
+                  type="button" 
+                  onClick={() => { setActiveTab("friendsNetwork"); 
+                                    setFriendLookUp(friend); }}>See Network</button>
+                  {!isDeleting&&<Image 
+                  onClick={()=>{removeFriend(friend.f_uid)}}
+                  alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />}
+                  {isDeleting&&<Loader color={'#2c3e50'}/>}
               </div>
             </div>
           ))}

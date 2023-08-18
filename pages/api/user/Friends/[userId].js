@@ -26,7 +26,8 @@ export default withApiAuthRequired(async (req, res) => {
                                 name: currentTempUser.attributes.name,
                                 surname: currentTempUser.attributes.surname,
                                 profilePic: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                                bio: currentTempUser.attributes.bio
+                                bio: currentTempUser.attributes.bio,
+                                f_uid:x.uid
                             });
                         })
 
