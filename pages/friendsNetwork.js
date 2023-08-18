@@ -1,40 +1,49 @@
 import { useEffect, useState } from "react";
-import {withPageAuthRequired} from "@auth0/nextjs-auth0"
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import * as d3 from 'd3';
+import * as d3 from "d3";
 import FriendEventsForceLayout from "./components/friendEventsForceLayout ";
-export default function FriendsNetwork ({ activeTab, setActiveTab, secretCode,friendLookUp,setFriendLookUp}) {
+
+export default function FriendsNetwork({
+  setActiveTab,
+  friendLookUp,
+  setFriendLookUp,
+}) {
   const [data, setData] = useState(null);
   const [activeNode, setActiveNode] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
-  const [selectedUserName, setSelectedUserName] = useState("")
-  const {user} = useUser();
+  const [selectedUserName, setSelectedUserName] = useState("");
+  const { user } = useUser();
+  var counter= 0;
   useEffect(() => {
-    setActiveTab("friendsNetwork")
     const fetchData = async () => {
-      const dataRaw = await fetch(`/api/friends/Network/${user.sub.split("|")[1]}`,
-      {
-        method: "Get"
-      });
+      const dataRaw = await fetch(
+        `/api/friends/Network/${user.sub.split("|")[1]}`,
+        {
+          method: "Get",
+        }
+      );
       const dataResp = await dataRaw.json();
       if (dataResp != undefined) {
         setData(dataResp);
-        d3.selectAll('.node').select('circle').attr('fill', 'red');
-
+        d3.selectAll(".node").select("circle").attr("fill", "red");
       } else {
         setData(null);
       }
     };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     const updateSelectedNode = () => {
       const idParam = friendLookUp.id;
       const userName = `${friendLookUp.name} ${friendLookUp.surname}`;
-
       setSelectedId(idParam);
       setSelectedUserName(userName);
     };
-    fetchData();
     updateSelectedNode();
-  }, [selectedId,activeTab]);
+  }, [friendLookUp.id, friendLookUp.name, friendLookUp.surname]);
+
   const handleNodeClick = (d) => {
     d3.selectAll('.node').select('circle').attr('fill', '#2c3e50');
     // Select relationships for clicked node
@@ -46,7 +55,7 @@ export default function FriendsNetwork ({ activeTab, setActiveTab, secretCode,fr
       clickedUser: clickedCircle.userName,
       connections: [],
       isCurrentUser: false,
-      userId:clickedCircle.id
+      userId: clickedCircle.id
     };
     relationships.forEach(rel => {
       const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
@@ -58,17 +67,10 @@ export default function FriendsNetwork ({ activeTab, setActiveTab, secretCode,fr
     });
     setActiveNode(relText);
   }
-  const toggleNavMenu = () => {
-    var navbar = document.getElementById("navbar");
-    // if (isVisible) {
-    //   navbar.style.display = "none";
-    //   setIsNavBarVIsible(false);
-    // }
-    // else {
-    //   navbar.style.display = "unset";
-    //   setIsNavBarVIsible(true);
-    // }
+  if (!data) {
+    return null; 
   }
+
   return (
     <div className="friends frinds-network">
       <div className="constnet-container">
@@ -78,7 +80,7 @@ export default function FriendsNetwork ({ activeTab, setActiveTab, secretCode,fr
             <div className="card-header">
               <span>Drag or click on <b>{selectedUserName}</b> to find out how you can start to network.</span>
             </div>
-            <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
+            <svg viewBox="0 0 100 80" width="40" height="40">
               <rect width="100" height="20"></rect>
               <rect y="30" width="100" height="20"></rect>
               <rect y="60" width="100" height="20"></rect>
@@ -106,7 +108,7 @@ export default function FriendsNetwork ({ activeTab, setActiveTab, secretCode,fr
                   {activeNode.connections.map((node, index) => (
                     <span key={index}>{node}</span>
                   ))}
-                  {!activeNode.isCurrentUser && <button type="button" className="friend-network" onClick={() => { setActiveTab("notifications"); setFriendLookUp({receiverUserId: activeNode.userId,receiverUserName:activeNode.clickedUser})}}>Contact {activeNode.clickedUser}</button>}
+                  {!activeNode.isCurrentUser && <button type="button" className="friend-network" onClick={() => { setActiveTab("notifications"); setFriendLookUp({ receiverUserId: activeNode.userId, receiverUserName: activeNode.clickedUser }) }}>Contact {activeNode.clickedUser}</button>}
                 </div>
               </div>)}
           </div>

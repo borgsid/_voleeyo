@@ -10,7 +10,10 @@ const FriendEventsForceLayout = ({ data, width, height, onNodeClick ,selectedId}
       .attr('height', height)
     
     svg.selectAll('*').remove(); // Clear SVG element
-
+    if (!data.nodes.length) {
+      // Handle the case where there are no nodes (no similar nodes)
+      return;
+    }
     const simulation = d3.forceSimulation(data.nodes)
       .force('link', d3.forceLink().id(d => d.id).distance(150).links(data.links))
       .force('charge', d3.forceManyBody())

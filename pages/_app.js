@@ -17,14 +17,9 @@ function App({ Component, pageProps }) {
   const [activeTab, setActiveTab] = useState("index");
   const [isVisible, setIsVisible] = useState(false);
   const [hideNav, setHideNav] = useState(true);
-  const [secretCode, setSecretCode] = useState("")
   const [friendLookUp, setFriendLookUp] = useState({});
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const [currentUser, setCurrentUser] = useState({})
   
-  useEffect(() => {
-      setIsVisible(true);
-  }, [hideNav, showSideMenu]);
   const toggleNavMenuFunc = () => {
     if (isVisible) {
       setIsVisible(false);

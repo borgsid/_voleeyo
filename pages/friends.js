@@ -32,7 +32,7 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
     };
 
     fetchData();
-  }, [activeTab, friendLookUp]);
+  }, [friendLookUp]);
 
   const searchFriendsFunc = async (event) => {
     setSearchText(event?.target?.value ?? searchText);

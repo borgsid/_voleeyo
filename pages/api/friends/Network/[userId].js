@@ -25,7 +25,8 @@ export default withApiAuthRequired(async (req, res) => {
       var userEvents = await userEventsRaw.json();
       var userIds = [... new Set(userEvents.map(x => x.userId))];
       //get user detail
-      userIds.forEach(async (x, i) => {
+      await Promise.all(
+      userIds.map(async (x, i) => {
         var queryStringVolunteers = [{ attribute: "userId", operator: "=", value: x }];
         var linkVol = `${process.env.DESKREE_BASE_URL}/volunteers?where=${JSON.stringify(queryStringVolunteers)}`;
         const userDetailRaw = await fetch(linkVol);
@@ -34,15 +35,15 @@ export default withApiAuthRequired(async (req, res) => {
           if (userDetail.meta?.total > 0) {
             var userDetailList=userDetail.data[0];
             //map user events
-            nodeList.push( {
+            console.log("nodeList",nodeList)
+            network.nodes.push( {
               id: userDetailList.attributes.userId,
               userName: `${userDetailList.attributes.name} ${userDetailList.attributes.surname}`,
               group: 0
             })
-            // console.log( userDetail.data[0].attributes)
           }
         }
-      });
+      }));
      
       //check every event name replace with the first
       var eventArrylength = userEvents.length - 1;
@@ -63,8 +64,7 @@ export default withApiAuthRequired(async (req, res) => {
           )
         }
       }
-      network.nodes=nodeList;
-      // console.log(network)
+      console.log(network)
       res.status(200).json(network);
     }
     else
