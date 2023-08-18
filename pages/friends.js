@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
-import Image from 'next/image';
+import Loader from "./components/loader";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import {useUser} from "@auth0/nextjs-auth0/client"
-export default  function Friends ({ activeTab, setActiveTab,friendLookUp,setFriendLookUp}) {
-  const {user} = useUser();
+import { useUser } from "@auth0/nextjs-auth0/client"
+export default function Friends({ activeTab, setActiveTab, friendLookUp, setFriendLookUp }) {
+  const { user } = useUser();
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingSearch, setIsLoadingSearch] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
-      const dataRaw = await fetch(`/api/user/Friends/${user.sub?.split("|")[1]}`, 
-      {
-        method: "Get"
-      });
+      setIsLoading(true)
+      const dataRaw = await fetch(`/api/user/Friends/${user.sub?.split("|")[1]}`,
+        {
+          method: "Get"
+        });
       const dataResp = await dataRaw.json();
 
       if (dataResp.length === 0) {
@@ -21,33 +24,36 @@ export default  function Friends ({ activeTab, setActiveTab,friendLookUp,setFrie
       } else {
         setFriends(dataResp);
       }
+      setIsLoading(false)
     };
-    
+
     fetchData();
-  },[activeTab,friendLookUp]);
-  
+  }, [activeTab, friendLookUp]);
+
   const searchFriendsFunc = async (event) => {
     setSearchText(event?.target?.value ?? searchText);
-    if (searchText?.trim().length >= 1) {
-      var resultRaw = await fetch(`/api/search/Friends/${user.sub?.split("|")[1]}`, 
-      {
-        method: "POST",
-        body: JSON.stringify({ searchText }),
-      });
+    setIsLoadingSearch(true)
+
+    if (searchText?.trim().length >= 3) {
+      var resultRaw = await fetch(`/api/search/Friends/${user.sub?.split("|")[1]}`,
+        {
+          method: "POST",
+          body: JSON.stringify({ searchText }),
+        });
 
       if (resultRaw.status === 200) {
         setSearchFriends(await resultRaw.json());
       }
     }
+    else
+      setSearchFriends([])
+    setIsLoadingSearch(false)
   };
-
   const searchButton = () => {
     if (searchText?.trim().length >= 1) {
       searchFriendsFunc();
     }
   };
-
-  
 
   const addNewFriend = async (friendId) => {
     var resp = await fetch(`/api/friends/addNewFriends/${user.sub.split("|")[1]}`, {
@@ -56,9 +62,9 @@ export default  function Friends ({ activeTab, setActiveTab,friendLookUp,setFrie
     });
     if (resp.status === 200) {
       setFriends(await resp.json());
-      searchFriends.map((x)=> {
-        if(x.id==friendId)
-          x.isFollowing=true;
+      searchFriends.map((x) => {
+        if (x.id == friendId)
+          x.isFollowing = true;
       })
       setSearchFriends(searchFriends)
     } else {
@@ -77,61 +83,67 @@ export default  function Friends ({ activeTab, setActiveTab,friendLookUp,setFrie
     // }
   }
   return (
-   
-      <div className="content-container">
-        <div className="content">
-          <div className="page-header">
-            <h2>Your friends</h2>
-            <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
-              <rect width="100" height="20"></rect>
-              <rect y="30" width="100" height="20"></rect>
-              <rect y="60" width="100" height="20"></rect>
-            </svg>
-          </div>
-          <hr />
-          <div className="friends-cards cards-container">
-            {friends.map((friend) => (
-              <div className="friend-card" key={friend.id}>
-                <div className="card-header">
-                  <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
-                  <div>
-                    <h4>{friend.name} {friend.surname}</h4>
-                    <p className="card-subtitle">{friend.email}</p>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <button className="friend-btn-network" type="button" onClick={() => { setActiveTab("friendsNetwork");setFriendLookUp(friend);}}>See Network</button>
-                </div>
-              </div>
-            ))}
-          </div>
+
+    <div className="content-container">
+      <div className="content">
+        <div className="page-header">
+          <h2 className="friends-header-text">Your friends{
+            isLoading
+            && <Loader color={'#2c3e50'} />
+          }
+          </h2>
+          <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
+            <rect width="100" height="20"></rect>
+            <rect y="30" width="100" height="20"></rect>
+            <rect y="60" width="100" height="20"></rect>
+          </svg>
         </div>
-        <div className="content">
-          <h2>Search for friends</h2>
-          <div className="search-bar">
-            <input type="text" placeholder="Search friends..." onChange={searchFriendsFunc} />
-            <button className="btn-search" onClick={searchButton}>Search</button>
-          </div>
-          <h3>Search results</h3>
-          {/*Search results section */}
-          <div className="friends-cards cards-container">
-            {searchFriends.map((friend) => (
-              <div className="friend-card" key={friend.id}>
-                <div className="card-header">
-                  <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
-                  <div>
-                    <h4>{friend.name} {friend.surname}</h4>
-                    <p className="card-subtitle">{friend.email}</p>
-                  </div>
-                </div>
-                <div className="card-footer">
-                  { !friend.isFollowing&& <button className="add-friend-btn" onClick={() => { addNewFriend(friend.id) }}>Add Friend</button>}
+        <hr />
+        <div className="friends-cards cards-container">
+          {friends.map((friend, index) => (
+            <div className="friend-card" key={friend.id}>
+              <div className="card-header">
+                <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
+                <div>
+                  <h4>{friend.name} {friend.surname}</h4>
+                  <p className="card-subtitle">{friend.email}</p>
                 </div>
               </div>
-            ))}
-          </div>
+              <div className="card-body">
+                <button className="friend-btn-network" type="button" onClick={() => { setActiveTab("friendsNetwork"); setFriendLookUp(friend); }}>See Network</button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+      <div className="content">
+        <h2>Search for friends</h2>
+        <div className="search-bar">
+          <input type="text" placeholder="Search friends..." onChange={searchFriendsFunc} />
+          <button className="btn-search" onClick={searchButton}>Search</button>
+        </div>
+        <h3 className="friends-header-text">Search results
+         { isLoadingSearch&&<Loader color={'#2c3e50'}/>}
+          </h3>
+        {/*Search results section */}
+        <div className="friends-cards cards-container">
+          {searchFriends.map((friend) => (
+            <div className="friend-card" key={friend.id}>
+              <div className="card-header">
+                <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
+                <div>
+                  <h4>{friend.name} {friend.surname}</h4>
+                  <p className="card-subtitle">{friend.email}</p>
+                </div>
+              </div>
+              <div className="card-footer">
+                <button className="add-friend-btn" onClick={() => { addNewFriend(friend.userId) }}>Add Friend</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 
 };

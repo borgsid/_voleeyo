@@ -134,11 +134,11 @@ export default function UserProfile({setActiveTab}) {
                 ? <Loader color={'#2c3e50'} />
                 : <button className="cancel-button" disabled={disableButtons} onClick={handleCancel} >Cancel</button>
             }
-            {
+            {/* TODO {
               isDeleting
                 ? <Loader color={'grey'} />
                 : <button className="delete-button" disabled={disableButtons} onClick={handleDelete} >Delete Profile</button>
-            }
+            } */}
           </div>
 
         </div>

@@ -105,3 +105,7 @@ button.friend-btn-network[type="button"]{
   border-top: 1px solid #ccc;
   margin: 1rem 0;
 }
+.friends-header-text{
+  display: flex;
+  gap:10px;
+}
