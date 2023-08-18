@@ -38,7 +38,7 @@ export default withApiAuthRequired(async (req, res) => {
             method: "Get",
             headers: {
                 'cookie': `${req.headers.cookie}`,
-                'content-type': 'text/plain;charset=UTF-8'
+                'content-type': 'application/json'
             }
         });
         if (myFriendsRaw.status == 200) {

@@ -27,6 +27,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
+    gap:8px;
   }
   
   .card-header h5 {

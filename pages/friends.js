@@ -55,21 +55,24 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
     }
   };
 
-  const addNewFriend = async (friendId) => {
+  const addNewFriend = async (friendUserId) => {
+    setIsLoading(true)
     var resp = await fetch(`/api/friends/addNewFriends/${user.sub.split("|")[1]}`, {
       method: "POST",
-      body: JSON.stringify({ friendId }),
+      body: JSON.stringify({ friendUserId }),
     });
     if (resp.status === 200) {
       setFriends(await resp.json());
       searchFriends.map((x) => {
-        if (x.id == friendId)
+        if (x.id == friendUserId)
           x.isFollowing = true;
       })
       setSearchFriends(searchFriends)
     } else {
-      console.log("we couldnt add this friend at this time");
+      alert("we couldnt add this friend at this time");
     }
+    setSearchFriends([]);
+    setIsLoading(false);
   };
   const toggleNavMenu = () => {
     var navbar = document.getElementById("navbar");
