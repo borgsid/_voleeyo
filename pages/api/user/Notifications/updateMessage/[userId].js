@@ -5,6 +5,7 @@ export default withApiAuthRequired(async (req, res) => {
     const { user } = session;
     if (user) {
         const message = JSON.parse(req.body).message;
+        console.log("message",message)
         //Check for different statuses to send proper payload
         var linkNotifications = `${process.env.DESKREE_BASE_URL}/notifications/${message.id}`;
         const userNotificationsRaw = await fetch(linkNotifications,

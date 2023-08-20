@@ -42,7 +42,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     fetchData();
   },[]);
   const updateMessageStatus=async (e)=>{
-        await fetch(`/api/user/setMessageRead/${user.sub.split("|")[1]}`,
+        await fetch(`/api/user/Notifications/updateMessage/${user.sub.split("|")[1]}`,
         {
           method:"post",
           body:JSON.stringify({message:e})
@@ -65,7 +65,8 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     e.preventDefault();
     // handle reply submission logic
     selectedMessage.userMessage=reply;
-    await fetch(`/api/user/setMessageRead/${user.sub.split("|")[1]}`,
+    console.log("selectedMessage",selectedMessage)
+    await fetch(`/api/user/Notifications/updateMessage/${user.sub.split("|")[1]}`,
     {
       method:"post",
       body:JSON.stringify({message:selectedMessage})
@@ -87,14 +88,15 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
       messageFrom:{/*server gets the logges userinfo*/},
       messageTo:{
         id:receiverUserId, 
-        isFollowing:false
+        isFollowing:false,
+        receiverUserName
       },
       userMessage: newMessage,
       isInbox:true
     };
 
     // handle reply submission logic
-    const response=await fetch(`/api/user/sendNewMessage/${user.sub.split("|")[1]}`,
+    const response=await fetch(`/api/user/Notifications/sendNewMessage/${user.sub.split("|")[1]}`,
     {
       method:"post",
       body:JSON.stringify({message:myMessage})
@@ -103,7 +105,6 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     clearNewMessageModal();
     if(response.ok)
       {
-        // notifications.sent.pop()
         notifications.sent.push((await response.json()).message)
         setNotifications({...notifications});
       }
@@ -147,9 +148,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     if(e.key=="Backspace")
       setHideFilteredList(false);
     if(e.target.value?.length>1){
-      const secretCode = localStorage.getItem("voleeyo_login");
       const searchText = e.target.value.toLowerCase();
-    
       var friendsRaw= await fetch(`/api/search/InAllFriends/${user.sub.split("|")[1]}`,
       {
         method: "POST",
@@ -163,7 +162,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
   };
   const handleFriendSelect=(friend)=>{
     setReceiverUserName(`${friend.name} ${friend.surname}`)
-    setReceiverUserId(friend.id)
+    setReceiverUserId(friend.userId)
     setHideFilteredList(true)
   }
   return (
@@ -310,7 +309,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
               <div className="modal-body">
                 <div className="form-group">
                   <label htmlFor="friend">To:</label>
-                  <input type="text" id="friend" name="friend" value={receiverUserName} onChange={setReceiverName} onKeyUp={handleFilterFriends}/>
+                  <input autocomplete="off" type="text" id="friend" name="friend" value={receiverUserName} onChange={setReceiverName} onKeyUp={handleFilterFriends}/>
                   {!hideFilteredList && filteredFriends.length > 0 ? (
                       <div className="dropdown-list">
                         {filteredFriends.map((friend) => (
