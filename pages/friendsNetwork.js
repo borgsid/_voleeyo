@@ -61,26 +61,25 @@ export default function FriendsNetwork({
       const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
       d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
       d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
-      if (clickedCircle.id ==user.sub.split("|")[1])
+      if (clickedCircle.id == user.sub.split("|")[1])
         relText.isCurrentUser = true
       relText.connections.push(`- connected to ${data.nodes.find(x => x.id == relatedNodeId).userName} through the: ${rel.eventName}.`);
     });
     setActiveNode(relText);
   }
   if (!data) {
-    return ( <div className="friends frinds-network">
-    <div className="constnet-container">
-      <div className="content">
-        <div className="page-header">
-        <h2>Your Friends network</h2>
-
-      <center>
-      <Loader/>
-      </center>
+    return (<div className="friends frinds-network">
+      <div className="constnet-container">
+        <div className="content">
+          <div className="page-header">
+            <h2>Your Friends network</h2>
+            <center>
+              <Loader />
+            </center>
+          </div>
+        </div>
       </div>
-      </div>
-      </div>
-    </div>); 
+    </div>);
   }
 
   return (
