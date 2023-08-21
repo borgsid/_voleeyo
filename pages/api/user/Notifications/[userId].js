@@ -56,7 +56,9 @@ export default withApiAuthRequired(async (req, res) => {
                             message: element.attributes.message,
                             isRead: element.attributes.isRead,
                             userMessage: element.attributes.reply,
-                            isInbox: true
+                            isInbox: true,
+                            createdUTC:element.attributes.createdAt,
+                            editedUTC:element.attributes?.updatedAt
                         }
                     )
                 });
@@ -101,7 +103,9 @@ export default withApiAuthRequired(async (req, res) => {
                                 isFollowing: true
                             },
                             userMessage: element.attributes.message,
-                            isInbox: false
+                            isInbox: false,
+                            createdUTC:element.attributes.createdAt,
+                            editedUTC:element.attributes?.updatedAt
                         }
                     )
                 });

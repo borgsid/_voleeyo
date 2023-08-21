@@ -4,7 +4,6 @@ import EventModel from "../../Models/eventResponseModel";
 export default withApiAuthRequired(async function UserEventsAction(req, res) {
   const session = await getSession(req, res);
   const { user } = session;
-  //TODO sorting &sorted[param]=eventYear&sorted[how]=asc
   var querystring=req.query?.userId!="0"?
     `?where=[{"attribute":"userId","operator":"=","value":"${req.query?.userId}"}]`
     :"";

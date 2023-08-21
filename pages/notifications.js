@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import {useUser} from "@auth0/nextjs-auth0/client"
-export default function Notifications({ activeTab, setActiveTab,friendLookUp,setFriendLookUp}){
-  const [notifications, setNotifications] = useState({inbox:[],sent:[]});
+import { useUser } from "@auth0/nextjs-auth0/client";
+import Loader from "./components/loader"
+export default function Notifications({ activeTab, setActiveTab, friendLookUp, setFriendLookUp }) {
+  const [notifications, setNotifications] = useState({ inbox: [], sent: [] });
   const [showModal, setShowModal] = useState(false);
   const [selectedMessage, setReplyMessage] = useState("");
   const [reply, setReply] = useState("");
@@ -11,24 +12,25 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
   const [newMessage, setNewMessage] = useState('')
   const [receiverUserId, setReceiverUserId] = useState("");
   const [receiverUserName, setReceiverUserName] = useState("");
-  const [activeTabSection,setActiveTabSection]= useState("inbox");
-  const [filteredFriends,setFilteredFriends]=useState([]);
-  const [hideFilteredList,setHideFilteredList]=useState(true);
-  const {user} = useUser();
+  const [activeTabSection, setActiveTabSection] = useState("inbox");
+  const [filteredFriends, setFilteredFriends] = useState([]);
+  const [hideFilteredList, setHideFilteredList] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUser();
   useEffect(() => {
     setActiveTab("notifications")
-    var userId= friendLookUp?.receiverUserId
-    var userName= friendLookUp?.receiverUserName
-    if(userName?.length>0)
-    {
+    var userId = friendLookUp?.receiverUserId
+    var userName = friendLookUp?.receiverUserName
+    if (userName?.length > 0) {
       setReceiverUserId(userId);
       setReceiverUserName(userName);
       setIsMessagingModalOpen(true)
       setActiveTabSection("sent");
     }
     const fetchData = async () => {
+      setIsLoading(true)
       const dataRaw = await fetch(`/api/user/Notifications/${user.sub.split("|")[1]}`, {
-        method: "post" 
+        method: "post"
       });
       const dataResp = await dataRaw.json();
 
@@ -37,41 +39,42 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
       } else {
         setNotifications(dataResp);
       }
+      setIsLoading(false)
     }
-    
+
     fetchData();
-  },[]);
-  const updateMessageStatus=async (e)=>{
-        await fetch(`/api/user/Notifications/updateMessage/${user.sub.split("|")[1]}`,
-        {
-          method:"post",
-          body:JSON.stringify({message:e})
-        }
-      )
+  }, []);
+  const updateMessageStatus = async (e) => {
+    await fetch(`/api/user/Notifications/updateMessage/${user.sub.split("|")[1]}`,
+      {
+        method: "post",
+        body: JSON.stringify({ message: e })
+      }
+    )
   }
-  const handleSelectedMessage =async (e) => {
-    if(e.userMessage?.length==0)
-    e.userMessage=reply;
+  const handleSelectedMessage = async (e) => {
+    if (e.userMessage?.length == 0)
+      e.userMessage = reply;
     setReplyMessage(e);
     setShowModal(true);
-    if(!e.isRead)
-      {
-        e.isRead=true;
-        await updateMessageStatus(e);
-      }
+    if (!e.isRead) {
+      e.isRead = true;
+      await updateMessageStatus(e);
+    }
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     // handle reply submission logic
-    selectedMessage.userMessage=reply;
-    console.log("selectedMessage",selectedMessage)
+    selectedMessage.userMessage = reply;
     await fetch(`/api/user/Notifications/updateMessage/${user.sub.split("|")[1]}`,
-    {
-      method:"post",
-      body:JSON.stringify({message:selectedMessage})
-    })
+      {
+        method: "post",
+        body: JSON.stringify({ message: selectedMessage })
+      })
     setReply("")
+    setIsLoading(false)
     setShowModal(false)
   };
   const handleNewMessageClick = () => {
@@ -79,39 +82,40 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     setHideFilteredList(false);
     setIsMessagingModalOpen(true);
   }
-  const handleNewMessageSubmit = async(e) => {
+  const handleNewMessageSubmit = async (e) => {
     e.preventDefault();
-    const myMessage= {
+    setIsLoading(true)
+    const myMessage = {
       id: 0,
-      isRead:false,
-      message:"",
-      messageFrom:{/*server gets the logges userinfo*/},
-      messageTo:{
-        id:receiverUserId, 
-        isFollowing:false,
+      isRead: false,
+      message: "",
+      messageFrom: {/*server gets the logges userinfo*/ },
+      messageTo: {
+        id: receiverUserId,
+        isFollowing: false,
         receiverUserName
       },
       userMessage: newMessage,
-      isInbox:true
+      isInbox: true
     };
 
     // handle reply submission logic
-    const response=await fetch(`/api/user/Notifications/sendNewMessage/${user.sub.split("|")[1]}`,
-    {
-      method:"post",
-      body:JSON.stringify({message:myMessage})
-    })
+    const response = await fetch(`/api/user/Notifications/sendNewMessage/${user.sub.split("|")[1]}`,
+      {
+        method: "post",
+        body: JSON.stringify({ message: myMessage })
+      })
     setIsMessagingModalOpen(false)
     clearNewMessageModal();
-    if(response.ok)
-      {
-        notifications.sent.push((await response.json()).message)
-        setNotifications({...notifications});
-      }
-      else
-        alert("There was a problem delivering your message, please try again.")
+    if (response.ok) {
+      notifications.sent.push((await response.json()).message)
+      setNotifications({ ...notifications });
+    }
+    else
+      alert("There was a problem delivering your message, please try again.")
+    setIsLoading(false)
   };
-  const clearNewMessageModal=()=>{
+  const clearNewMessageModal = () => {
     setFilteredFriends([]);
     setReceiverUserName(null);
     setReceiverUserId(null);
@@ -127,62 +131,66 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
     //   setIsVisible(true);
     // }
   }
-  const closeAndResetModal=()=>{
+  const closeAndResetModal = () => {
     setNewMessage("");
     setReply("");
     setShowModal(false)
   }
-  const setReceiverName=(e)=>{
-      setReceiverUserName(e.target?.value);
+  const setReceiverName = (e) => {
+    setReceiverUserName(e.target?.value);
   }
-  const setUserTextInput=(e)=>{
-    if(e.target?.value?.length>0)
+  const setUserTextInput = (e) => {
+    if (e.target?.value?.length > 0)
       setNewMessage(e.target.value)
   }
-  const closeNewMessageModal=()=>{
+  const closeNewMessageModal = () => {
     setIsMessagingModalOpen(false);
     clearNewMessageModal();
   }
   const handleFilterFriends = async (e) => {
 
-    if(e.key=="Backspace")
+    if (e.key == "Backspace")
       setHideFilteredList(false);
-    if(e.target.value?.length>1){
+    if (e.target.value?.length > 1) {
       const searchText = e.target.value.toLowerCase();
-      var friendsRaw= await fetch(`/api/search/InAllFriends/${user.sub.split("|")[1]}`,
-      {
-        method: "POST",
-        body: JSON.stringify({ searchText }),
-      });
-      if(friendsRaw.ok){
-        const filteredFriends =await friendsRaw.json();
+      var friendsRaw = await fetch(`/api/search/InAllFriends/${user.sub.split("|")[1]}`,
+        {
+          method: "POST",
+          body: JSON.stringify({ searchText }),
+        });
+      if (friendsRaw.ok) {
+        const filteredFriends = await friendsRaw.json();
         setFilteredFriends(filteredFriends);
       }
     }
   };
-  const handleFriendSelect=(friend)=>{
+  const handleFriendSelect = (friend) => {
     setReceiverUserName(`${friend.name} ${friend.surname}`)
     setReceiverUserId(friend.userId)
     setHideFilteredList(true)
   }
   return (
-    activeTab=="notifications"&&<div className="notification">
+    activeTab == "notifications" && <div className="notification">
       <div className="notification-content content">
         <div className="page-header">
-          <h2>Your messages</h2>
+          <h2 className="friends-header-text">Your messages{
+            isLoading
+            && <Loader color={'#2c3e50'} />
+          }
+          </h2>
           <div className="notification-tabs">
-              <div
-                className={`notification-tab ${activeTabSection === "inbox" ? "active" : ""}`}
-                onClick={() => {setActiveTabSection("inbox"); setNotifications({...notifications})}}
-              >
-                Inbox
-              </div>
-              <div
-                className={`notification-tab ${activeTabSection === "sent" ? "active" : ""}`}
-                onClick={() =>{ setActiveTabSection("sent"); setNotifications({...notifications})}}
-              >
-                Sent
-              </div>
+            <div
+              className={`notification-tab ${activeTabSection === "inbox" ? "active" : ""}`}
+              onClick={() => { setActiveTabSection("inbox"); setNotifications({ ...notifications }) }}
+            >
+              Inbox
+            </div>
+            <div
+              className={`notification-tab ${activeTabSection === "sent" ? "active" : ""}`}
+              onClick={() => { setActiveTabSection("sent"); setNotifications({ ...notifications }) }}
+            >
+              Sent
+            </div>
           </div>
           <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
             <rect width="100" height="20"></rect>
@@ -198,41 +206,49 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
               onClick={() => handleSelectedMessage(message)}
             >
               {/*this is the  inbox section */}
-              {activeTabSection=="inbox"&&<div className="card-header">
+              {activeTabSection == "inbox" && <div className="card-header">
                 <h5>{message.messageFrom.name} {message.messageFrom.surname}</h5>
-                {message.isRead==undefined ? 
-                 <span className="unread-indicator">sending</span>
-                  :message.isRead?(
-                  <span className="read-indicator">Read</span>
-                ) : (
-                  <span className="unread-indicator">Unread</span>
-                )}
+                {message.isRead == undefined ?
+                  <label><span className="unread-indicator">sending</span></label>
+                  : message.isRead ? (
+                    <label>{(new Date(message.createdUTC)).toLocaleTimeString()} <span className="read-indicator">Read</span></label>
+                  ) : (
+                    <label>{(new Date(message.createdUTC)).toLocaleTimeString()} <span className="unread-indicator">Unread</span></label>
+                  )}
               </div>
               }
               {/*this is the sent section */}
-              {activeTabSection=="sent" &&<div className="card-header">
+              {activeTabSection == "sent" && <div className="card-header">
                 <h5>To: {message.messageTo.name} {message.messageTo.surname}</h5>
-                  <span className="unread-indicator">sent</span>
-                </div>
+                <label>{(new Date(message.createdUTC)).toLocaleTimeString()} <span className="unread-indicator">sent</span></label>
+              </div>
               }
               {/*this is the  inbox section */}
-              {activeTabSection=="inbox"&&<div className="card-body">
+              {activeTabSection == "inbox" && <div className="card-body">
                 <p>{message.message}</p>
                 {message.userMessage && (
                   <div className="user-reply">
+                      <div className="reply-section">
+                      <strong>You replied:</strong> 
+                      {message.userMessage?.length>0&&<label>{(new Date(message.editedUTC)).toLocaleTimeString()}</label>}
+                      </div>
                     <p>
-                      <strong>You replied:</strong> {message.userMessage}
+                      {message.userMessage}
                     </p>
                   </div>
                 )}
               </div>}
               {/*this is the  sent section */}
-              {activeTabSection=="sent"&&<div className="card-body">
+              {activeTabSection == "sent" && <div className="card-body">
                 <p>You sent:{message.userMessage}</p>
                 {message.userMessage && (
                   <div className="user-reply">
+                    <div className="reply-section">
+                      <strong> reply:</strong>
+                      {message.message?.length>0&&<label>{(new Date(message.editedUTC)).toLocaleTimeString()}</label>}
+                      </div>
                     <p>
-                      <strong>{message?.name} reply:</strong> {message.message}
+                       {message.message}
                     </p>
                   </div>
                 )}
@@ -245,20 +261,20 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
           <ReactModal
             className="modal"
             isOpen={true}
-            onRequestClose={ closeAndResetModal }
+            onRequestClose={closeAndResetModal}
             ariaHideApp={false}
           >
             <div className="notifications-modal modal-content">
               <form onSubmit={handleSubmit}>
 
-                {activeTabSection=="inbox"&&
-                <h4>{selectedMessage.messageFrom.name} {selectedMessage.messageFrom.surname}</h4>}
-                 {activeTabSection=="sent"&&
-                <h4>To:{selectedMessage.messageTo.name} {selectedMessage.messageTo.surname}</h4>}
+                {activeTabSection == "inbox" &&
+                  <h4>{selectedMessage.messageFrom.name} {selectedMessage.messageFrom.surname}</h4>}
+                {activeTabSection == "sent" &&
+                  <h4>To:{selectedMessage.messageTo.name} {selectedMessage.messageTo.surname}</h4>}
 
-                {activeTabSection=="inbox"&&<p>Message:{selectedMessage.message}</p>}
-                {activeTabSection=="sent"&&<p>You wrote:{selectedMessage.userMessage}</p>}
-                {activeTabSection=="inbox"&&selectedMessage.userMessage && (
+                {activeTabSection == "inbox" && <p>Message:{selectedMessage.message}</p>}
+                {activeTabSection == "sent" && <p>You wrote:{selectedMessage.userMessage}</p>}
+                {activeTabSection == "inbox" && selectedMessage.userMessage && (
                   <div className="user-reply">
                     <p>
                       <strong>You replied:</strong> {selectedMessage.userMessage}
@@ -266,7 +282,7 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
                   </div>
                 )}
 
-                {activeTabSection=="sent"&&selectedMessage.userMessage && (
+                {activeTabSection == "sent" && selectedMessage.userMessage && (
                   <div className="user-reply">
                     <p>
                       <strong>reply:</strong> {selectedMessage.message}
@@ -279,17 +295,18 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
                     <textarea
                       id="reply"
                       name="reply"
-                      value={reply??""}
+                      value={reply ?? ""}
                       onChange={(e) => setReply(e.target.value)}
                     />
                   </div>
                 )}
-              <div className="buttons-line">
-                {!selectedMessage.userMessage && (
-                  <button type="submit">Send reply</button>
-                )}
-                <button type="submit" onClick={closeAndResetModal}>Close</button>
-              </div>
+                <div className="buttons-line">
+                  {!selectedMessage.userMessage && !isLoading && (
+                    <button type="submit">Send reply</button>
+                  )}
+                  {isLoading&& <Loader color={'#2c3e50'} />}
+                  <button type="submit" onClick={closeAndResetModal}>Close</button>
+                </div>
               </form>
             </div>
           </ReactModal>
@@ -309,19 +326,19 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
               <div className="modal-body">
                 <div className="form-group">
                   <label htmlFor="friend">To:</label>
-                  <input autocomplete="off" type="text" id="friend" name="friend" value={receiverUserName} onChange={setReceiverName} onKeyUp={handleFilterFriends}/>
+                  <input autocomplete="off" type="text" id="friend" name="friend" value={receiverUserName} onChange={setReceiverName} onKeyUp={handleFilterFriends} />
                   {!hideFilteredList && filteredFriends.length > 0 ? (
-                      <div className="dropdown-list">
-                        {filteredFriends.map((friend) => (
-                          <div className="dropdown-list-item" key={friend.id} onClick={() => handleFriendSelect(friend)}>
-                            {friend.name} {friend.surname}
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                     (!hideFilteredList && <div className="dropdown-no-results">Keep typing to see more results</div>)
-                    )}
-                  <input hidden disabled type="text" id="idfriend" name="idfriend" value={receiverUserId}/>
+                    <div className="dropdown-list">
+                      {filteredFriends.map((friend) => (
+                        <div className="dropdown-list-item" key={friend.id} onClick={() => handleFriendSelect(friend)}>
+                          {friend.name} {friend.surname}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    (!hideFilteredList && <div className="dropdown-no-results">Keep typing to see more results</div>)
+                  )}
+                  <input hidden disabled type="text" id="idfriend" name="idfriend" value={receiverUserId} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="message">Message:</label>
@@ -329,8 +346,9 @@ export default function Notifications({ activeTab, setActiveTab,friendLookUp,set
                 </div>
               </div>
               <div className="modal-footer">
-                <button type="submit" onClick={handleNewMessageSubmit} className="send-button">Send</button>
-                <button type="submit" className="cancel-button" onClick={ closeNewMessageModal}>Cancel</button>
+                {!isLoading && <button type="submit" onClick={handleNewMessageSubmit} className="send-button">Send</button>}
+                {isLoading && <Loader color={'#2c3e50'} />}
+                <button type="submit" className="cancel-button" onClick={closeNewMessageModal}>Cancel</button>
               </div>
             </div>
           </ReactModal>}

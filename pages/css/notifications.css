@@ -286,3 +286,7 @@ button[type="submit"]:hover {
 .modal-content button[type="submit"].cancel-button{
   background-color: #f04545;
 }
+.reply-section{
+  display: flex;
+    justify-content: space-between;
+}

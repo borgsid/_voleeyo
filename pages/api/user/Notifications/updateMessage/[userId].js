@@ -5,16 +5,15 @@ export default withApiAuthRequired(async (req, res) => {
     const { user } = session;
     if (user) {
         const message = JSON.parse(req.body).message;
-        console.log("message",message)
         //Check for different statuses to send proper payload
         var linkNotifications = `${process.env.DESKREE_BASE_URL}/notifications/${message.id}`;
         const userNotificationsRaw = await fetch(linkNotifications,
            { 
-            method: "post",
-            headers:{
+            method: "PATCH",
+            headers: {
                 "content-type": "application/json; charset=utf-8"
             },
-            body:JSON.stringify({
+           body:JSON.stringify({
                 isRead: message.isRead,
                 reply: message.userMessage,
                 message: message.message,
@@ -27,6 +26,7 @@ export default withApiAuthRequired(async (req, res) => {
         }
         else
         {
+            console.log(JSON.stringify(await userNotificationsRaw.json()))
             res.status(400).json();
         }
     }

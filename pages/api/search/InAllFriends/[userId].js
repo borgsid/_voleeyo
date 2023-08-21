@@ -22,7 +22,6 @@ export default withApiAuthRequired(async (req, res) => {
                 || body.searchText.toLocaleLowerCase().includes(x.name.toLocaleLowerCase())
                 || body.searchText.toLocaleLowerCase().includes(x.surname.toLocaleLowerCase())
             ));
-        console.log("friends",friendsRaw.status)
         res.status(200).json(searchResults);
     }
     else {

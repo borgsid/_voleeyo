@@ -46,7 +46,7 @@ export default withApiAuthRequired(async (req, res) => {
     const session = await getSession(req, res);
     const { user } = session;
     if (user) {
-        const message = JSON.parse(req.body).message;
+        var message = JSON.parse(req.body).message;
         //Check for different statuses to send proper payload
         var linkNotifications = `${process.env.DESKREE_BASE_URL}/notifications`;
         const userNotificationsRaw = await fetch(linkNotifications,
@@ -63,9 +63,12 @@ export default withApiAuthRequired(async (req, res) => {
                 })
             })
         if (userNotificationsRaw.status == 200) {
+            var userNotifications= await userNotificationsRaw.json();
+            message.id=userNotifications.data.uid;
             message.messageTo.name = message.messageTo.receiverUserName;
             message.isRead = false;
-            console.log("message",message)
+            message.createdUTC=userNotifications.data.createdAt;
+            message.editedUTC=userNotifications.data.updatedAt;
             res.status(200).json({ message });
         }
         else
