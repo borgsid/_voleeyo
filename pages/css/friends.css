@@ -98,7 +98,24 @@ button.friend-btn-network[type="button"]{
     border: 1px solid #ccc;
     margin: 0 10px 0 0;
 }
-
+.friends-tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+.friends-tab.active {
+  color: #333;
+  border-bottom: 3px solid #333;
+}
+.friends-tab{
+  cursor :pointer;
+}
+.friends-content{
+width: -webkit-fill-available;
+margin: 20px;
+}
 /* Style for horizontal line */
 .friends hr {
   border: none;
