@@ -1,62 +1,30 @@
-import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
+import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
-export default withApiAuthRequired((req, res) => {
+export default withApiAuthRequired(async (req, res) => {
     //Check for different statuses to send proper payload
-    if (req.query?.userId) 
-    {
+    if (req.query?.userId) {
         const body = JSON.parse(req.body);
-        const friends=[
-            {
-                id:2,
-                name:"Alice",
-                surname:"James",
-                profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                bio:"",
-                email:"sds@yopmail.com"
-            },
-            {
-                id:3,
-                name:"Bobby",
-                surname:"Walber",
-                profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                bio:"",
-                email:"sds@yopmail.com"
-            },
-            {
-                id:4,
-                name:"Charlie",
-                surname:"West",
-                profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                bio:"",
-                email:"sds@yopmail.com"
-            },
-            {
-                id:5,
-                name:"Dave",
-                surname:"Brown",
-                profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                bio:"",
-                email:"sds@yopmail.com"
-            },
-            {
-                id:6,
-                name:"Eve",
-                surname:"O-marley",
-                profilePic:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                bio:"",
-                email:"sds@yopmail.com"
+        var friends = [];
+        const baseUri = process.env.baseUri;
+        const url = `${baseUri}user/Friends/${req.query?.userId}`;
+        var friendsRaw = await fetch(url, {
+            method: "GET",
+            headers: {
+                'cookie': `${req.headers.cookie}`,
+                'content-type': 'text/plain;charset=UTF-8'
             }
-        ]
-        var searchResults =friends.filter(x=> 
+        });
+        if (friendsRaw.status == 200)
+            friends = await friendsRaw.json()
+        var searchResults = friends.filter(x =>
             x.name.toLocaleLowerCase().includes(body.searchText.toLocaleLowerCase())
             || x.surname.toLocaleLowerCase().includes(body.searchText.toLocaleLowerCase()
-            || body.searchText.toLocaleLowerCase().includes(x.name.toLocaleLowerCase())
-            || body.searchText.toLocaleLowerCase().includes(x.surname.toLocaleLowerCase())
+                || body.searchText.toLocaleLowerCase().includes(x.name.toLocaleLowerCase())
+                || body.searchText.toLocaleLowerCase().includes(x.surname.toLocaleLowerCase())
             ));
-       
-            res.status(200).json(searchResults);
+        res.status(200).json(searchResults);
     }
     else {
         res.status(400).json([]);
     }
-  });
+});

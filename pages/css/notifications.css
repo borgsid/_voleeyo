@@ -148,7 +148,13 @@ textarea {
   resize: none;
   min-height: 100px;
 }
-
+textarea#message{
+  width: unset;
+  padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
 
 button[type="submit"]:hover {
@@ -279,4 +285,8 @@ button[type="submit"]:hover {
 
 .modal-content button[type="submit"].cancel-button{
   background-color: #f04545;
+}
+.reply-section{
+  display: flex;
+    justify-content: space-between;
 }

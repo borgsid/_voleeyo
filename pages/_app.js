@@ -7,6 +7,8 @@ import './css/friends.css';
 import './css/friendsNetwork.css';
 import './css/account.css'
 import './css/about.css'
+import './css/userProfile.css';
+import './css/navBar.css';
 import { UserProvider } from '@auth0/nextjs-auth0/client';  
 import logo from "../assets/fav icon.png"
 import NavMenu from "./components/navMenu";
@@ -15,14 +17,9 @@ function App({ Component, pageProps }) {
   const [activeTab, setActiveTab] = useState("index");
   const [isVisible, setIsVisible] = useState(false);
   const [hideNav, setHideNav] = useState(true);
-  const [secretCode, setSecretCode] = useState("")
   const [friendLookUp, setFriendLookUp] = useState({});
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const [currentUser, setCurrentUser] = useState({})
   
-  useEffect(() => {
-      setIsVisible(true);
-  }, [hideNav, showSideMenu]);
   const toggleNavMenuFunc = () => {
     if (isVisible) {
       setIsVisible(false);
@@ -50,16 +47,12 @@ function App({ Component, pageProps }) {
             setHideNav={setHideNav}
             setActiveTab={setActiveTab}
             toggleNavMenu={toggleNavMenuFunc}
-            secretCode={secretCode}
-            currentUser={currentUser}
-            setCurrentUser={setCurrentUser} />}
+            />}
           <Component {...pageProps}
             hideNav={hideNav}
             setHideNav={setHideNav}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            secretCode={secretCode}
-            setSecretCode={setSecretCode}
             isVisible={isVisible}
             showSideMenu={showSideMenu}
             setShowSideMenu={setShowSideMenu}

@@ -1,60 +1,35 @@
-import { withApiAuthRequired ,getSession} from "@auth0/nextjs-auth0";
+import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
-export default withApiAuthRequired(async (req, res)=> {
+export default withApiAuthRequired(async (req, res) => {
   // Check for different statuses to send proper payload
-const body = JSON.parse(req.body);
-  const session = await getSession(req,res);
-  const {user} = session;
-  var myEvents = [
-    {
-      id: 1,
-      eventName: "Charity Walk",
-      eventYear: 2022,
-      eventLocation: "New York",
-      eventRole: "Volunteer"
-    },
-    {
-      id: 2,
-      eventName: "Food Drive",
-      eventYear: 2022,
-      eventLocation: "Chicago",
-      eventRole: "Donor"
-    },
-    {
-      id: 13,
-      eventName: "Environmental Cleanup",
-      eventYear: 2021,
-      eventLocation: "San Francisco",
-      eventRole: "Volunteer"
-    },
-    {
-      id: 14,
-      eventName: "Blood Drive",
-      eventYear: 2021,
-      eventLocation: "Los Angeles",
-      eventRole: "Donor"
-    },
-    {
-      id: 16,
-      eventName: "Animal Shelter Volunteer",
-      eventYear: 2020,
-      eventLocation: "Seattle",
-      eventRole: "Volunteer"
-    },
-    {
-      id: 19,
-      eventName: "Community Garden",
-      eventYear: 2020,
-      eventLocation: "Denver",
-      eventRole: "Volunteer"
-    }
-  ];
-  const eventToRemove= myEvents.find(x=> x.id==body.cardId);
-  console.log("eventToRemove",eventToRemove)
-  myEvents=[... myEvents.filter(x=> x.id!=body.cardId)];
-  if (user) {
-    res.status(200).json(myEvents);
-  } else {
+  const body = JSON.parse(req.body);
+  const session = await getSession(req, res);
+  const { user } = session;
+
+  if (!user)
     res.status(400).json([]);
+  else {
+
+    var savedEventRaw = await fetch(`${process.env.DESKREE_BASE_URL}/events/${body.cardGuid}`, {
+      method: "delete",
+    })
+    if (savedEventRaw.status != 200)
+      res.status(400).json([]);
+    else {
+
+      //GET ALL USER EVENTS
+      const baseUri = process.env.baseUri;
+      const url = `${baseUri}user/EventsCards/${req.query?.userId}`;
+      // Get the user session and access token
+      const userEventsRaw = await fetch(url, {
+        method: "GET",
+        headers: {
+          'cookie': `${req.headers.cookie}`,
+          'content-type': 'text/plain;charset=UTF-8'
+        }
+      });
+      const currentUserEvents = await userEventsRaw.json();
+      res.status(200).json(currentUserEvents);
+    }
   }
 });
