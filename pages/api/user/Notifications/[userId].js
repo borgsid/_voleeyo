@@ -61,6 +61,12 @@ export default withApiAuthRequired(async (req, res) => {
                             editedUTC:element.attributes?.updatedAt
                         }
                     )
+                    myNotifications.inbox.sort((a,b)=>{
+                        if(new Date(a.createdUTC)>new Date(b.createdUTC))
+                            return 1;
+                            if(new Date(a.createdUTC)<new Date(b.createdUTC))
+                            return -1;
+                    })
                 });
             }
 
@@ -108,6 +114,12 @@ export default withApiAuthRequired(async (req, res) => {
                             editedUTC:element.attributes?.updatedAt
                         }
                     )
+                    myNotifications.sent.sort((a,b)=>{
+                        if(new Date(a.createdUTC)>new Date(b.createdUTC))
+                            return 1;
+                            if(new Date(a.createdUTC)<new Date(b.createdUTC))
+                            return -1;
+                    })
                 });
 
             }

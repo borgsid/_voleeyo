@@ -61,7 +61,8 @@ export default function FriendsNetwork({
       const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
       d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
       d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
-      if (clickedCircle.id == user.sub.split("|")[1])
+      console.log("clickedCircle",clickedCircle)
+      if (clickedCircle.id == (user.sub.split("|")[1]).replace(/[^a-zA-Z0-9]/g, ''))
         relText.isCurrentUser = true
       relText.connections.push(`- connected to ${data.nodes.find(x => x.id == relatedNodeId).userName} through the: ${rel.eventName}.`);
     });
