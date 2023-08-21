@@ -49,23 +49,25 @@ export default function FriendsNetwork({
     // Select relationships for clicked node
     const clickedCircle = d.target.__data__;
     setSelectedUserName(clickedCircle.userName);
-    const relationships = data.links.filter(l => l.source.id === clickedCircle.id || l.target.id === clickedCircle.id);
+    const relationships = data.links.filter(l => l.source.id == clickedCircle.id || l.target.id == clickedCircle.id);
     // Set fill color for related nodes
+    console.log("relationships",relationships)
     var relText = {
       clickedUser: clickedCircle.userName,
       connections: [],
       isCurrentUser: false,
       userId: clickedCircle.id
     };
+    if (clickedCircle.id == (user.sub.split("|")[1]))
+      relText.isCurrentUser = true
     relationships.forEach(rel => {
       const relatedNodeId = rel.source.id === clickedCircle.id ? rel.target.id : rel.source.id;
       d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
       d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
-      console.log("clickedCircle",clickedCircle)
-      if (clickedCircle.id == (user.sub.split("|")[1]).replace(/[^a-zA-Z0-9]/g, ''))
-        relText.isCurrentUser = true
       relText.connections.push(`- connected to ${data.nodes.find(x => x.id == relatedNodeId).userName} through the: ${rel.eventName}.`);
     });
+    if(relationships.length==0)
+      relText.connections.push(`- don't have events in common with anyone at the moment`)
     setActiveNode(relText);
   }
   if (!data) {
