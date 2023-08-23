@@ -3,7 +3,6 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Loader from "./components/loader"
 import pencil from "../assets/pencil-edit-button.svg";
-
 export default function UserProfile({setActiveTab}) {
   const { user } = useUser()
   const [name, setName] = useState(null);
