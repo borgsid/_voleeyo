@@ -27,15 +27,7 @@ const Header = ({  activeTab, setActiveTab }) => {
                         <li>
                             <a onClick={()=>{location.href="/api/auth/login"} } >{link1.name}</a>
                         </li>
-                    }
-                    {
-                         (user??false) &&
-                        <li>
-                            <a  onClick={()=>{
-                                location.href="/api/auth/logout"
-                            }} >Logout</a>
-                        </li> 
-                    }
+                    } 
                     { (user??false) && <li>
                             <a onClick={() => { setActiveTab("dashboard") }}>{link2.name}</a>
                     </li>
@@ -53,6 +45,14 @@ const Header = ({  activeTab, setActiveTab }) => {
                     <li>
                         <a onClick={() => { setActiveTab("about") }}>{link6.name}</a>
                     </li>
+                    {
+                         (user??false) &&
+                        <li>
+                            <a  onClick={()=>{
+                                location.href="/api/auth/logout"
+                            }} >Logout</a>
+                        </li> 
+                    }
                 </ul> 
             </div>
         </header>
