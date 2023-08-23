@@ -1,48 +1,48 @@
 import { useState, useEffect } from 'react';
-import { useUser } from '@auth0/nextjs-auth0/client';
-const Privacy = () => {
-    const [consent, setConsent] = useState(true);
-    const [showDelete, setShowDelete] = useState(false);
-    const {user} = useUser();
-    const removeData = async () => {
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useUser } from "@auth0/nextjs-auth0/client";
+export default function Privacy() {
+  const [consent, setConsent] = useState(true);
+  const [showDelete, setShowDelete] = useState(false);
+  const { user } = useUser();
+  const removeData = async () => {
 
-        var resp = await fetch(`/api/userProfileSettings/privacy/${user.sub.split("|")[1]}`, 
-        {
-            method: "get"
-        });
+    var resp = await fetch(`/api/user/userProfileSettings/privacy/${user.sub.split("|")[1]}`,
+      {
+        method: "get"
+      });
 
-        var text = await resp.json();
-        if (resp.ok) {
-            alert(text)
-            return true
-        }
-        else
-        {
-            alert(text)
-            return false;
-        }
-
+    var text = await resp.json();
+    if (resp.ok) {
+      alert(text)
+      return true
     }
-    const handleDeleteData = async () => {
-       await removeData()
+    else {
+      alert(text)
+      return false;
     }
-   
 
-    return (
-        <div className="privacy-container">
-            {consent ? (
-                <p>
-                    By using the website of Voleeyo, you accept to be tracked across the site. <br />
-                    The data you input will be used solely for matching with other users.<br />
-                    By continuing to do so, you automatically accept the terms and conditions. <br />
-                    You may remove your consent at any time in the accounts section{(user??false) ? 'by clicking "Delete data"' : ''}.
-                </p>
-            ) : (
-                <p>Your data has been deleted.</p>
-            )}
-            {(user??false) && <button className="delete-data-button" onClick={handleDeleteData}>Delete data</button>}
+  }
+  const handleDeleteData = async () => {
+    await removeData()
+  }
 
-            <style jsx>{`
+
+  return (
+    <div className="privacy-container">
+      {consent ? (
+        <p>
+          By using the website of Voleeyo, you accept to be tracked across the site. <br />
+          The data you input will be used solely for matching with other users.<br />
+          By continuing to do so, you automatically accept the terms and conditions. <br />
+          You may remove your consent at any time in the accounts section{(user ?? false) ? 'by clicking "Delete data"' : ''}.
+        </p>
+      ) : (
+        <p>Your data has been deleted.</p>
+      )}
+      {(user ?? false) && <button className="delete-data-button" onClick={handleDeleteData}>Delete data</button>}
+
+      <style jsx>{`
           .privacy-container {
             border: 1px solid #ddd;
             padding: 20px;
@@ -70,7 +70,7 @@ const Privacy = () => {
             background-color: #d43d3d;
           }
         `}</style>
-        </div>
-    );
+    </div>
+  );
 }
-export default Privacy;
+export const getServerSideProps = withPageAuthRequired();
