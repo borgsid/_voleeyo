@@ -19,7 +19,8 @@ export default withApiAuthRequired(async (req, res) => {
           name: currentUserData.name,
           surname: currentUserData.surname,
           bio: currentUserData.bio,
-          v_uid:currentUserEntries.data[0].uid
+          v_uid:currentUserEntries.data[0].uid,
+          isActive:currentUserData.isActive
         }
         res.status(200).json(currentUserModel);
       }

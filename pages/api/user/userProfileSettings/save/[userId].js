@@ -5,8 +5,10 @@ export default withApiAuthRequired(async (req, res) => {
   const {name} = JSON.parse(req.body);
   const {surname} = JSON.parse(req.body);
   const userbio = JSON.parse(req.body).bio;
+  const isActive=JSON.parse(req.body).isActive??true
   const session = await getSession(req, res);
   const { user } = session;
+  console.log("I?M here",JSON.parse(req.body))
   const userId=   user.sub.split("|")[1];
   if (!user)
     res.status(400).json({});
@@ -17,7 +19,8 @@ export default withApiAuthRequired(async (req, res) => {
         name,
         surname,
         bio:userbio==null?"":userbio,
-        userId
+        userId,
+        isActive
       }),
       headers:{
           "content-type":"application/json; charset=utf-8"

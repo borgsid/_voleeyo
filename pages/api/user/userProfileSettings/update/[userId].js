@@ -1,29 +1,30 @@
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
 export default withApiAuthRequired(async (req, res) => {
-  // Check for different statuses to send proper payload
-  const {name} = JSON.parse(req.body);
-  const {surname} = JSON.parse(req.body);
-  const {bio} = JSON.parse(req.body);
-  const{v_uid}=  JSON.parse(req.body);
-  const {userId}=   JSON.parse(req.body);
-
+  const { name } = JSON.parse(req.body);
+  const { surname } = JSON.parse(req.body);
+  const { bio } = JSON.parse(req.body);
+  const { v_uid } = JSON.parse(req.body);
+  const { userId } = JSON.parse(req.body);
+  const { isActive } = JSON.parse(req.body);
+  console.log("JSON.parse(req.body)",JSON.parse(req.body))
   const session = await getSession(req, res);
   const { user } = session;
   if (!user)
     res.status(400).json({});
   else {
     var savedProfileRaw = await fetch(`${process.env.DESKREE_BASE_URL}/volunteers/${v_uid}`, {
-      method: "post",
-      body:JSON.stringify({
+      method: "POST",
+      body: JSON.stringify({
         name,
         surname,
         bio,
-        userId
+        userId,
+        isActive
       }),
-      headers:{
-        "content-type":"application/json; charset=utf-8"
-    }
+      headers: {
+        "content-type": "application/json; charset=utf-8"
+      }
     })
     if (savedProfileRaw.status != 200)
       res.status(400).json({});

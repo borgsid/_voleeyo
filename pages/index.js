@@ -43,7 +43,7 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
           {activeTab == "index" &&
             <div className="section-one-text">
               {!(user??false) && <h1>Voleeyo: your LinkedIn for volunteers</h1>}
-              {(user??false) && <h1>Welcome back to Voleeyo, {user.given_name}</h1>}
+              {(user??false) && <h1>Welcome back to Voleeyo,</h1>}
               <b>A place where to connect while giving back to the community</b>
               {
                 !(user??false) && <p>

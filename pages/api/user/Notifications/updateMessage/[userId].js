@@ -26,7 +26,6 @@ export default withApiAuthRequired(async (req, res) => {
         }
         else
         {
-            console.log(JSON.stringify(await userNotificationsRaw.json()))
             res.status(400).json();
         }
     }

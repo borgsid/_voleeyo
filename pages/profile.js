@@ -14,6 +14,7 @@ export default function UserProfile({setActiveTab}) {
   const [isCanceling, setIsCanceling] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [disableButtons, setDisableButtons] = useState(false);
+  const [isTCAccepted, setIsTCAccepted] = useState(false);
   const [usersNames, setUsersNames] = useState(null)
   const svgPencil = pencil;
 
@@ -29,6 +30,13 @@ export default function UserProfile({setActiveTab}) {
     setBio(e.target.value);
   };
 
+  const handleCheckboxChange = (e) => {
+    if(e.target.value=='on')
+      e.target.value='off'
+    else
+      e.target.value='on'
+    setIsTCAccepted(e.target.value);
+  };
   async function handleSave() {
     setIsSaving(true);
     setDisableButtons(true);
@@ -41,7 +49,8 @@ export default function UserProfile({setActiveTab}) {
         surname,
         name,
         bio,
-        userId
+        userId,
+        isActive:isTCAccepted=='on'
       })
     });
     if (respRaw.status !== 200)
@@ -68,11 +77,13 @@ export default function UserProfile({setActiveTab}) {
       
       if (respRaw.status === 200) {
         var currentUser = await respRaw.json();
+        console.log("currentUser",currentUser)
         setName(currentUser.name);
         setSurname(currentUser.surname);
         setUsersNames(`${currentUser.name} ${currentUser.surname}`);
         setBio(currentUser.bio);
         setVuid(currentUser.v_uid)
+        setIsTCAccepted(currentUser.isActive?'on':'off')
       }
     }
 
@@ -127,6 +138,10 @@ export default function UserProfile({setActiveTab}) {
             value={bio}
             onChange={handleBioChange}
           />
+          <div className='privacy-sector'>
+          <input onClick={handleCheckboxChange} value={isTCAccepted} checked={isTCAccepted=='on'} id="privacy-checkbox"type="checkbox" />
+          <label for="privacy-checkbox"> I Accept the <a className='text-links' onClick={()=>{setActiveTab('privacy')}}>terms and conditions</a></label>
+          </div>
           <div className="button-container">
             {
               isSaving

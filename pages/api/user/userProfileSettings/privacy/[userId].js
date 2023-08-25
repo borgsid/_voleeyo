@@ -1,49 +1,32 @@
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
 export default withApiAuthRequired(async (req, res) => {
-    const session = await getSession(req,res);
-    const { user } = session;
-    const getToken = async () => {
-        try {
-          const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, 
-          {
-            method:"post",
-            headers: {
-                
-                'Content-Type': 'application/json'
-              },
-            body:JSON.stringify(
-            {
-                grant_type: 'client_credentials',
-                client_id: process.env.AUTH0_CLIENT_ID,
-                client_secret: process.env.AUTH0_CLIENT_SECRET,
-                audience: `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/`
-            })});
-            var resp = await response.json();
-            console.log("resp",resp)
-          return resp.access_token;
-        } catch (error) {
-          console.error('Error getting token:', error);
+  const session = await getSession(req, res);
+  const UtcDate = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}T${new Date().getUTCHours()}:${new Date().getUTCMinutes()}:${new Date().getUTCSeconds()}Z`;
+  const { user } = session;
+  if (user) {
+    var queryString = `?where=[{"attribute":"userId","operator":"=","value":"${req.query?.userId}"}]`;
+    var currentUserRaw = await fetch(`${process.env.DESKREE_BASE_URL}/volunteers${queryString}`, {
+      method: "get",
+    });
+    if (currentUserRaw.status == 200) {
+      const currentUser = (await currentUserRaw.json()).data[0];
+      var logicDeleteUserRaw = await fetch(`${process.env.DESKREE_BASE_URL}/volunteers/${currentUser.uid}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          deletionUTCdate: UtcDate,
+          isActive: false
+        }),
+        headers: {
+          "content-type": "application/json; charset=utf-8"
         }
-      };
-    if (user) {
-        try {
-            const token = await getToken();
-            console.log("token",token)
-            const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${req.query?.userId}`, {
-                method:"delete",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            res.status(response.status).json(JSON.stringify(await response.json()));
-        } catch (error) {
-            console.log("delete user",  error)
-            res.status(400).json('Error deleting user:', JSON.stringify( error));
-        }
+      });
+      res.status(logicDeleteUserRaw.status).json(`User is ${logicDeleteUserRaw.status!=200?"not ":""}deleted`);
 
     }
-    else {
-        res.status(400).json("There was an issue removing data, contact support.");
-    }
+    else
+      res.status(400).json({});
+  }
+  else
+    res.status(400).json({});
 }); 

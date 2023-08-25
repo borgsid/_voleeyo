@@ -6,7 +6,7 @@ import twitterSvg from "../../assets/iconmonstr-twitter-1.svg"
 import tik_tokSvg from "../../assets/iconmonstr-audio-thin.svg"
 import pencil from "../../assets/pencil-edit-button-yellow.svg";
 import { useUser } from "@auth0/nextjs-auth0/client";
-const NavMenu = ({ activeTab, setActiveTab}) => {
+const NavMenu = ({ activeTab, setActiveTab }) => {
   const { user } = useUser()
   const [name, setName] = useState(null);
   const [surname, setSurname] = useState(null);
@@ -25,10 +25,12 @@ const NavMenu = ({ activeTab, setActiveTab}) => {
   useEffect(() => {
     const getUserData = async () => {
       if (user) {
-
         var respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
-        if (respRaw.status == 200) {
-          var currentUser = await respRaw.json();
+        var currentUser = await respRaw.json();
+        if (
+          activeTab=='privacy'||
+          activeTab=='about'||
+        (respRaw.status == 200 && currentUser?.isActive)) {
           setName(currentUser.name)
           setSurname(currentUser.surname)
         }
