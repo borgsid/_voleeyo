@@ -26,11 +26,13 @@ const NavMenu = ({ activeTab, setActiveTab }) => {
     const getUserData = async () => {
       if (user) {
         var respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
-        var currentUser = await respRaw.json();
         if (
           activeTab=='privacy'||
           activeTab=='about'||
-        (respRaw.status == 200 && currentUser?.isActive)) {
+          respRaw.status == 200) {
+          var currentUser = await respRaw.json();
+          if(!currentUser?.isActive)
+            setActiveTab('profile');
           setName(currentUser.name)
           setSurname(currentUser.surname)
         }

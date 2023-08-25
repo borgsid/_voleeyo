@@ -1,24 +1,27 @@
 import { useState, useEffect } from 'react';
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import Loader from "./components/loader";
+
 export default function Privacy() {
   const [consent, setConsent] = useState(true);
   const [showDelete, setShowDelete] = useState(false);
+  const [isLoading,SetIsaLoading] = useState(false)
   const { user } = useUser();
   const removeData = async () => {
-
+    SetIsaLoading(true)
     var resp = await fetch(`/api/user/userProfileSettings/privacy/${user.sub.split("|")[1]}`,
       {
         method: "get"
       });
-
-    var text = await resp.json();
-    if (resp.ok) {
-      alert(text)
-      return true
-    }
-    else {
-      alert(text)
+      var text = await resp.json();
+      if (resp.ok) {
+        alert(text)
+        return true
+      }
+      else {
+        alert(text)
+        SetIsaLoading(false)
       return false;
     }
 
@@ -44,8 +47,10 @@ export default function Privacy() {
       ) : (
         <p>Your data has been deleted.</p>
       )}
-      {(user ?? false) && <button className="delete-data-button" onClick={handleDeleteData}>Delete data</button>}
-
+      {(user&&!isLoading)?
+        <button className="delete-data-button" onClick={handleDeleteData}>Delete data</button>
+        :<Loader/>
+      }
       <style jsx>{`
           .privacy-container {
             border: 1px solid #ddd;

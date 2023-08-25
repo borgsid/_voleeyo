@@ -78,6 +78,8 @@ export default function UserProfile({ setActiveTab }) {
         setVuid(currentUser.v_uid);
         setIsTCAccepted(currentUser.isActive);
       }
+      else
+        setUsersNames(" ")
     };
 
     setUserValues();
