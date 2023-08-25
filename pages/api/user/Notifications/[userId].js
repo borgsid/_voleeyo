@@ -14,7 +14,7 @@ export default withApiAuthRequired(async (req, res) => {
         const myInboxRaw = await fetch(linkVol, { method: "get" });
         //get sent
         queryString = `[{"attribute":"senderUserId","operator":"=","value":"${req.query?.userId}"}]`;
-        var linkVol = `${process.env.DESKREE_BASE_URL}/notifications?where=${queryString}`;
+        linkVol = `${process.env.DESKREE_BASE_URL}/notifications?where=${queryString}`;
         const mySentEmailRaw = await fetch(linkVol);
         var allUsersInbox = [];
         var allUsersSent = [];
