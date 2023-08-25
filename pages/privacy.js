@@ -23,8 +23,12 @@ export default function Privacy() {
     }
 
   }
+  const handleLogout = () => {
+    location.href = "/api/auth/logout";
+  };
   const handleDeleteData = async () => {
     await removeData()
+    handleLogout()
   }
 
 
