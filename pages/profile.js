@@ -78,10 +78,10 @@ export default function UserProfile({setActiveTab}) {
       if (respRaw.status === 200) {
         var currentUser = await respRaw.json();
         console.log("currentUser",currentUser)
-        setName(currentUser.name);
-        setSurname(currentUser.surname);
+        setName(currentUser.name??"");
+        setSurname(currentUser.surname??"");
         setUsersNames(`${currentUser.name} ${currentUser.surname}`);
-        setBio(currentUser.bio);
+        setBio(currentUser.bio??"");
         setVuid(currentUser.v_uid)
         setIsTCAccepted(currentUser.isActive?'on':'off')
       }
@@ -115,13 +115,13 @@ export default function UserProfile({setActiveTab}) {
           <input
             type="text"
             placeholder="Name"
-            value={name}
+            defaultValue={name}
             onChange={handleNameChange}
           />
           <input
             type="text"
             placeholder="Surname"
-            value={surname}
+            defaultValue={surname}
             onChange={handleSurnameChange}
           />
           {
@@ -130,17 +130,17 @@ export default function UserProfile({setActiveTab}) {
               disabled
               type="email"
               placeholder="Email"
-              value={email}
+              defaultValue={email}
             />
           }
           <textarea
             placeholder="Bio/Description"
-            value={bio}
+            defaultValue={bio}
             onChange={handleBioChange}
           />
           <div className='privacy-sector'>
-          <input onClick={handleCheckboxChange} value={isTCAccepted} checked={isTCAccepted=='on'} id="privacy-checkbox"type="checkbox" />
-          <label for="privacy-checkbox"> I Accept the <a className='text-links' onClick={()=>{setActiveTab('privacy')}}>terms and conditions</a></label>
+          <input onChange={handleCheckboxChange} onClick={handleCheckboxChange} defaultValue={isTCAccepted} checked={isTCAccepted=='on'} id="privacy-checkbox"type="checkbox" />
+          <label > I Accept the <a className='text-links' onClick={()=>{setActiveTab('privacy')}}>terms and conditions</a></label>
           </div>
           <div className="button-container">
             {
