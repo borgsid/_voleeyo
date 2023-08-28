@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'voleeyo-1'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4932A2D1660C4945AAA1CFCF22A966B0 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D33A48B234D84DEA985962DA4B25AB0F }}
           package: .
