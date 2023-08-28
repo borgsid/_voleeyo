@@ -29,7 +29,6 @@ const AutocompleteEventCard = (dataModel) => {
             setSuggestions([]);
           }
         } catch (error) {
-          console.error('Error fetching suggestions:', error);
           setSuggestions([]);
         }
       }
