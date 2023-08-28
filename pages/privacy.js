@@ -9,7 +9,6 @@ export default function Privacy() {
   const [isLoading,SetIsaLoading] = useState(false)
   const { user } = useUser();
   const removeData = async () => {
-    SetIsaLoading(true)
     var resp = await fetch(`/api/user/userProfileSettings/privacy/${user.sub.split("|")[1]}`,
       {
         method: "get"
@@ -21,7 +20,6 @@ export default function Privacy() {
       }
       else {
         alert(text)
-        SetIsaLoading(false)
       return false;
     }
 
@@ -30,8 +28,11 @@ export default function Privacy() {
     location.href = "/api/auth/logout";
   };
   const handleDeleteData = async () => {
+    SetIsaLoading(true)
     await removeData()
     handleLogout()
+    SetIsaLoading(false)
+
   }
 
 
