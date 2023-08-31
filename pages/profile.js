@@ -29,52 +29,59 @@ export default function UserProfile({ setActiveTab }) {
     setBio(e.target.value);
   };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
   const handleCheckboxChange = () => {
     setIsTCAccepted((prevValue) => !prevValue);
   };
-  
+
 
   const handleSave = async () => {
-    setIsSaving(true);
-    setDisableButtons(true);
-    const userId = user.sub.split("|")[1];
-    const operation = vUid ? "update" : "save";
-    const respRaw = await fetch(`/api/user/userProfileSettings/${operation}/${userId}`, {
-      method: 'post',
-      body: JSON.stringify({
-        v_uid: vUid,
-        surname,
-        name,
-        bio,
-        userId,
-        isActive: isTCAccepted,
-      }),
-    });
-    
-    if (respRaw.status !== 200) {
-      alert("Error during data save");
-    } else {
-      setActiveTab('dashboard');
-    }
-    
-    setIsSaving(false);
-    setDisableButtons(false);
-  };
+    if (email?.length != 0) {
 
-  const handleCancel = () => {
-    setActiveTab('dashboard');
+      setIsSaving(true);
+      setDisableButtons(true);
+      const userId = user.sub.split("|")[1];
+      const operation = vUid ? "update" : "save";
+      const respRaw = await fetch(`/api/user/userProfileSettings/${operation}/${userId}`, {
+        method: 'post',
+        body: JSON.stringify({
+          v_uid: vUid,
+          email,
+          surname,
+          name,
+          bio,
+          userId,
+          isActive: isTCAccepted,
+        }),
+      });
+
+      if (respRaw.status !== 200) {
+        alert("Error during data save");
+      } else {
+        setActiveTab('dashboard');
+      }
+
+      setIsSaving(false);
+      setDisableButtons(false);
+    }
+    else
+      alert("Email is Required")
   };
 
   useEffect(() => {
     const setUserValues = async () => {
       const respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
-      
+
       if (respRaw.status === 200) {
         const currentUser = await respRaw.json();
         setName(currentUser.name || "");
         setSurname(currentUser.surname || "");
         setUsersNames(`${currentUser.name} ${currentUser.surname}`);
         setBio(currentUser.bio || "");
+        setEmail(currentUser.email || "");
         setVuid(currentUser.v_uid);
         setIsTCAccepted(currentUser.isActive);
       }
@@ -116,30 +123,28 @@ export default function UserProfile({ setActiveTab }) {
             value={surname}
             onChange={handleSurnameChange}
           />
-          {email && (
-            <input
-              readOnly
-              disabled
-              type="email"
-              placeholder="Email"
-              value={email}
-            />
-          )}
+          <input
+            type="email"
+            required
+            placeholder="Email to receive notifications from followers"
+            value={email}
+            onChange={handleEmailChange}
+          />
           <textarea
             placeholder="Bio/Description"
             value={bio}
             onChange={handleBioChange}
           />
           <div className='privacy-sector'>
-          <input
-  type="checkbox"
-  checked={isTCAccepted}
-  id="privacy-checkbox"
-  onChange={handleCheckboxChange}
-/>
+            <input
+              type="checkbox"
+              checked={isTCAccepted}
+              id="privacy-checkbox"
+              onChange={handleCheckboxChange}
+            />
             <label>
               I Accept the{' '}
-              <a className='text-links' onClick={() => { setActiveTab('privacy') }}>terms and conditions</a>
+              <a className='text-links' onClick={() => { setActiveTab('privacy') }}>terms and conditions</a>, emails sent to you from friends will be sent through Voleeyo and vice versa.
             </label>
           </div>
           <div className="button-container">
@@ -152,16 +157,13 @@ export default function UserProfile({ setActiveTab }) {
                 Save
               </button>
             )}
-            {/* TODO */}
-            {/* {isDeleting ? <Loader color={'grey'} /> : (
-              <button
-                className="delete-button"
-                disabled={disableButtons}
-                onClick={handleDelete}
-              >
-                Delete Profile
-              </button>
-            )} */}
+            <button
+              className="delete-button"
+              disabled={disableButtons}
+              onClick={() => { setActiveTab("privacy") }}
+            >
+              Delete Profile
+            </button>
           </div>
         </div>
       </div>

@@ -26,18 +26,19 @@ const NavMenu = ({ activeTab, setActiveTab }) => {
     const getUserData = async () => {
       if (user) {
         var respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
-        if (
-          activeTab=='privacy'||
-          activeTab=='about'||
-          respRaw.status == 200) {
+        
+        if ( respRaw.status == 200 ) {
           var currentUser = await respRaw.json();
+
           if(!currentUser?.isActive)
             setActiveTab('profile');
+
           setName(currentUser.name)
           setSurname(currentUser.surname)
         }
-        else
-          setActiveTab('profile');
+        if(respRaw.status==400||respRaw.status==204)
+            if(!(activeTab=='privacy'||activeTab=='about'))
+              setActiveTab('profile');
       }
     }
     getUserData();

@@ -4,6 +4,7 @@ export default withApiAuthRequired(async (req, res) => {
   // Check for different statuses to send proper payload
   const {name} = JSON.parse(req.body);
   const {surname} = JSON.parse(req.body);
+  const {email} = JSON.parse(req.body);
   const userbio = JSON.parse(req.body).bio;
   const isActive=JSON.parse(req.body).isActive??true
   const session = await getSession(req, res);
@@ -19,12 +20,14 @@ export default withApiAuthRequired(async (req, res) => {
         surname,
         bio:userbio==null?"":userbio,
         userId,
-        isActive
+        isActive,
+        email
       }),
       headers:{
           "content-type":"application/json; charset=utf-8"
       }
     })
+    console.log("savedProfileRaw.status",savedProfileRaw.status)
     if (savedProfileRaw.status != 200)
       res.status(400).json({});
     else {

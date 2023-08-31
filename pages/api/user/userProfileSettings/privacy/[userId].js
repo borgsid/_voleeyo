@@ -15,18 +15,19 @@ export default withApiAuthRequired(async (req, res) => {
       if (currentUserRaw.status === 200) {
         const currentUser = (await currentUserRaw.json()).data[0];
 
-        // Logic to mark the user as inactive in your application's database
+        // Logic to mark the user as inactive in your application's database:NO GDPR mayhem
         const logicDeleteUserRaw = await fetch(`${process.env.DESKREE_BASE_URL}/volunteers/${currentUser.uid}`, {
-          method: "PATCH",
-          headers: {
-            "content-type": "application/json; charset=utf-8"
-          },
-          body: JSON.stringify({
-            deletionUTCdate: UtcDate,
-            isActive: false
-          })
+          // method: "PATCH",
+          method: "DELETE"
+          // ,headers: {
+          //   "content-type": "application/json; charset=utf-8"
+          // },
+          // body: JSON.stringify({
+          //   deletionUTCdate: UtcDate,
+          //   isActive: false
+          // })
         });
-        if (logicDeleteUserRaw.status === 200) {
+        if (logicDeleteUserRaw.status == 200) {
           // Fetch an access token for Auth0 Management API
           const tokenRaw = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
             method: 'POST',
