@@ -7,6 +7,7 @@ export default withApiAuthRequired(async (req, res) => {
   const { v_uid } = JSON.parse(req.body);
   const { userId } = JSON.parse(req.body);
   const { isActive } = JSON.parse(req.body);
+  const { email } = JSON.parse(req.body);
   const session = await getSession(req, res);
   const { user } = session;
   if (!user)
@@ -17,6 +18,7 @@ export default withApiAuthRequired(async (req, res) => {
       body: JSON.stringify({
         name,
         surname,
+        email,
         bio,
         userId,
         isActive
