@@ -39,7 +39,7 @@ export default function UserProfile({ setActiveTab }) {
 
 
   const handleSave = async () => {
-    if (email?.length != 0) {
+    if (email?.length != 0 && checkEmailValidity()) {
 
       setIsSaving(true);
       setDisableButtons(true);
@@ -71,6 +71,13 @@ export default function UserProfile({ setActiveTab }) {
       alert("Email is Required")
   };
 
+  function checkEmailValidity(){
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if(!emailRegex.test(email))
+      alert("Use a valid email format");
+    return emailRegex.test(email);
+  }
+
   useEffect(() => {
     const setUserValues = async () => {
       const respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
@@ -97,7 +104,7 @@ export default function UserProfile({ setActiveTab }) {
     <div className="profile-margin">
       <center>
         {!usersNames && <Loader color={'#2c3e50'} />}
-        <h2>Hi {usersNames}, here you can change your personal info{email ? " except for your email" : ""}.</h2>
+        <h2>Hi {usersNames}, here you can change your personal info.</h2>
       </center>
       <div className="user-profile">
         <div className="main-profile avatar">

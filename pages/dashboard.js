@@ -7,6 +7,7 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import AutocompleteEventCard from "../pages/components/inputEventsWithSuggestions";
 import Loader from "./components/loader"
+import SingleEventCard from "./components/singleEventCard";
 export default function Dashboard({setActiveTab, hideNav, setHideNav }) {
     const { user } = useUser();
     var svgPencil = pencil;
@@ -156,21 +157,15 @@ export default function Dashboard({setActiveTab, hideNav, setHideNav }) {
             </div>
             <h3>These are your Volunteer events, add and edit them as you like.</h3>
             {
-                !isLoadingCards && <div className="dashboard-cards cards-container">
-                    {events.map((event, index) => (
-                        <div key={index} className="event-card"
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}>
-                            <h4>{event.eventName}</h4>
-                            <p>{event.eventLocation}</p>
-                            <p>{event.eventYear}</p>
-                            <p>{event.eventRole}</p>
-                            {hoverIndex === index && (
-                                <div className="edit-icon" onClick={() => handleEditClick(event)}>
-                                    <Image alt="pencil icon" height={svgPencil.height} src={svgPencil.src} width={svgPencil.width} />
-                                </div>
-                            )}
-                        </div>
+                !isLoadingCards &&events.length>0&& <div className="dashboard-cards cards-container">
+                    {events.map((event) => (
+                        <SingleEventCard index={ event?.eventUID}
+                                        hoverIndex={hoverIndex}
+                                        svgPencil={svgPencil}
+                                        event={event}
+                                        handleEditClickFunc={handleEditClick}
+                                        handleMouseLeaveFunc={handleMouseLeave}
+                                        handleMouseEnterFunc={handleMouseEnter}/>
                     ))}
                 </div>
             }
