@@ -39,7 +39,7 @@ export default function UserProfile({ setActiveTab }) {
 
 
   const handleSave = async () => {
-    if (email?.length != 0) {
+    if (email?.length != 0 && checkEmailValidity()) {
 
       setIsSaving(true);
       setDisableButtons(true);
@@ -71,10 +71,17 @@ export default function UserProfile({ setActiveTab }) {
       alert("Email is Required")
   };
 
+  function checkEmailValidity(){
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if(!emailRegex.test(email))
+      alert("Use a valid email format");
+    return emailRegex.test(email);
+  }
+
   useEffect(() => {
     const setUserValues = async () => {
       const respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
-
+      
       if (respRaw.status === 200) {
         const currentUser = await respRaw.json();
         setName(currentUser.name || "");
@@ -97,7 +104,7 @@ export default function UserProfile({ setActiveTab }) {
     <div className="profile-margin">
       <center>
         {!usersNames && <Loader color={'#2c3e50'} />}
-        <h2>Hi {usersNames}, here you can change your personal info{email ? " except for your email" : ""}.</h2>
+        <h2>Hi {usersNames}, here you can change your personal info.</h2>
       </center>
       <div className="user-profile">
         <div className="main-profile avatar">
@@ -142,10 +149,9 @@ export default function UserProfile({ setActiveTab }) {
               id="privacy-checkbox"
               onChange={handleCheckboxChange}
             />
-            <label>
-              I Accept the{' '}
-              <a className='text-links' onClick={() => { setActiveTab('privacy') }}>terms and conditions</a>, emails sent to you from friends will be sent through Voleeyo and vice versa.
-            </label>
+            <span>
+              I Accept the <a className='text-links' onClick={() => { setActiveTab('privacy') }}>terms and conditions</a>, emails sent to you from friends will be sent through Voleeyo and vice versa.
+            </span>
           </div>
           <div className="button-container">
             {isSaving ? <Loader /> : (

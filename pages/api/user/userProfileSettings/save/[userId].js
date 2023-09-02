@@ -27,7 +27,6 @@ export default withApiAuthRequired(async (req, res) => {
           "content-type":"application/json; charset=utf-8"
       }
     })
-    console.log("savedProfileRaw.status",savedProfileRaw.status)
     if (savedProfileRaw.status != 200)
       res.status(400).json({});
     else {
