@@ -14,7 +14,7 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingSearch, setIsLoadingSearch] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isAddingFriend,setIsAddingFriend]=useState(false);
+  const [isAddingFriend, setIsAddingFriend] = useState(false);
   const [activeTabSection, setActiveTabSection] = useState("following");
   const svgBin = binIcon;
   useEffect(() => {
@@ -105,53 +105,70 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
   };
   return (
 
-    <div className="friends-content content-container">
-      <div className="content">
+
+    <div className="notification">
+      <div className="notification-content content">
         <div className="page-header">
           <h2 className="friends-header-text">Your friends{
             isLoading
             && <Loader color={'#2c3e50'} />
           }
           </h2>
-
-        <div className="friends-tabs">
+          <div className="notification-tabs">
             <div
-              className={`friends-tab ${activeTabSection === "following" ? "active" : ""}`}
+              className={`notification-tab ${activeTabSection === "following" ? "active" : ""}`}
+              onClick={() => { setActiveTabSection("following") }}
             >
               Following
             </div>
             <div
-              className={`friends-tab ${activeTabSection === "followed" ? "active" : ""}`}
+              className={`notification-tab ${activeTabSection === "followed" ? "active" : ""}`}
+              onClick={() => { setActiveTabSection("followed") }}
             >
-              Followers
+              Followed
             </div>
           </div>
-          </div>
-        {/*this is the  inbox section */}
-        {activeTabSection == "following" && <div className="card-body">
-        <div className="friends-cards cards-container">
-          {friends.map((friend, index) => (
-            <SingleFriendCard
-            index={friend?.f_uid}
-            friend={friend}
-            setActiveTabFunc={setActiveTab}
-            setFriendLookUpFunc={setFriendLookUp}
-            addNewFriendFunc={()=>{return true}}
-            removeFriendFunc={removeFriend}
-            isDeleting={isDeleting}
-            svgBin={svgBin}
-            isMyFriend={true}
-            />
-          ))}
         </div>
+        {/*this is the  following section */}
+        {activeTabSection == "following" && <div className="card-body">
+          <div className="friends-cards cards-container">
+            {friends.map((friend, index) => (
+              <SingleFriendCard
+                index={friend?.f_uid}
+                friend={friend}
+                setActiveTabFunc={setActiveTab}
+                setFriendLookUpFunc={setFriendLookUp}
+                addNewFriendFunc={() => { return true }}
+                removeFriendFunc={removeFriend}
+                isDeleting={isDeleting}
+                svgBin={svgBin}
+                isMyFriend={true}
+              />
+            ))}
+          </div>
         </div>}
-        {/*this is the  sent section */}
+        {/*this is the  followed section */}
         {activeTabSection == "followed" && <div className="card-body">
-
+          {/* empty section */}
         </div>}
+        {/* <button className="fab" onClick={handleNewMessageClick}>+</button> */}
+
+
       </div>
-      <div className="content">
-        <h2>Search for friends</h2>
+      <div className="notification-content content"
+        style={{marginTop:'43px'}}
+      >
+        <div className="page-header">
+
+        <h2 className="friends-header-text">Search for friends</h2>
+        <div className="notification-tabs">
+            <div
+              className='notification-tab'
+            >
+            </div>
+          </div>
+        </div>
+
         <div className="search-bar">
           <input type="text" placeholder="Search friends..." onChange={searchFriendsFunc} />
           <button className="btn-search" onClick={searchButton}>Search</button>
@@ -161,17 +178,17 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
         </h3>
         {/*Search results section */}
         <div className="friends-cards cards-container">
-          {searchFriends.map((friend,index) => (
+          {searchFriends.map((friend, index) => (
             <SingleFriendCard
-            index={friend?.f_uid}
-            friend={friend}
-            setActiveTabFunc={()=>{}}
-            setFriendLookUpFunc={()=>{}}
-            addNewFriendFunc={addNewFriend}
-            isDeleting={isDeleting}
-            isAddingFriend={isAddingFriend}
-            svgBin={svgBin}
-            isMyFriend={false}
+              index={friend?.f_uid}
+              friend={friend}
+              setActiveTabFunc={() => { }}
+              setFriendLookUpFunc={() => { }}
+              addNewFriendFunc={addNewFriend}
+              isDeleting={isDeleting}
+              isAddingFriend={isAddingFriend}
+              svgBin={svgBin}
+              isMyFriend={false}
             />
           ))}
         </div>
