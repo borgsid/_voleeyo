@@ -14,7 +14,7 @@ export default withApiAuthRequired(async (req, res) => {
                 body: JSON.stringify(
                     {
                         followingUserId: user.sub.split("|")[1],
-                        followedUserId: modelData.friendUserId
+                        followersUserId: modelData.friendUserId
                     }
                 ),
                 headers: {
@@ -22,7 +22,6 @@ export default withApiAuthRequired(async (req, res) => {
                 }
             }
         );
-
         if (addedNewFriendRaw.status == 200) {
             var myFriendsRaw = await fetch(`${process.env.baseUri}user/Friends/${user.sub.split("|")[1]}`, {
                 method: "GET",
@@ -32,8 +31,7 @@ export default withApiAuthRequired(async (req, res) => {
                 }
             });
             if (myFriendsRaw.status == 200) {
-                friends.push(...(await myFriendsRaw.json()));
-                res.status(200).json(friends);
+                res.status(200).json(await myFriendsRaw.json());
             }
             else
                 res.status(400).json([]);

@@ -7,7 +7,7 @@ export default withApiAuthRequired(async (req, res) => {
     const { user } = session;
 
     if (user && modelData.friendUid) {
-        const friends = [];
+        var friends = {following:[],followers:[]};
         var removeFriendRaw = await fetch(`${process.env.DESKREE_BASE_URL}/userFollowers/${modelData.friendUid}`,
             {
                 method: "delete"
@@ -22,17 +22,17 @@ export default withApiAuthRequired(async (req, res) => {
                 }
             });
             if (myFriendsRaw.status == 200) {
-                friends.push(...(await myFriendsRaw.json()));
+                friends=await myFriendsRaw.json();
                 res.status(200).json(friends);
             }
             else
-                res.status(400).json([]);
+                res.status(400).json(friends);
         }
         else {
-            res.status(400).json([]);
+            res.status(400).json(friends);
         }
     }
     else {
-        res.status(400).json([]);
+        res.status(400).json(friends);
     }
 });

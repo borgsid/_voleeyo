@@ -81,7 +81,7 @@ export default function UserProfile({ setActiveTab }) {
   useEffect(() => {
     const setUserValues = async () => {
       const respRaw = await fetch(`/api/user/userProfileSettings/user/${user.sub.split("|")[1]}`);
-
+      
       if (respRaw.status === 200) {
         const currentUser = await respRaw.json();
         setName(currentUser.name || "");
@@ -149,10 +149,9 @@ export default function UserProfile({ setActiveTab }) {
               id="privacy-checkbox"
               onChange={handleCheckboxChange}
             />
-            <label>
-              I Accept the{' '}
-              <a className='text-links' onClick={() => { setActiveTab('privacy') }}>terms and conditions</a>, emails sent to you from friends will be sent through Voleeyo and vice versa.
-            </label>
+            <span>
+              I Accept the <a className='text-links' onClick={() => { setActiveTab('privacy') }}>terms and conditions</a>, emails sent to you from friends will be sent through Voleeyo and vice versa.
+            </span>
           </div>
           <div className="button-container">
             {isSaving ? <Loader /> : (
