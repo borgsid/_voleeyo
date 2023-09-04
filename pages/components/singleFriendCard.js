@@ -12,9 +12,9 @@ const SingleFriendCard = (data) => {
   const { svgBin } = data;
   const { isMyFriend } = data;
   const { isAddingFriend } = data;
+  const canAddButton = data?.canContact ?? true;
 
-
-  if (isMyFriend&&data)
+  if (isMyFriend && data)
     return <>
       <div className="friend-card" key={index}>
         <div className="card-header">
@@ -38,7 +38,7 @@ const SingleFriendCard = (data) => {
         </div>
       </div>
     </>
-  if (!isMyFriend&&data)
+  if (!isMyFriend && data)
     return <>
       <div className="friend-card" key={index}>
         <div className="card-header">
@@ -48,12 +48,18 @@ const SingleFriendCard = (data) => {
             <p className="card-subtitle">{friend?.email}</p>
           </div>
         </div>
-        <div className="card-footer">
+        {canAddButton&&<div className="card-footer">
           {!isAddingFriend ?
             <button className="add-friend-btn" onClick={() => { addNewFriendFunc(friend?.userId) }}>Add Friend</button>
             : <Loader color={'#2c3e50'} />
           }
         </div>
+        }
+        {!canAddButton &&<div className="card-footer">
+          <button className="delete-button" disabled>private</button>
+          </div>
+
+        }
       </div>
     </>
 }
