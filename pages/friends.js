@@ -132,8 +132,9 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
         {/*this is the  following section */}
         {activeTabSection == "following" && <div className="card-body">
           <div className="friends-cards cards-container">
-            {friends[activeTabSection].map((friend, index) => (
+            {friends[activeTabSection].map((friend) => (
               <SingleFriendCard
+              key={friend?.f_uid}
                 index={friend?.f_uid}
                 friend={friend}
                 setActiveTabFunc={setActiveTab}
@@ -151,10 +152,11 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
 
         {activeTabSection == "followers" && <div className="card-body">
           <div className="friends-cards cards-container">
-            {friends[activeTabSection].map((friend, index) => (
+            {friends[activeTabSection].map((friend) => (
               friend?.isFollowing?
               <SingleFriendCard
                 index={friend?.f_uid}
+                key={friend?.f_uid}
                 friend={friend}
                 setActiveTabFunc={setActiveTab}
                 setFriendLookUpFunc={setFriendLookUp}
@@ -166,6 +168,7 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
               />
               :  <SingleFriendCard
               index={friend?.f_uid}
+              key={friend?.f_uid}
               friend={friend}
               setActiveTabFunc={() => { }}
               setFriendLookUpFunc={() => { }}
@@ -188,9 +191,7 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
 
         <h2 className="friends-header-text">Search for friends</h2>
         <div className="notification-tabs">
-            <div
-              className='notification-tab'
-            >
+            <div className='notification-tab'>
             </div>
           </div>
         </div>
@@ -206,6 +207,7 @@ export default function Friends({ activeTab, setActiveTab, friendLookUp, setFrie
           {searchFriends.map((friend, index) => (
             <SingleFriendCard
               index={friend?.f_uid}
+              key={friend?.f_uid}
               friend={friend}
               setActiveTabFunc={() => { }}
               setFriendLookUpFunc={() => { }}

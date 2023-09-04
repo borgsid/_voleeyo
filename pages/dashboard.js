@@ -157,9 +157,10 @@ export default function Dashboard({setActiveTab, hideNav, setHideNav }) {
             </div>
             <h3>These are your Volunteer events, add and edit them as you like.</h3>
             {
-                !isLoadingCards &&events.length>0&& <div className="dashboard-cards cards-container">
+                !isLoadingCards &&events?.length>0&& <div className="dashboard-cards cards-container">
                     {events.map((event) => (
-                        <SingleEventCard index={ event?.eventUID}
+                        <SingleEventCard key={ event?.eventUID}
+                                        index={ event?.eventUID}
                                         hoverIndex={hoverIndex}
                                         svgPencil={svgPencil}
                                         event={event}
