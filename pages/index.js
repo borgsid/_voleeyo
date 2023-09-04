@@ -55,7 +55,7 @@ export default ({ showSideMenu, setShowSideMenu, hideNav, setHideNav, activeTab,
               {(user??false) && <p>Find out what you friends have been up to and connect with new ones!</p>}
               <div className="social-links">
                 <a href="#" target="_blank" rel="noopener noreferrer">Instagram (Coming soon)</a>
-                <a href="https://twitter.com/Voleeyo" target="_blank" rel="noopener noreferrer">Twitter (WIP)</a>
+                <a href="https://x.com/Voleeyo" target="_blank" rel="noopener noreferrer">Twitter (WIP)</a>
               </div>
               <br />
               <br />
