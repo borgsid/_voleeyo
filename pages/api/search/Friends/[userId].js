@@ -14,14 +14,16 @@ export default withApiAuthRequired(async (req, res) => {
             var allUsers = await allUsersRaw.json();
             if (allUsers.meta?.total > 0) {
                 allUsers.data.forEach((x, index) => {
-                    friends.push({
-                        id: index + 1,
-                        userId: x.attributes.userId,
-                        name: x.attributes.name,
-                        surname: x.attributes.surname,
-                        profilePic: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
-                        bio: x.attributes.bio
-                    });
+                    if (x.attributes.isActive)
+                        friends.push({
+                            id: index + 1,
+                            f_uid: x.uid,
+                            userId: x.attributes.userId,
+                            name: x.attributes.name,
+                            surname: x.attributes.surname,
+                            profilePic: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
+                            bio: x.attributes.bio
+                        });
                 });
             }
         }
