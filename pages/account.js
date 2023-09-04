@@ -78,7 +78,7 @@ const Account = ({ activeTab, setActiveTab }) => {
         <label>
           <input type="checkbox" checked={userContactMeButton} onChange={handleContactMeToggle} />
           <span className="custom-checkbox"></span>
-          <span>Show Contact Button</span>
+          <span>Show Add Friend Button</span>
         </label>
       </div>
       <div className="section">
