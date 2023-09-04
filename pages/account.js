@@ -62,87 +62,91 @@ const Account = ({ activeTab, setActiveTab }) => {
 
   return (
     <>
-
-      <div className="account-container">
-        <div className="section">
-          <h3>User Data:</h3>
-          <label>
-            <input type="checkbox" id="name-check" checked={userDataVisible} onChange={handleUserDataToggle} />
-            <span className="custom-checkbox"></span>
-            <span>Surname</span>
-          </label>
-          <br />
-          <label>
-            <input type="checkbox" checked={userContactMeButton} onChange={handleContactMeToggle} />
-            <span className="custom-checkbox"></span>
-            <span>Contact button</span>
-          </label>
-        </div>
-        <div className="section">
-          <h3>User Event Data:</h3>
-          <label>
-            <input type="checkbox" id="year-check" checked={userEventDataVisible} onChange={handleUserEventToggle} />
-            <span className="custom-checkbox"></span>
-            <span>Year</span>
-          </label>
-        </div>
+    <div className="account-container">
+      <div className="section">
+        <p>
+          In this section, you can control what information is visible on your Friends Card and Events Card.
+          Toggle the checkboxes to decide what data you want to share with others.
+        </p>
+        <h3>User Data:</h3>
+        <label>
+          <input type="checkbox" id="name-check" checked={userDataVisible} onChange={handleUserDataToggle} />
+          <span className="custom-checkbox"></span>
+          <span>Show Surname</span>
+        </label>
+        <br />
+        <label>
+          <input type="checkbox" checked={userContactMeButton} onChange={handleContactMeToggle} />
+          <span className="custom-checkbox"></span>
+          <span>Show Contact Button</span>
+        </label>
       </div>
-      <div className='cards-container' style={{ height: 'fit-content' }}>
-        <style >{`
-            .user-header{
-              grid-row:1/2;
-              grid-column: 2/3;
-            }
-            .friend-card{
-              grid-row:2/3;
-              grid-column: 2/3;
-            }
-            .event-header{
-              grid-row:3/4;
-              grid-column: 2/3;
-            }
-            .event-card{
-              grid-row:4/5;
-              grid-column: 2/3;
-            }
-            .cards-container{
-              place-items:center
-            }
-          `}
-        </style>
-        <div className='user-header'>
-          <h3>User Details Card</h3>
-        </div>
-        <SingleFriendCard
-          index={friend.f_uid}
-          key={friend.f_uid}
-          friend={{ id: friend.id, name, surname, f_uid: friend.f_uid, profilePic: friend.profilePic, userId: friend.userId }}
-          setActiveTabFunc={() => { }}
-          addNewFriendFunc={() => { }}
-          canContact={userContactMeButton}
-          svgBin={svgBin}
-          isMyFriend={false}
-        />
-        <div className='event-header'>
-          <h3>Event Details Card</h3>
-        </div>
-        <SingleEventCard index={'xxx'}
-          hoverIndex={99}
-          event={{
-            id: event.id,
-            eventUID: event.eventUID,
-            eventName: event.eventName,
-            eventYear: year,
-            eventLocation: event.eventLocation,
-            eventRole: event.eventRole,
-          }}
-          svgPencil={() => { return true }}
-          handleEditClickFunc={() => { return true }}
-          handleMouseLeaveFunc={() => { return true }}
-          handleMouseEnterFunc={() => { return true }}
-        />
+      <div className="section">
+        <h3>User Event Data:</h3>
+        <label>
+          <input type="checkbox" id="year-check" checked={userEventDataVisible} onChange={handleUserEventToggle} />
+          <span className="custom-checkbox"></span>
+          <span>Show Event Year</span>
+        </label>
       </div>
-    </>
+    </div>
+    <div className='cards-container' style={{ height: 'fit-content' }}>
+      <style >{`
+          .user-header{
+            grid-row:1/2;
+            grid-column: 2/3;
+          }
+          .friend-card{
+            grid-row:2/3;
+            grid-column: 2/3;
+          }
+          .event-header{
+            grid-row:3/4;
+            grid-column: 2/3;
+          }
+          .event-card{
+            grid-row:4/5;
+            grid-column: 2/3;
+          }
+          .cards-container{
+            place-items:center
+          }
+        `}
+      </style>
+      <div className='user-header'>
+        <h3>User Details Card</h3>
+      </div>
+      <SingleFriendCard
+        index={friend.f_uid}
+        key={friend.f_uid}
+        friend={{ id: friend.id, name, surname, f_uid: friend.f_uid, profilePic: friend.profilePic, userId: friend.userId }}
+        setActiveTabFunc={() => { }}
+        addNewFriendFunc={() => { }}
+        canContact={userContactMeButton}
+        svgBin={svgBin}
+        isMyFriend={false}
+      />
+      <div className='event-header'>
+        <h3>Event Details Card</h3>
+      </div>
+      <SingleEventCard index={'xxx'}
+        hoverIndex={99}
+        event={{
+          id: event.id,
+          eventUID: event.eventUID,
+          eventName: event.eventName,
+          eventYear: year,
+          eventLocation: event.eventLocation,
+          eventRole: event.eventRole,
+        }}
+        svgPencil={() => { return true }}
+        handleEditClickFunc={() => { return true }}
+        handleMouseLeaveFunc={() => { return true }}
+        handleMouseEnterFunc={() => { return true }}
+      />
+    </div>
+  </>
+  
   );
 };
 
