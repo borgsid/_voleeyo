@@ -42,8 +42,8 @@ export default withApiAuthRequired(async (req, res) => {
             }
         });
         if (myFriendsRaw.status == 200) {
-            var myFriendsRaw = await myFriendsRaw.json();
-            var myFriendsUserIds = myFriendsRaw.map(x => x.userId);
+            var myFriends = await myFriendsRaw.json();
+            var myFriendsUserIds = myFriends.following.map(x => x.userId);
             var clearExistingFriends = searchResults.filter(x => !myFriendsUserIds.includes(x.userId));
             res.status(200).json(clearExistingFriends);
         }
