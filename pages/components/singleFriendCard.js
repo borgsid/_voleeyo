@@ -18,10 +18,10 @@ const SingleFriendCard = (data) => {
     return <>
       <div className="friend-card" key={index}>
         <div className="card-header">
-          <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
+          <img width="75" height="75" src={friend?.profilePic} alt="Friend profile picture" />
           <div>
-            <h4>{friend.name} {friend.surname}</h4>
-            <p className="card-subtitle">{friend.email}</p>
+            <h4>{friend?.name} {friend?.surname}</h4>
+            <p className="card-subtitle">{friend?.email}</p>
           </div>
         </div>
         <div className="card-body my-friends">
@@ -32,8 +32,8 @@ const SingleFriendCard = (data) => {
               setFriendLookUpFunc(friend);
             }}>See Network</button>
           {!isDeleting && <Image
-            onClick={() => { removeFriendFunc(friend.f_uid) }}
-            alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />}
+            onClick={() => { removeFriendFunc(friend?.f_uid) }}
+            alt="delete icon" height={svgBin?.height} src={svgBin?.src} width={svgBin?.width} />}
           {isDeleting && <Loader color={'#2c3e50'} />}
         </div>
       </div>
@@ -42,15 +42,15 @@ const SingleFriendCard = (data) => {
     return <>
       <div className="friend-card" key={index}>
         <div className="card-header">
-          <img width="75" height="75" src={friend.profilePic} alt="Friend profile picture" />
+          <img width="75" height="75" src={friend?.profilePic} alt="Friend profile picture" />
           <div>
-            <h4>{friend.name} {friend.surname}</h4>
-            <p className="card-subtitle">{friend.email}</p>
+            <h4>{friend?.name} {friend?.surname}</h4>
+            <p className="card-subtitle">{friend?.email}</p>
           </div>
         </div>
         <div className="card-footer">
           {!isAddingFriend ?
-            <button className="add-friend-btn" onClick={() => { addNewFriendFunc(friend.userId) }}>Add Friend</button>
+            <button className="add-friend-btn" onClick={() => { addNewFriendFunc(friend?.userId) }}>Add Friend</button>
             : <Loader color={'#2c3e50'} />
           }
         </div>
