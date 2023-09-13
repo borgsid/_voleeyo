@@ -17,7 +17,6 @@ const NavMenu = ({ activeTab, setActiveTab }) => {
   var twitter = twitterSvg;
   var tik_tok = tik_tokSvg;
   const handleTabClick = (tab) => {
-    setActiveTab(tab);
   };
   const handleLogout = () => {
     location.href = "/api/auth/logout";
