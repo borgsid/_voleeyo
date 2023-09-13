@@ -13,7 +13,7 @@ const NavMenu = ({ activeTab, setActiveTab }) => {
   const [email, setEmail] = useState(null);
   const svgPencil = pencil;
   var instagam = instagamSvg;
-  var facebook = facebookSvg;
+  var facebook = facebookSvg;//akdssafsdfdsf
   var twitter = twitterSvg;
   var tik_tok = tik_tokSvg;
   const handleTabClick = (tab) => {
