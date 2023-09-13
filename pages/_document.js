@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <meta property="og:title" content="Voleeyo: the LinkedIn for volunteers" key="title"/>
+        <meta property="og:title" content="Voleeyo: the facebook for volunteers" key="title"/>
         <meta property="og:description" content="built at buildspace during nights and weekends S3 & S4" key="description"/>
         <meta
           property="og:image"
