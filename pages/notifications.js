@@ -89,11 +89,13 @@ export default function Notifications({ activeTab, setActiveTab, friendLookUp, s
       id: 0,
       isRead: false,
       message: "",
-      messageFrom: {/*server gets the logges userinfo*/ },
+      messageFrom: {
+        id: user.sub.split("|")[1],
+        name: "",
+        surname: document.getElementById("currentUser-name")?.innerText,
+        isFollowing: true
+       },
       messageTo: {
-        id: receiverUserId,
-        isFollowing: false,
-        receiverUserName
       },
       userMessage: newMessage,
       isInbox: true
@@ -117,8 +119,8 @@ export default function Notifications({ activeTab, setActiveTab, friendLookUp, s
   };
   const clearNewMessageModal = () => {
     setFilteredFriends([]);
-    setReceiverUserName(null);
-    setReceiverUserId(null);
+    setReceiverUserName("");
+    setReceiverUserId("");
   }
   const toggleNavMenu = () => {
     var navbar = document.getElementById("navbar");
@@ -326,7 +328,7 @@ export default function Notifications({ activeTab, setActiveTab, friendLookUp, s
               <div className="modal-body">
                 <div className="form-group">
                   <label htmlFor="friend">To:</label>
-                  <input autocomplete="off" type="text" id="friend" name="friend" value={receiverUserName} onChange={setReceiverName} onKeyUp={handleFilterFriends} />
+                  <input autoComplete="off" type="text" id="friend" name="friend" value={receiverUserName} onChange={setReceiverName} onKeyUp={handleFilterFriends} />
                   {!hideFilteredList && filteredFriends.length > 0 ? (
                     <div className="dropdown-list">
                       {filteredFriends.map((friend) => (

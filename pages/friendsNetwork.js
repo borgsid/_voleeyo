@@ -51,12 +51,12 @@ export default function FriendsNetwork({
     setSelectedUserName(clickedCircle.userName);
     const relationships = data.links.filter(l => l.source.id == clickedCircle.id || l.target.id == clickedCircle.id);
     // Set fill color for related nodes
-    console.log("relationships",relationships)
     var relText = {
       clickedUser: clickedCircle.userName,
       connections: [],
       isCurrentUser: false,
-      userId: clickedCircle.id
+      userId: clickedCircle.id,
+      hasNoEventsInCommon:false
     };
     if (clickedCircle.id == (user.sub.split("|")[1]))
       relText.isCurrentUser = true
@@ -65,10 +65,17 @@ export default function FriendsNetwork({
       d3.select(`#node-${relatedNodeId}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
       d3.select(`#node-${clickedCircle.id}`).select('circle').attr('fill', 'rgb(225, 215, 172)');
       relText.connections.push(`- connected to ${data.nodes.find(x => x.id == relatedNodeId).userName} through the: ${rel.eventName}.`);
-    });
+    }); 
     if(relationships.length==0)
-      relText.connections.push(`- don't have events in common with anyone at the moment`)
-    setActiveNode(relText);
+      {
+        relText.hasNoEventsInCommon=true;
+        relText.connections.push(`- ${relText.isCurrentUser?" don't":" doesn't"} have events in common with anyone at the moment`)
+      }
+    
+      data.uniqueEvents.filter(x => x.source == clickedCircle.id).forEach((ev)=>{
+        relText.connections.push(`- and ${relText.isCurrentUser?"you have":"has"} participated in the: ${ev.eventName}.`);
+      })
+  setActiveNode(relText);
   }
   if (!data) {
     return (<div className="friends frinds-network">
@@ -116,8 +123,8 @@ export default function FriendsNetwork({
               <div className="side-banner">
 
                 <div className="node-info">
-                  {!activeNode.isCurrentUser && <h3>{activeNode.clickedUser} is:</h3>}
-                  {activeNode.isCurrentUser && <h3>{activeNode.clickedUser} are:</h3>}
+                  {!activeNode.isCurrentUser && <h3>{activeNode.clickedUser} {!activeNode.hasNoEventsInCommon?"is:":""}</h3>}
+                  {activeNode.isCurrentUser && <h3>{activeNode.clickedUser} {!activeNode.hasNoEventsInCommon?"are:":""}</h3>}
                   <hr />
                   {activeNode.connections.map((node, index) => (
                     <span key={index}>{node}</span>

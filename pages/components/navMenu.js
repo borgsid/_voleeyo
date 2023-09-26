@@ -56,7 +56,7 @@ const NavMenu = ({ activeTab, setActiveTab }) => {
         />
       </div>
       <div className="name">
-        <h4>{name} {surname}</h4>
+        <h4 id="currentUser-name">{name} {surname}</h4>
         {
           !(name && surname) && activeTab != 'profile' &&
           <Image onClick={() => { handleTabClick("profile") }}

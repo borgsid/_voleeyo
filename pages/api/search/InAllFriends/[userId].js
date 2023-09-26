@@ -15,7 +15,14 @@ export default withApiAuthRequired(async (req, res) => {
             }
         });
         if (friendsRaw.status == 200)
-            friends = await friendsRaw.json()
+            {
+                var resp =await friendsRaw.json();
+                friends = [... resp["following"]].concat([...resp["followers"]])
+                friends=Array.from(new Set(friends.map(obj => obj.userId)))
+                        .map(userId => {
+                            return friends.find(obj => obj.userId === userId);
+                        }); 
+            }
         var searchResults = friends.filter(x =>
             x.name.toLocaleLowerCase().includes(body.searchText.toLocaleLowerCase())
             || x.surname.toLocaleLowerCase().includes(body.searchText.toLocaleLowerCase()
