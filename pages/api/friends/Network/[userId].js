@@ -7,7 +7,8 @@ export default withApiAuthRequired(async (req, res) => {
     //Check for different statuses to send proper payload
     const network = {
       nodes: [],
-      links: []
+      links: [],
+      uniqueEvents:[]
     };
     const nodeList = [];
     //Get all events
@@ -72,6 +73,14 @@ export default withApiAuthRequired(async (req, res) => {
                   yearOfParticipation: events[i].eventYear
                 }
               );
+          else
+            network.uniqueEvents.push(
+              {
+                source: events[0].userId.replace(/[^a-zA-Z0-9]/g, ''),  
+                eventName: events[0].eventName,
+                yearOfParticipation: events[0].eventYear
+              }
+            );
         }
       }
       res.status(200).json(network);
