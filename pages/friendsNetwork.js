@@ -24,6 +24,7 @@ export default function FriendsNetwork({
         }
       );
       const dataResp = await dataRaw.json();
+      console.log("dataResp",dataResp)
       if (dataResp != undefined) {
         setData(dataResp);
         d3.selectAll(".node").select("circle").attr("fill", "red");
