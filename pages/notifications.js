@@ -3,8 +3,11 @@ import ReactModal from 'react-modal';
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Loader from "./components/loader"
+import binIcon from "../assets/bin-delete-button.svg"
+import Image from "next/image";
 export default function Notifications({ activeTab, setActiveTab, friendLookUp, setFriendLookUp }) {
   const [notifications, setNotifications] = useState({ inbox: [], sent: [] });
+  const svgBin = binIcon;
   const [showModal, setShowModal] = useState(false);
   const [selectedMessage, setReplyMessage] = useState("");
   const [reply, setReply] = useState("");
@@ -16,6 +19,7 @@ export default function Notifications({ activeTab, setActiveTab, friendLookUp, s
   const [filteredFriends, setFilteredFriends] = useState([]);
   const [hideFilteredList, setHideFilteredList] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { user } = useUser();
   useEffect(() => {
     setActiveTab("notifications")
@@ -62,7 +66,23 @@ export default function Notifications({ activeTab, setActiveTab, friendLookUp, s
       await updateMessageStatus(e);
     }
   };
-
+  const deleteMessage = async (cardType, message_id) => {
+    setIsDeleting(true);
+    var resp = await fetch(`/api/user/Notifications/deleteMessage/${user.sub.split("|")[1]}`, {
+      method: "Post",
+      body: JSON.stringify(
+        {
+          id: message_id,
+          notificationToWhom: cardType == "inbox" ? "receiver" : "sender"
+        }
+      )
+    })
+    if (resp.status == 200) {
+      notifications[cardType] = notifications[cardType].filter(x => x.id != message_id);
+      setNotifications(notifications)
+    }
+    setIsDeleting(false);
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -94,7 +114,7 @@ export default function Notifications({ activeTab, setActiveTab, friendLookUp, s
         name: "",
         surname: document.getElementById("currentUser-name")?.innerText,
         isFollowing: true
-       },
+      },
       messageTo: {
       },
       userMessage: newMessage,
@@ -185,13 +205,13 @@ export default function Notifications({ activeTab, setActiveTab, friendLookUp, s
               className={`notification-tab ${activeTabSection === "inbox" ? "active" : ""}`}
               onClick={() => { setActiveTabSection("inbox"); setNotifications({ ...notifications }) }}
             >
-              Inbox
+              Inbox {notifications.inbox?.length>0?`(${notifications.inbox?.length})`:""}
             </div>
             <div
               className={`notification-tab ${activeTabSection === "sent" ? "active" : ""}`}
               onClick={() => { setActiveTabSection("sent"); setNotifications({ ...notifications }) }}
             >
-              Sent
+              Sent {notifications.sent?.length>0?`(${notifications.sent?.length})`:""}
             </div>
           </div>
           <svg onClick={toggleNavMenu} viewBox="0 0 100 80" width="40" height="40">
@@ -204,57 +224,73 @@ export default function Notifications({ activeTab, setActiveTab, friendLookUp, s
           {notifications[activeTabSection].map((message) => (
             <div
               className="notification-card"
-              key={message.id}
-              onClick={() => handleSelectedMessage(message)}
+
             >
-              {/*this is the  inbox section */}
-              {activeTabSection == "inbox" && <div className="card-header">
-                <h5>{message.messageFrom.name} {message.messageFrom.surname}</h5>
-                {message.isRead == undefined ?
-                  <label><span className="unread-indicator">sending</span></label>
-                  : message.isRead ? (
-                    <label>{(new Date(message.createdUTC)).toLocaleTimeString()} <span className="read-indicator">Read</span></label>
-                  ) : (
-                    <label>{(new Date(message.createdUTC)).toLocaleTimeString()} <span className="unread-indicator">Unread</span></label>
-                  )}
-              </div>
+              {
+                !isDeleting && <div className="delete-icon notification" onClick={() => { deleteMessage(activeTabSection, message.id) }}>
+                  <Image alt="delete icon" height={svgBin.height} src={svgBin.src} width={svgBin.width} />
+                </div>
               }
-              {/*this is the sent section */}
-              {activeTabSection == "sent" && <div className="card-header">
-                <h5>To: {message.messageTo.name} {message.messageTo.surname}</h5>
-                <label>{(new Date(message.createdUTC)).toLocaleTimeString()} <span className="unread-indicator">sent</span></label>
-              </div>
+              {isDeleting &&
+                <div className="delete-icon notification">
+                  <Loader />
+                </div>
               }
-              {/*this is the  inbox section */}
-              {activeTabSection == "inbox" && <div className="card-body">
-                <p>{message.message}</p>
-                {message.userMessage && (
-                  <div className="user-reply">
+
+              <div
+                key={message.id}
+                onClick={() => handleSelectedMessage(message)}
+              >
+                {/*this is the  inbox section */}
+                {activeTabSection == "inbox" && <div className="card-header">
+                  <h5>{message.messageFrom.name} {message.messageFrom.surname}</h5>
+                  {message.isRead == undefined ?
+                    <label><span className="unread-indicator">sending</span></label>
+                    : message.isRead ? (
+                      <label>{(new Date(message.createdUTC)).toLocaleTimeString()} <span className="read-indicator">Read</span></label>
+                    ) : (
+                      <label>{(new Date(message.createdUTC)).toLocaleTimeString()} <span className="unread-indicator">Unread</span></label>
+                    )}
+                </div>
+                }
+                {/*this is the sent section */}
+                {activeTabSection == "sent" && <div className="card-header">
+                  <h5>To: {message.messageTo.name} {message.messageTo.surname}</h5>
+                  <label>{(new Date(message.createdUTC)).toLocaleTimeString()} <span className="unread-indicator">sent</span></label>
+                </div>
+                }
+                {/*this is the  inbox section */}
+                {activeTabSection == "inbox" && <div className="card-body">
+                  <p>{message.message}</p>
+                  {message.userMessage && (
+                    <div className="user-reply">
                       <div className="reply-section">
-                      <strong>You replied:</strong> 
-                      {message.userMessage?.length>0&&<label>{(new Date(message.editedUTC)).toLocaleTimeString()}</label>}
+                        <strong>You replied:</strong>
+                        {message.userMessage?.length > 0 && <label>{(new Date(message.editedUTC)).toLocaleTimeString()}</label>}
                       </div>
-                    <p>
-                      {message.userMessage}
-                    </p>
-                  </div>
-                )}
-              </div>}
-              {/*this is the  sent section */}
-              {activeTabSection == "sent" && <div className="card-body">
-                <p>You sent:{message.userMessage}</p>
-                {message.userMessage && (
-                  <div className="user-reply">
-                    <div className="reply-section">
-                      <strong> reply:</strong>
-                      {message.message?.length>0&&<label>{(new Date(message.editedUTC)).toLocaleTimeString()}</label>}
+                      <p>
+                        {message.userMessage}
+                      </p>
+                    </div>
+                  )}
+                </div>}
+
+                {/*this is the  sent section */}
+                {activeTabSection == "sent" && <div className="card-body">
+                  <p>You sent:{message.userMessage}</p>
+                  {message.userMessage && (
+                    <div className="user-reply">
+                      <div className="reply-section">
+                        <strong> reply:</strong>
+                        {message.message?.length > 0 && <label>{(new Date(message.editedUTC)).toLocaleTimeString()}</label>}
                       </div>
-                    <p>
-                       {message.message}
-                    </p>
-                  </div>
-                )}
-              </div>}
+                      <p>
+                        {message.message}
+                      </p>
+                    </div>
+                  )}
+                </div>}
+              </div>
             </div>
           ))}
         </div>
@@ -306,7 +342,7 @@ export default function Notifications({ activeTab, setActiveTab, friendLookUp, s
                   {!selectedMessage.userMessage && !isLoading && (
                     <button type="submit">Send reply</button>
                   )}
-                  {isLoading&& <Loader color={'#2c3e50'} />}
+                  {isLoading && <Loader color={'#2c3e50'} />}
                   <button type="submit" onClick={closeAndResetModal}>Close</button>
                 </div>
               </form>
