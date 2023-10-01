@@ -290,3 +290,7 @@ button[type="submit"]:hover {
   display: flex;
     justify-content: space-between;
 }
+.delete-icon.notification{
+  justify-content: right;
+  padding: 0 0 15px 0;
+}
